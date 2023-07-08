@@ -29,3 +29,18 @@ longitude = -0.1278
 
 country = get_country_from_coordinates(latitude, longitude)
 print(f"The location is in {country}")
+
+
+
+import pandas as pd
+
+def remove_character_from_column(df, column, character):
+    df[column] = df[column].str.replace(character, "")
+    return df
+
+# Assuming your DataFrame is named 'df' and the column is named 'text_column'
+df = pd.DataFrame({'text_column': ['Hello*', 'How*are*you', 'Excited*']})
+
+cleaned_df = remove_character_from_column(df, 'text_column', '*')
+print(cleaned_df)
+
