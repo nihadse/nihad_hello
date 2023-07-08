@@ -44,3 +44,24 @@ df = pd.DataFrame({'text_column': ['Hello*', 'How*are*you', 'Excited*']})
 cleaned_df = remove_character_from_column(df, 'text_column', '*')
 print(cleaned_df)
 
+
+
+
+
+
+import geocoder
+
+def get_coordinates_from_place(place):
+    location = geocoder.osm(place)
+    if location.ok:
+        latitude = location.lat
+        longitude = location.lng
+        return latitude, longitude
+    else:
+        return None, None
+
+place = "Statue of Liberty, New York"
+
+latitude, longitude = get_coordinates_from_place(place)
+print(f"The coordinates of {place} are Latitude: {latitude}, Longitude: {longitude}")
+
