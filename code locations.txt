@@ -1,0 +1,31 @@
+# detect the lontitude and latitude fron the place name 
+from geopy.geocoders import Nominatim
+
+def get_coordinates_from_place(place):
+    geolocator = Nominatim(user_agent="coordinate_finder")
+    location = geolocator.geocode(place)
+    latitude = location.latitude
+    longitude = location.longitude
+    return latitude, longitude
+
+place = "Statue of Liberty, New York"
+
+latitude, longitude = get_coordinates_from_place(place)
+print(f"The coordinates of {place} are Latitude: {latitude}, Longitude: {longitude}")
+
+#detect country from lat and lon
+
+from geopy.geocoders import Nominatim
+
+def get_country_from_coordinates(latitude, longitude):
+    geolocator = Nominatim(user_agent="country_detector")
+    location = geolocator.reverse(f"{latitude}, {longitude}", exactly_one=True)
+    address = location.raw['address']
+    country = address.get('country', '')
+    return country
+
+latitude = 51.5074
+longitude = -0.1278
+
+country = get_country_from_coordinates(latitude, longitude)
+print(f"The location is in {country}")
