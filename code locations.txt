@@ -65,3 +65,39 @@ place = "Statue of Liberty, New York"
 latitude, longitude = get_coordinates_from_place(place)
 print(f"The coordinates of {place} are Latitude: {latitude}, Longitude: {longitude}")
 
+
+
+
+
+
+
+
+
+
+
+
+
+from sklearn.cluster import KMeans
+
+# Assuming your DataFrame is named 'df' and contains a 'country' column
+
+
+unique_countries = data_restaurant['wilaya_res'].unique()
+k = len(unique_countries)
+
+
+# Step 1: Create a numeric representation for each unique country
+country_codes = data_restaurant['wilaya_res'].astype('category').cat.codes
+
+
+
+kmeans = KMeans(n_clusters=k)
+kmeans.fit(country_codes.values.reshape(-1, 1))
+
+# Step 3: Assign cluster labels to DataFrame
+data_restaurant['cluster_label'] = kmeans.labels_
+
+# Step 4: Print the resulting DataFrame
+data_restaurant['cluster_label'].unique()
+
+
