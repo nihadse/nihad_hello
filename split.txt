@@ -1,0 +1,19 @@
+import pandas as pd
+
+# Load the CSV file
+df = pd.read_csv('your_file.csv')
+
+# Split the transaction ID, transaction amount, and transaction date by '|'
+df['Transaction ID'] = df['Transaction ID'].apply(lambda x: x.split('|'))
+df['Transaction Amount'] = df['Transaction Amount'].apply(lambda x: x.split('|'))
+df['Transaction Date'] = df['Transaction Date'].apply(lambda x: x.split('|'))
+
+# Aggregate transaction data for each client
+df_transformed = df.groupby('Client ID').agg({
+    'Transaction ID': lambda x: list(map(int, sum(x, []))),
+    'Transaction Amount': lambda x: list(map(float, sum(x, []))),
+    'Transaction Date': lambda x: sum(x, [])
+}).reset_index()
+
+# Display the transformed dataframe
+print(df_transformed)
