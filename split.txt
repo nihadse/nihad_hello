@@ -8,6 +8,8 @@ df['Transaction ID'] = df['Transaction ID'].apply(lambda x: x.split('|'))
 df['Transaction Amount'] = df['Transaction Amount'].apply(lambda x: x.split('|'))
 df['Transaction Date'] = df['Transaction Date'].apply(lambda x: x.split('|'))
 
+df['fixed_acidity'] = df['fixed_acidity'].apply(lambda x: [float(i) for i in str(x).split('|')])
+
 # Aggregate transaction data for each client
 df_transformed = df.groupby('Client ID').agg({
     'Transaction ID': lambda x: list(map(int, sum(x, []))),
@@ -17,3 +19,6 @@ df_transformed = df.groupby('Client ID').agg({
 
 # Display the transformed dataframe
 print(df_transformed)
+
+
+df['fixed_acidity'] = df['fixed_acidity'].apply(lambda x: [float(i) for i in str(x).split('|')])
