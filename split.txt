@@ -1,3 +1,19 @@
+https://coursera.org/share/9e552a19f92a91ed4c3931da93576afc
+
+
+https://coursera.org/share/a9ad9a14059f571fa14aa59cd1bbb584
+
+https://coursera.org/share/f9118f63e30857dda73e0633e8231526
+
+https://coursera.org/share/19921ddff442a2dc6b9cb3c9dc336fe5
+
+https://coursera.org/share/0f1eead6b24b9a94b40d8af8fb29a48d
+
+https://coursera.org/share/31d8e216b0a507cccb0946643359d150
+
+https://coursera.org/share/34c7c4734490bd1b3b8e7fbb744d7201
+
+
 import pandas as pd
 
 # Load the CSV file
