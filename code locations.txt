@@ -101,3 +101,71 @@ data_restaurant['cluster_label'] = kmeans.labels_
 data_restaurant['cluster_label'].unique()
 
 
+
+
+CountryLatitudeLongitudeAllemagne51.165710.4515Russie61.5240105.3188Ukraine48.379431.1656Egypte26.820630.8025Portugal39.3999-8.2245Malaisie4.2105101.9758Pays-Bas52.36764.9041Chine35.8617104.1954Romanie45.943224.9668Suisse46.81828.2275Qatar25.354851.1839Grèce39.074221.8243Autriche47.516214.5501Côte d'Ivoire7.5399-5.5471Thailande15.8700100.9925Jordanie30.585236.2384Bulgarie42.733925.4858Indonesie-0.7893113.9213Japan36.2048138.2529Hongrie47.162519.5033Senegal14.4974-14.4524Benin9.30772.3158Pologne51.9194
+
+
+
+
+
+Country, Latitude, Longitude
+Allemagne (Germany), 51.1657, 10.4515
+Russie (Russia), 61.5240, 105.3188
+Ukraine, 48.3794, 31.1656
+Egypte (Egypt), 26.8206, 30.8025
+Portugal, 39.3999, -8.2245
+Malaisie (Malaysia), 4.2105, 101.9758
+Pays-Bas (Netherlands), 52.1326, 5.2913
+Chine (China), 35.8617, 104.1954
+Romanie (Romania), 45.9432, 24.9668
+Suisse (Switzerland), 46.8182, 8.2275
+Qatar, 25.3548, 51.1839
+Grèce (Greece), 39.0742, 21.8243
+Autriche (Austria), 47.5162, 14.5501
+Côte d'Ivoire, 7.5400, -5.5471
+Thailande (Thailand), 15.8700, 100.9925
+Jordanie (Jordan), 30.5852, 36.2384
+Bulgarie (Bulgaria), 42.7339, 25.4858
+Indonesie (Indonesia), -0.7893, 113.9213
+Japan, 36.2048, 138.2529
+Hongrie (Hungary), 47.1625, 19.5033
+Senegal, 14.4974, -14.4524
+Benin, 9.3077, 2.3158
+Pologne (Poland), 51.9194, 19.1451
+Mauritanie (Mauritania), 21.0079, -10.9408
+Norvège (Norway), 60.4720, 8.4689
+Oman, 21.5126, 55.9233
+Liban (Lebanon), 33.8547, 35.8623
+Tchéquie (Czechia), 49.8175, 15.4730
+Finlande (Finland), 61.9241, 25.7482
+Mali, 17.5707, -3.9962
+Honduras, 15.1994, -86.2419
+Chypre (Cyprus), 35.1264, 33.4299
+Vietnam, 14.0583, 108.2772
+Costa Rica, 9.7489, -83.7534
+Malte (Malta), 35.9375, 14.3754
+Corée du Sud (South Korea), 35.9078, 127.7669
+Bresil (Brazil), -14.2350, -51.9253
+Guinée (Guinea), 9.9456, -9.6966
+Congo, -0.2280, 15.8277
+Philippines, 12.8797, 121.7740
+Slovenia, 46.1512, 14.9955
+Koweit (Kuwait), 29.3117, 47.4818
+Irlande (Ireland), 53.1424, -7.6921
+Denmark, 56.2639, 9.5018
+Inde (India), 20.5937, 78.9629
+Croatie (Croatia), 45.1000, 15.2000
+Suède (Sweden), 60.1282, 18.6435
+Biélorussie (Belarus), 53.7098, 27.9534
+Slovakia, 48.6690, 19.6990
+Serbie (Serbia), 44.0165, 21.0059
+Moldavie (Moldova), 47.4116, 28.3699
+Cameroun (Cameroon), 7.3697, 12.3547
+Nigeria, 9.0820, 8.6753
+Afrique du Sud (South Africa), -30.5595, 22.9375
+Niger, 17.6078, 8.0817
+Soudan (Sudan), 12.8628, 30.2176
+Singapore, 1.3521, 103.8198
+Népal (Nepal), 28.3949, 84.1240
+Australie (Australia), -25.2744, 133.7751
