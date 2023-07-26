@@ -334,3 +334,19 @@ explore_nominatim_database(gzipped_file)
 
 
 
+
+
+
+
+from geopy.geocoders import Nominatim
+
+geolocator = Nominatim(user_agent="geoapiExercises", database="path/to/country_grid.sql.gz")
+
+countries = ["Algeria", "United States", "France"]
+
+for country in countries:
+    location = geolocator.geocode(country)
+    print((location.latitude, location.longitude))
+
+
+
