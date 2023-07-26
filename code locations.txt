@@ -1,4 +1,4 @@
-9i# detect the lontitude and latitude fron the place name 
+99i# detect the lontitude and latitude fron the place name 
 from geopy.geocoders import Nominatim
 
 def get_coordinates_from_place(place):
@@ -382,4 +382,57 @@ country_name = "United States"
 latitude, longitude = get_country_coordinates(country_name)
 if latitude and longitude:
     print(f"Latitude: {latitude}, Longitude: {longitude}")
+
+
+import sqlite3
+import pandas as pd
+import gzip
+
+# Replace 'path/to/country_grid.sql.gz' with the actual path to your downloaded file
+db_file = 'path/to/country_grid.sql.gz'
+
+def sqlite_to_excel(sqlite_file, output_excel):
+    with gzip.open(sqlite_file, 'rb') as f:
+        # Read the compressed data and decode it as UTF-8
+        uncompressed_data = f.read().decode('utf-8')
+
+    # Create an in-memory database to connect and query the data
+    connection = sqlite3.connect(':memory:')
+    cursor = connection.cursor()
+
+    try:
+        # Execute the uncompressed data as a SQL script to populate the in-memory database
+        cursor.executescript(uncompressed_data)
+
+        # Get a list of all tables in the database
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        table_names = [row[0] for row in cursor.fetchall()]
+
+        # Create an Excel writer object to write data to Excel file
+        writer = pd.ExcelWriter(output_excel, engine='xlsxwriter')
+
+        # Loop through each table and convert it to an Excel sheet
+        for table_name in table_names:
+            # Read table data into a pandas DataFrame
+            df = pd.read_sql_query(f"SELECT * FROM {table_name}", connection)
+
+            # Write the DataFrame to the Excel file
+            df.to_excel(writer, sheet_name=table_name, index=False)
+
+        # Save the Excel file
+        writer.save()
+
+        print(f"Successfully exported database to '{output_excel}'.")
+
+    except Exception as e:
+        print(f"Error occurred while exporting the database: {e}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+# Example usage:
+output_excel_file = 'output.xlsx'
+sqlite_to_excel(db_file, output_excel_file)
+
 
