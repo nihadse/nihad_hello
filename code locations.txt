@@ -1,4 +1,4 @@
-# detect the lontitude and latitude fron the place name 
+i# detect the lontitude and latitude fron the place name 
 from geopy.geocoders import Nominatim
 
 def get_coordinates_from_place(place):
@@ -222,5 +222,57 @@ place_name = "New York City"
 latitude, longitude = get_latitude_longitude(place_name)
 if latitude and longitude:
     print(f"Latitude: {latitude}, Longitude: {longitude}")
+
+
+# tables
+
+import sqlite3
+
+# Replace 'path/to/country_grid.sql.gz' with the actual path to your downloaded file
+db_file = 'path/to/country_grid.sql.gz'
+
+def explore_nominatim_database():
+    connection = sqlite3.connect(f"file:{db_file}?mode=ro", uri=True)
+    cursor = connection.cursor()
+
+    try:
+        # Get a list of all tables in the database
+        query = "SELECT name FROM sqlite_master WHERE type='table';"
+        cursor.execute(query)
+
+        table_names = [row[0] for row in cursor.fetchall()]
+
+        # Print the table names
+        print("Tables in the database:")
+        for table_name in table_names:
+            print(table_name)
+
+        # Explore the contents of each table
+        for table_name in table_names:
+            print(f"\nContents of '{table_name}':")
+            query = f"SELECT * FROM {table_name} LIMIT 5;"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            # Print the column names
+            column_names = [description[0] for description in cursor.description]
+            print(column_names)
+
+            # Print the data
+            for row in rows:
+                print(row)
+
+    except Exception as e:
+        print(f"Error occurred while exploring the database: {e}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+# Call the function to explore the Nominatim database
+explore_nominatim_database()
+
+
+
 
 
