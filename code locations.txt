@@ -1,4 +1,4 @@
-i# detect the lontitude and latitude fron the place name 
+9i# detect the lontitude and latitude fron the place name 
 from geopy.geocoders import Nominatim
 
 def get_coordinates_from_place(place):
@@ -273,6 +273,64 @@ def explore_nominatim_database():
 explore_nominatim_database()
 
 
+
+
+
+
+
+import sqlite3
+import gzip
+
+# Replace 'path/to/country_grid.sql.gz' with the actual path to your downloaded file
+gzipped_file = 'path/to/country_grid.sql.gz'
+
+def explore_nominatim_database(db_file):
+    with gzip.open(db_file, 'rb') as f:
+        # Read the compressed data and decode it as UTF-8
+        uncompressed_data = f.read().decode('utf-8')
+
+    # Create an in-memory database to connect and query the data
+    connection = sqlite3.connect(':memory:')
+    cursor = connection.cursor()
+
+    try:
+        # Execute the uncompressed data as a SQL script to populate the in-memory database
+        cursor.executescript(uncompressed_data)
+
+        # Get a list of all tables in the database
+        query = "SELECT name FROM sqlite_master WHERE type='table';"
+        cursor.execute(query)
+
+        table_names = [row[0] for row in cursor.fetchall()]
+
+        # Print the table names
+        print("Tables in the database:")
+        for table_name in table_names:
+            print(table_name)
+
+            # Explore the contents of each table
+            query = f"SELECT * FROM {table_name} LIMIT 5;"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            # Print the column names
+            column_names = [description[0] for description in cursor.description]
+            print(column_names)
+
+            # Print the data
+            for row in rows:
+                print(row)
+            print("\n")
+
+    except Exception as e:
+        print(f"Error occurred while exploring the database: {e}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+# Call the function to explore the Nominatim database
+explore_nominatim_database(gzipped_file)
 
 
 
