@@ -349,4 +349,37 @@ for country in countries:
     print((location.latitude, location.longitude))
 
 
+import sqlite3
+from geopy.geocoders import Nominatim
+
+# Replace 'path/to/country_grid.sql.gz' with the actual path to your downloaded file
+db_file = 'path/to/country_grid.sql.gz'
+
+def get_country_coordinates(country_name):
+    geolocator = Nominatim(user_agent="myGeocoder")
+
+    # Establish a connection to the SQLite database
+    connection = sqlite3.connect(f"file:{db_file}?mode=ro", uri=True)
+    cursor = connection.cursor()
+
+    # Search for the country name in the 'country_info' table
+    query = f"SELECT lat, lon FROM country_info WHERE country_name='{country_name}' LIMIT 1;"
+    cursor.execute(query)
+
+    row = cursor.fetchone()
+    if row:
+        latitude, longitude = row
+        return latitude, longitude
+    else:
+        print(f"Could not find coordinates for '{country_name}'.")
+        return None, None
+
+    cursor.close()
+    connection.close()
+
+# Example usage:
+country_name = "United States"
+latitude, longitude = get_country_coordinates(country_name)
+if latitude and longitude:
+    print(f"Latitude: {latitude}, Longitude: {longitude}")
 
