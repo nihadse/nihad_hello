@@ -1,4 +1,4 @@
-99i# detect the lontitude and latitude fron the place name 
+099i# detect the lontitude and latitude fron the place name 
 from geopy.geocoders import Nominatim
 
 def get_coordinates_from_place(place):
@@ -486,4 +486,48 @@ def export_sqlite_to_excel(db_file, output_excel_file):
 
 # Call the function to export the SQLite database to an Excel file
 export_sqlite_to_excel(db_file, output_excel_file)
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+from googletrans import Translator
+
+def translate_column(input_column, source_language, target_language):
+    translator = Translator()
+    # Translate each value in the input column using Google Translate API.
+    translated_column = [translator.translate(value, src=source_language, dest=target_language).text
+                         for value in input_column]
+    return translated_column
+
+def main():
+    # Read the CSV file containing country names in multiple languages.
+    data = pd.read_csv("multilingual_countries.csv")
+
+    source_languages = ["tr", "es", "de"]  # Turkish, Spanish, German
+    target_languages = ["fr", "en", "ar"]  # French, English, Arabic
+
+    # Translate the country names to each target language and create new columns for each translation.
+    for source_lang, target_lang in zip(source_languages, target_languages):
+        target_column_name = f"Country_{target_lang.upper()}"
+        data[target_column_name] = translate_column(data["Country"], source_lang, target_lang)
+
+    # Save the DataFrame to a new CSV file.
+    data.to_csv("translated_countries.csv", index=False)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
 
