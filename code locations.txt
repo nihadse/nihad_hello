@@ -574,4 +574,36 @@ print(similarity_matrix)
 
 
 
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import LabelEncoder
+
+# Sample data (replace this with your dataset)
+data = {
+    'ClientID': [1, 2, 3, 4],
+    'Country': ['USA', 'Canada', 'USA', 'Mexico'],
+    'Date': ['2023-07-28', '2023-07-29', '2023-07-28', '2023-07-30'],
+    'Amount': [100, 200, 150, 300]
+}
+
+df = pd.DataFrame(data)
+
+# Encode categorical data (Country and Date)
+le_country = LabelEncoder()
+le_date = LabelEncoder()
+
+df['CountryEncoded'] = le_country.fit_transform(df['Country'])
+df['DateEncoded'] = le_date.fit_transform(df['Date'])
+
+# Pivot table to create the matrix
+matrix = df.pivot(index='ClientID', columns=['CountryEncoded', 'DateEncoded'], values='Amount')
+matrix = matrix.fillna(0)  # Replace NaN with 0 if needed
+
+# Calculate the cosine similarity matrix
+cosine_sim = cosine_similarity(matrix)
+
+# Convert the similarity matrix to a DataFrame for better representation
+similarity_matrix_df = pd.DataFrame(cosine_sim, index=df['ClientID'], columns=df['ClientID'])
+
+print(similarity_matrix_df)
 
