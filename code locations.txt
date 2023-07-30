@@ -654,3 +654,30 @@ print(co_occurrence_matrix)
 
 
 
+
+
+
+
+
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
+
+# Assuming you have a DataFrame called 'data' with columns: 'client_id', 'transaction_date', 'amount'
+# You can use 'pivot_table' to reshape your data into a matrix-like structure.
+data_pivot = data.pivot_table(index='client_id', columns='transaction_date', values='amount', fill_value=0)
+
+# Normalize the data to remove the influence of scale on the cosine similarity.
+scaler = StandardScaler()
+normalized_data = scaler.fit_transform(data_pivot)
+
+# Calculate the cosine similarity matrix
+cosine_sim_matrix = cosine_similarity(normalized_data)
+
+# Convert the cosine similarity matrix into a DataFrame for better visualization
+cosine_sim_df = pd.DataFrame(cosine_sim_matrix, index=data_pivot.index, columns=data_pivot.index)
+
+# cosine_sim_df now contains the similarity scores between clients based on their transaction amounts.
+
+
+
