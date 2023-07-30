@@ -1,4 +1,4 @@
-099i# detect the lontitude and latitude fron the place name 
+8099i# detect the lontitude and latitude fron the place name 
 from geopy.geocoders import Nominatim
 
 def get_coordinates_from_place(place):
@@ -678,6 +678,55 @@ cosine_sim_matrix = cosine_similarity(normalized_data)
 cosine_sim_df = pd.DataFrame(cosine_sim_matrix, index=data_pivot.index, columns=data_pivot.index)
 
 # cosine_sim_df now contains the similarity scores between clients based on their transaction amounts.
+
+
+
+
+
+
+import pandas as pd
+import numpy as np
+
+# Sample transaction data as a pandas DataFrame
+data = {
+    'ClientID': [1, 2, 1, 3, 2, 1, 2, 3],
+    'TransactionDate': ['2023-07-28', '2023-07-28', '2023-07-28', '2023-07-29',
+                        '2023-07-29', '2023-07-30', '2023-07-30', '2023-07-30']
+}
+
+df = pd.DataFrame(data)
+
+# Create a co-occurrence matrix using a dictionary of dictionaries
+co_occurrence_matrix = {}
+for client_id in df['ClientID'].unique():
+    co_occurrence_matrix[client_id] = {}
+
+# Iterate through the transactions and update the co-occurrence matrix
+for i in range(len(df)):
+    client_id_i = df.loc[i, 'ClientID']
+    date_i = df.loc[i, 'TransactionDate']
+    
+    for j in range(i + 1, len(df)):
+        client_id_j = df.loc[j, 'ClientID']
+        date_j = df.loc[j, 'TransactionDate']
+        
+        if date_i == date_j:
+            co_occurrence_matrix[client_id_i][client_id_j] = co_occurrence_matrix.get(client_id_i, {}).get(client_id_j, 0) + 1
+            co_occurrence_matrix[client_id_j][client_id_i] = co_occurrence_matrix.get(client_id_j, {}).get(client_id_i, 0) + 1
+
+# Convert the co-occurrence matrix to a 2D numpy array for easier manipulation
+unique_clients = sorted(df['ClientID'].unique())
+matrix_size = len(unique_clients)
+matrix = np.zeros((matrix_size, matrix_size))
+
+for i, client_id_i in enumerate(unique_clients):
+    for j, client_id_j in enumerate(unique_clients):
+        matrix[i][j] = co_occurrence_matrix.get(client_id_i, {}).get(client_id_j, 0)
+
+print("Co-occurrence Matrix:")
+print(matrix)
+
+
 
 
 
