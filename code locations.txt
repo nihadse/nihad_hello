@@ -531,3 +531,47 @@ if __name__ == "__main__":
 
 
 
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# Sample data
+data = {
+    'Client ID': [1001, 1002, 1003, 1004],
+    'Transaction Amount': [50.35, 100.20, 75.10, 500.75],
+    'Location': ['New York', 'Los Angeles', 'Miami', 'San Francisco'],
+    'Transaction Date': ['2023-07-12', '2023-07-10', '2023-07-09', '2023-07-08']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Convert 'Transaction Date' to datetime
+df['Transaction Date'] = pd.to_datetime(df['Transaction Date'])
+
+# Group data by client ID, date, and location and count the number of transactions
+transaction_counts = df.groupby(['Client ID', 'Transaction Date', 'Location']).size().reset_index(name='Count')
+
+# Create an empty similarity matrix with client IDs as index and columns
+clients = df['Client ID'].unique()
+similarity_matrix = pd.DataFrame(index=clients, columns=clients)
+similarity_matrix = similarity_matrix.fillna(0)
+
+# Fill similarity matrix with the count of transactions for each client pair
+for _, row in transaction_counts.iterrows():
+    client1, client2, count = row['Client ID'], row['Client ID'], row['Count']
+    similarity_matrix.at[client1, client2] = count
+    similarity_matrix.at[client2, client1] = count
+
+print("Similarity Matrix:")
+print(similarity_matrix)
+
+
+
+
