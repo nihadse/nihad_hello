@@ -755,4 +755,31 @@ print(result)
 
 
 
+import pandas as pd
+
+# Assuming your data frame is named 'df'
+def transform_date_operation(row):
+    date_str = pd.to_datetime(row['DATE OPERATION MVT CPTABLE-HMVT'])
+    complement_str = row['LIB. COMPLEMENT. MVT CPTABLE-HMVT']
+    
+    if date_str.month == 1 and complement_str[-4:-2] == "12":
+        new_year = str(date_str.year - 1)
+        new_month = complement_str[-2:]
+        new_day = complement_str[:2]
+        return new_year + "-" + new_month + "=" + new_day
+    else:
+        new_year = str(date_str.year)
+        new_month = complement_str[-2:]
+        new_day = complement_str[:2]
+        return new_year + new_month + "-" + new_day
+
+# Apply the transformation to the DataFrame
+df['NEW_COLUMN'] = df.apply(lambda row: transform_date_operation(row), axis=1)
+
+# Now the transformed values will be stored in the new column 'NEW_COLUMN'
+
+
+
+
+
 
