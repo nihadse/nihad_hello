@@ -783,3 +783,51 @@ df['NEW_COLUMN'] = df.apply(lambda row: transform_date_operation(row), axis=1)
 
 
 
+
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Sample data: replace this with your own dataset
+data = {
+    'Location': ['Location 1', 'Location 2', 'Location 3', 'Location 4', 'Location 5'],
+    'Country': ['Country A', 'Country B', None, 'Country C', None],
+}
+
+# Load data into a DataFrame
+df = pd.DataFrame(data)
+
+# Drop rows with missing countries
+df = df.dropna(subset=['Country'])
+
+# Feature engineering: Vectorize location names for k-means
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(df['Location'])
+
+# Number of clusters (adjust this based on your dataset and needs)
+num_clusters = 3
+
+# Apply k-means clustering to locations with known countries
+kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+df['Cluster'] = kmeans.fit_predict(X)
+
+# Function to predict missing countries using cluster information
+def predict_missing_countries():
+    missing_df = df[df['Country'].isnull()]
+    for index, row in missing_df.iterrows():
+        cluster = row['Cluster']
+        predicted_country = df[df['Cluster'] == cluster]['Country'].mode().values[0]
+        df.at[index, 'Country'] = predicted_country
+
+# Predict missing countries
+predict_missing_countries()
+
+# Resulting DataFrame with predicted countries
+print(df)
+
+
+
+
+
+
+
