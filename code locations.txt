@@ -868,5 +868,36 @@ print(df)
 
 
 
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# Create the dataset with some missing values in the "Country" column
+data = {'Location': ['Paris', 'London', 'Paris 45 Avenue', 'Berlin'],
+        'Country': ['France', 'UK', 'France', None]}
+df = pd.DataFrame(data)
+
+# Drop rows with missing values in the "Country" column
+df.dropna(subset=['Country'], inplace=True)
+
+# Convert location strings to numerical features
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(df['Location'])
+
+# Split the data into training and validation sets
+X_train, X_val, y_train, y_val = train_test_split(X, df['Country'], test_size=0.2, random_state=42)
+
+# Create and train the Decision Tree Classifier
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+# Make predictions on the validation set
+y_pred = model.predict(X_val)
+
+# Evaluate the model's accuracy
+accuracy = accuracy_score(y_val, y_pred)
+print("Model Accuracy:", accuracy)
 
 
