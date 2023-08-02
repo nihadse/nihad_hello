@@ -826,6 +826,45 @@ predict_missing_countries()
 print(df)
 
 
+import pandas as pd
+from difflib import SequenceMatcher
+
+# Sample data: replace this with your own dataset
+data = {
+    'Location': ['Location 1', 'Location 2', 'Location 3', 'Location 4', 'Location 5'],
+    'Country': ['Country A', 'Country B', None, 'Country C', None],
+}
+
+# Load data into a DataFrame
+df = pd.DataFrame(data)
+
+# Function to calculate string similarity between two locations
+def location_similarity(loc1, loc2):
+    return SequenceMatcher(None, loc1, loc2).ratio()
+
+# Function to predict missing countries using string similarity
+def predict_missing_countries():
+    missing_df = df[df['Country'].isnull()]
+    for index, row in missing_df.iterrows():
+        location = row['Location']
+        max_similarity = 0
+        predicted_country = None
+
+        # Find the most similar known location and use its country
+        for idx, known_row in df[df['Country'].notnull()].iterrows():
+            known_location = known_row['Location']
+            similarity = location_similarity(location, known_location)
+            if similarity > max_similarity:
+                max_similarity = similarity
+                predicted_country = known_row['Country']
+
+        df.at[index, 'Country'] = predicted_country
+
+# Predict missing countries
+predict_missing_countries()
+
+# Resulting DataFrame with predicted countries
+print(df)
 
 
 
