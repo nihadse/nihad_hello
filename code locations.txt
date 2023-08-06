@@ -901,3 +901,48 @@ accuracy = accuracy_score(y_val, y_pred)
 print("Model Accuracy:", accuracy)
 
 
+
+import fitz  # PyMuPDF library for PDF processing
+from transformers import AutoModelForQuestionAnswering, AutoTokenizer
+
+# Load the pre-trained BERT model and tokenizer for question-answering
+model_name = "bert-large-uncased-whole-word-masking-finetuned-squad"
+model = AutoModelForQuestionAnswering.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# Function to extract text from a PDF file
+def extract_text_from_pdf(pdf_path):
+    doc = fitz.open(pdf_path)
+    text = ""
+    for page_num in range(doc.page_count):
+        page = doc.load_page(page_num)
+        text += page.get_text("text")
+    doc.close()
+    return text
+
+# Function to perform question-answering on the PDF content
+def perform_question_answering(pdf_content, question):
+    inputs = tokenizer.encode_plus(question, pdf_content, add_special_tokens=True, return_tensors="pt")
+    answer_start_scores, answer_end_scores = model(**inputs)
+    answer_start = torch.argmax(answer_start_scores)
+    answer_end = torch.argmax(answer_end_scores) + 1
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(inputs["input_ids"][0][answer_start:answer_end]))
+    return answer
+
+# Example PDF file path (replace this with your PDF file)
+pdf_file_path = "example.pdf"
+
+# Example question to ask about the PDF content
+question = "What does the PDF contain?"
+
+# Extract text from the PDF
+pdf_content = extract_text_from_pdf(pdf_file_path)
+
+# Perform question-answering for the given question
+answer = perform_question_answering(pdf_content, question)
+
+# Print the answer
+print(f"Question: {question}")
+print(f"Answer: {answer}")
+
+
