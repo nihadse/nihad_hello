@@ -989,3 +989,14 @@ df['class'] = df.apply(lambda row: 'com_tpe_payment' if pd.notnull(row['com_tpe'
                                               else 'com_tpe_null' if pd.isnull(row['com_ret_gab'])
                                               else 'com_tpe_and_com_ret_gab_null', axis=1)
 
+
+
+import pandas as pd
+import numpy as np
+
+# Assuming 'df' is your DataFrame
+# Use np.where to create the new 'class' column based on the conditions
+df['class'] = np.where(pd.notnull(df['COM TPE']), 'COM TPE PAIEMENT',
+                       np.where(pd.isnull(df['COM TPE']) & pd.isnull(df['COM RET GAB']), 'COM TPE PAIEMENT',
+                                np.where(df['LIB. COMPLEMENT. MVT CPTABLE -HMVT'].str.contains("*>"), 'RET GAB BNPPARIBAS', 'RET GAB HORS BNPPARIBAS')))
+
