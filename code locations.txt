@@ -965,4 +965,11 @@ def add_new_column(row):
 data['new_column'] = data.apply(add_new_column, axis=1)
 
 print(data)
+import pandas as pd
+
+# Assuming 'df' is your DataFrame
+# Use apply with a lambda function to create the new 'class' column
+df['class'] = df.apply(lambda row: 'com_tpe_payment' if pd.notnull(row['com_tpe'])
+                                              else 'com_tpe_null' if pd.isnull(row['com_ret_gab'])
+                                              else 'com_tpe_and_com_ret_gab_null', axis=1)
 
