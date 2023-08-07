@@ -945,4 +945,24 @@ answer = perform_question_answering(pdf_content, question)
 print(f"Question: {question}")
 print(f"Answer: {answer}")
 
+import pandas as pd
+
+# Example DataFrame
+data = pd.DataFrame({
+    'lible': ['commis', 'open cart', 'RET GAB vis', 'something else', 'another RET GAB vis']
+})
+
+data['new_column'] = ''
+
+def add_new_column(row):
+    if row['lible'] == 'commis':
+        return 'com tpe'
+    elif 'RET' in row['lible'] and 'GAB' in row['lible'] and 'vis' in row['lible']:
+        return 'complete gab'
+    else:
+        return ''
+
+data['new_column'] = data.apply(add_new_column, axis=1)
+
+print(data)
 
