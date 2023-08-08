@@ -1,6 +1,31 @@
 
 import pandas as pd
 
+# Define the first dataset
+data1 = {'ID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+         'Value1': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+df1 = pd.DataFrame(data1)
+
+# Define the second dataset
+data2 = {'ID': [3, 4, 5, 6, 7, 8, 11, 12, 13, 14],
+         'Value2': [30, 40, 50, 60, 70, 80, 110, 120, 130, 140]}
+df2 = pd.DataFrame(data2)
+
+# Perform a left join
+result = df1.merge(df2, how='left', on='ID', suffixes=('_df1', '_df2'))
+
+# Remove the intersection
+result = result.loc[result['Value2_df2'].isnull()].drop(columns=['Value2_df2'])
+
+print(result)
+
+
+
+
+
+
+import pandas as pd
+
 # Assuming 'df' is your DataFrame
 # Use apply with a lambda function to create the new 'class' column
 df['class'] = df.apply(lambda row: 'COM TPE PAIEMENT' if pd.isnull(row['COM TPE'])
