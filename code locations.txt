@@ -1,3 +1,30 @@
+
+
+import pandas as pd
+
+# Sample data for left and right tables
+left_data = {'ID': [1, 2, 3, 4],
+             'Name': ['Alice', 'Bob', 'Charlie', 'David']}
+right_data = {'ID': [2, 3, 5],
+              'Name': ['Xavier', 'Yvonne', 'Zara']}
+
+left_df = pd.DataFrame(left_data)
+right_df = pd.DataFrame(right_data)
+
+# Performing the left join
+left_result = pd.merge(left_df, right_df, on=['ID', 'Name'], how='left')
+
+# Performing the inner join
+inner_result = pd.merge(left_df, right_df, on=['ID', 'Name'], how='inner')
+
+# Removing common rows between inner and left join results
+unique_left = left_result[~left_result.set_index(['ID', 'Name']).index.isin(inner_result.set_index(['ID', 'Name']).index)]
+
+print(unique_left)
+
+
+
+
 import pandas as pd
 
 # Assuming you have loaded your datasets 'dr' and 'dl'
