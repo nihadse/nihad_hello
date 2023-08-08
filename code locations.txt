@@ -1,3 +1,21 @@
+import pandas as pd
+
+# Assuming you have loaded your datasets 'dr' and 'dl'
+
+# Perform a left join
+result = pd.merge(dr, dl, how='left', left_on='CODE SIEGE HMVT', right_on='CODE SIEGE -HMVT')
+
+# Identify the intersection and remove it
+intersection_columns = set(dr.columns) & set(dl.columns)
+result.drop(columns=intersection_columns, inplace=True)
+
+print(result)
+
+
+
+
+
+
 
 import pandas as pd
 
