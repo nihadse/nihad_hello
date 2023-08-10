@@ -1,4 +1,33 @@
+
 import fitz  # PyMuPDF
+import pytesseract
+from PIL import Image
+
+pdf_path = "path_to_your_scanned_pdf_file.pdf"
+doc = fitz.open(pdf_path)
+
+target_word = "bank"
+
+for page_number, page in enumerate(doc, start=1):
+    image = page.get_pixmap()
+    img = Image.frombytes("RGB", [image.width, image.height], image.samples)
+    ocr_text = pytesseract.image_to_string(img)
+    
+    if target_word in ocr_text:
+        sentences = ocr_text.split(".")
+        for sentence in sentences:
+            if target_word in sentence:
+                print(f"Page {page_number}, Sentence: {sentence.strip()}")
+
+
+
+
+
+
+
+
+
+mport fitz  # PyMuPDF
 
 pdf_path = "path_to_your_pdf_file.pdf"
 doc = fitz.open(pdf_path)
