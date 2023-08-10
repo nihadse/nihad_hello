@@ -1,4 +1,26 @@
 
+import fitz  # PyMuPDF
+
+pdf_path = "path_to_your_pdf_file.pdf"
+doc = fitz.open(pdf_path)
+
+target_word = "bank"
+word_found = False
+
+for page in doc:
+    text = page.get_text()
+    if target_word in text:
+        word_found = True
+        break
+
+if word_found:
+    print(f"The word '{target_word}' was found in the PDF.")
+else:
+    print(f"The word '{target_word}' was not found in the PDF.")
+
+
+
+
 
 import pandas as pd
 
