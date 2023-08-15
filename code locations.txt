@@ -1,6 +1,6 @@
 git clone https://github.com/tesseract-ocr/tesseract.git
 
-
+https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/stopwords.zip
 https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip
 
 
