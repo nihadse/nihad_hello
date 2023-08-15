@@ -1,3 +1,39 @@
+
+import pickle
+import nltk
+from nltk.tokenize import PunktSentenceTokenizer
+
+# Load the Punkt tokenizer model
+with open('punkt_model.pickle', 'rb') as model_file:
+    punkt_model = pickle.load(model_file)
+
+# Load the custom stopwords from the file
+with open('custom_stopwords.txt', 'r') as stopwords_file:
+    custom_stop_words = set(stopword.strip() for stopword in stopwords_file)
+
+# Load the text you want to tokenize
+text = "This is an example sentence. And here's another one."
+
+# Initialize the Punkt tokenizer with the loaded model
+tokenizer = PunktSentenceTokenizer(punkt_model)
+
+# Tokenize the text into sentences
+sentences = tokenizer.tokenize(text)
+
+# Tokenize each sentence and filter out custom stopwords
+for sentence in sentences:
+    words = nltk.word_tokenize(sentence)
+    filtered_words = [word for word in words if word.lower() not in custom_stop_words]
+    print(filtered_words)
+
+
+
+
+
+
+
+
+
 # Load the custom punkt tokenizer model from a file
 with open('path_to_downloaded_model', 'rb') as model_file:
     custom_punkt_model = model_file.read()
