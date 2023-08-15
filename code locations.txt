@@ -1,3 +1,22 @@
+# Load the custom punkt tokenizer model from a file
+with open('path_to_downloaded_model', 'rb') as model_file:
+    custom_punkt_model = model_file.read()
+
+# Example text
+text = "This is a sample sentence. And here is another one."
+
+# Use the custom punkt tokenizer model to tokenize the text
+from nltk.tokenize.punkt import PunktSentenceTokenizer
+tokenizer = PunktSentenceTokenizer(custom_punkt_model)
+sentences = tokenizer.tokenize(text)
+
+# Print the sentences
+for sentence in sentences:
+    print(sentence)
+
+
+
+
 git clone https://github.com/tesseract-ocr/tesseract.git
 
 https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/stopwords.zip
