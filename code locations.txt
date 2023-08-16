@@ -1,4 +1,18 @@
 
+Cher [Nom du Collègue],
+
+J'espère que vous allez bien. Je souhaite demander la création d'une carte Visa pour faciliter mes transactions financières. Pourriez-vous me guider sur les étapes nécessaires? Votre aide serait grandement appréciée.
+
+Cordialement,
+[Votre Nom]
+
+
+
+
+
+
+
+
 import pickle
 import nltk
 from nltk.tokenize import PunktSentenceTokenizer
