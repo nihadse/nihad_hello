@@ -1,3 +1,13 @@
+Bonjour [Nom du destinataire],
+
+J'espère que vous allez bien. Je suis enthousiaste à l'idée de passer en revue les résultats finaux avec vous et de discuter des éléments supplémentaires que nous pourrions incorporer dans le fichier final avant que je ne vous l'envoie. Seriez-vous disponible pour une réunion afin d'en discuter ? Pourriez-vous s'il vous plaît me communiquer vos disponibilités pour la semaine à venir ?
+
+Je vous remercie et j'attends avec impatience notre discussion.
+
+Cordialement,
+[Votre Nom]"
+
+
 
 Cher [Nom du Collègue],
 
