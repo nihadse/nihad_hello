@@ -1,4 +1,42 @@
 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample matrix of transactions with dates (replace with your data)
+data = [
+    ["Client A", "2023-08-01", 100],
+    ["Client B", "2023-08-01", 150],
+    ["Client A", "2023-08-02", 50],
+    ["Client C", "2023-08-02", 200],
+    # Add more transactions here
+]
+columns = ["Client", "Date", "Amount"]
+df = pd.DataFrame(data, columns=columns)
+df["Date"] = pd.to_datetime(df["Date"])
+
+# Group the data by date and calculate the total transaction amount
+daily_usage = df.groupby("Date")["Amount"].sum()
+
+# Create a line plot to visualize the tendency
+plt.figure(figsize=(10, 6))
+plt.plot(daily_usage.index, daily_usage.values, marker='o')
+plt.xlabel("Date")
+plt.ylabel("Total Transaction Amount")
+plt.title("Visa Card Usage Tendency")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+
+
 import pandas as pd
 
 # Sample matrix of transactions with dates (replace with your data)
