@@ -1,3 +1,36 @@
+
+
+import numpy as np
+from bokeh.plotting import figure, show
+from bokeh.models import ColorBar
+from bokeh.transform import linear_cmap
+from bokeh.palettes import Viridis256
+
+# Create a random 10000x10000 matrix
+matrix = np.random.rand(10000, 10000)
+
+# Define a color map
+mapper = linear_cmap(field_name='matrix', palette=Viridis256, low=matrix.min(), high=matrix.max())
+
+# Create a Bokeh figure
+p = figure(width=800, height=800, toolbar_location='below')
+
+# Add the heatmap to the figure
+p.image(image=[matrix], x=0, y=0, dw=matrix.shape[1], dh=matrix.shape[0], color_mapper=mapper)
+
+# Add a color bar to the plot
+color_bar = ColorBar(color_mapper=mapper['transform'], width=8, location=(0,0))
+p.add_layout(color_bar, 'right')
+
+# Show the plot
+show(p)
+
+
+
+
+
+
+
 Bonjour [Nom du destinataire],
 
 J'espère que vous allez bien. Je suis enthousiaste à l'idée de passer en revue les résultats finaux avec vous et de discuter des éléments supplémentaires que nous pourrions incorporer dans le fichier final avant que je ne vous l'envoie. Seriez-vous disponible pour une réunion afin d'en discuter ? Pourriez-vous s'il vous plaît me communiquer vos disponibilités pour la semaine à venir ?
