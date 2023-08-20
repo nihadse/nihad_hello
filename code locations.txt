@@ -1,6 +1,58 @@
 
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+
+# Sample matrix of transactions with dates (replace with your data)
+data = [
+    ["Client A", "2023-08-01"],
+    ["Client B", "2023-08-02"],
+    ["Client A", "2023-08-03"],
+    ["Client C", "2023-08-04"],
+    # Add more transactions here
+]
+columns = ["Client", "Date"]
+df = pd.DataFrame(data, columns=columns)
+df["Date"] = pd.to_datetime(df["Date"])
+
+# Group the data by client and date, and calculate the number of transactions per day for each client
+client_daily_transactions = df.groupby(["Client", "Date"]).size().reset_index(name="Count")
+
+# Calculate the tendency of Visa card usage for each client
+client_tendencies = {}
+for client in client_daily_transactions["Client"].unique():
+    client_data = client_daily_transactions[client_daily_transactions["Client"] == client]
+    X = np.arange(len(client_data)).reshape(-1, 1)
+    y = client_data["Count"].values
+
+    model = LinearRegression()
+    model.fit(X, y)
+
+    client_tendencies[client] = model.coef_[0]
+
+# Plot the tendencies for each client
+plt.figure(figsize=(10, 6))
+clients = list(client_tendencies.keys())
+tendencies = list(client_tendencies.values())
+plt.bar(clients, tendencies)
+plt.xlabel("Client")
+plt.ylabel("Tendency (transactions per day)")
+plt.title("Visa Card Usage Tendencies by Client")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+
+import numpy as np
+import pandas as pd
 from collections import Counter
 
 # Sample matrix of transactions (replace with your data)
