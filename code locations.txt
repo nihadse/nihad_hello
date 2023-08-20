@@ -1,6 +1,41 @@
 
 import numpy as np
 import pandas as pd
+from collections import Counter
+
+# Sample matrix of transactions (replace with your data)
+data = [
+    ["Client A", "USA"],
+    ["Client B", "Canada"],
+    ["Client A", "USA"],
+    ["Client C", "Germany"],
+    # Add more transactions here
+]
+columns = ["Client", "Country"]
+df = pd.DataFrame(data, columns=columns)
+
+# Calculate the most common countries
+most_common_countries = Counter(df["Country"]).most_common()
+
+# Display the results
+print("Most used countries by clients:")
+for country, count in most_common_countries:
+    print(f"{country}: {count} transactions")
+
+
+
+
+
+
+
+
+
+
+
+
+
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # Sample matrix of transactions with dates (replace with your data)
