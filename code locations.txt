@@ -1,4 +1,24 @@
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load data
+data = pd.read_csv('transactions.csv')
+
+# Data exploration
+sns.pairplot(data[['Date', 'Amount', 'Country']])
+plt.show()
+
+# Correlation analysis
+correlation_matrix = data[['Date', 'Amount', 'Country']].corr()
+print(correlation_matrix)
+
+# Statistical significance
+from scipy.stats import pearsonr
+corr, p_value = pearsonr(data['Amount'], data['Country'])
+print(f'Correlation: {corr}, p-value: {p_value}')
 
 
 
