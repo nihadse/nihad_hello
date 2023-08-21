@@ -1,3 +1,79 @@
+
+
+
+import re
+import PyPDF2
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# Load PDF content
+def load_pdf_content(pdf_path):
+    pdf_text = ""
+    with open(pdf_path, "rb") as pdf_file:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            pdf_text += page.extract_text()
+    return pdf_text
+
+# Preprocess text
+def preprocess_text(text):
+    text = re.sub(r'\n', ' ', text)  # Remove newlines
+    text = re.sub(r'\s+', ' ', text)  # Replace multiple spaces with a single space
+    return text
+
+# Keyword matching chatbot
+def keyword_chatbot(pdf_text, user_input):
+    # Preprocess user input
+    user_input = preprocess_text(user_input)
+    
+    # Preprocess PDF text
+    pdf_text = preprocess_text(pdf_text)
+    
+    # Tokenize user input
+    user_tokens = word_tokenize(user_input)
+    
+    # Remove stopwords from user tokens
+    user_tokens = [token for token in user_tokens if token.lower() not in stopwords.words('english')]
+    
+    # Search for relevant information in PDF text
+    relevant_info = []
+    for token in user_tokens:
+        if token.lower() in pdf_text.lower():
+            relevant_info.append(token)
+    
+    return relevant_info
+
+# Main function
+def main():
+    pdf_path = "your_pdf_file.pdf"
+    pdf_text = load_pdf_content(pdf_path)
+    
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == "exit":
+            break
+        
+        relevant_info = keyword_chatbot(pdf_text, user_input)
+        if relevant_info:
+            print("Chatbot: Relevant information found:", relevant_info)
+        else:
+            print("Chatbot: No relevant information found.")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
 plt.figure(figsize=(8, 6))  # Adjust the figure size if needed
 plt.imshow(styled_matrix.get_array(), cmap='coolwarm')
 plt.colorbar()
