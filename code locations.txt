@@ -1,5 +1,37 @@
 
 
+import PyPDF2
+from transformers import pipeline
+
+# Load the question answering pipeline
+qa_pipeline = pipeline("question-answering", model="distilbert-base-cased-distilled-squad", tokenizer="distilbert-base-cased")
+
+# Load PDF content
+def load_pdf_content(pdf_path):
+    pdf_text = ""
+    with open(pdf_path, "rb") as pdf_file:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            pdf_text += page.extract_text()
+    return pdf_text
+
+# Provide PDF path and question
+pdf_path = "your_pdf_file.pdf"
+question = "What was the goal of the Apollo program?"
+
+# Load PDF content
+pdf_text = load_pdf_content(pdf_path)
+
+# Get the answer
+answer = qa_pipeline(question=question, context=pdf_text)
+
+# Print the answer
+print("Question:", question)
+print("Answer:", answer["answer"])
+
+
+
 
 import re
 import PyPDF2
