@@ -1,3 +1,12 @@
+plt.figure(figsize=(8, 6))  # Adjust the figure size if needed
+plt.imshow(styled_matrix.get_array(), cmap='coolwarm')
+plt.colorbar()
+plt.axis('off')  # Turn off axis
+plt.savefig('styled_co_occurrence_matrix.png', dpi=300, bbox_inches='tight')
+plt.show()
+
+
+
 
 import pandas as pd
 import numpy as np
