@@ -1,4 +1,10 @@
 
+https://github.com/explosion/spacy-models/releases/tag/fr_core_news_sm-3.0.0
+
+
+
+
+
 import pdfplumber
 import spacy
 
