@@ -1,3 +1,23 @@
+import nltk
+from nltk.data import find
+
+# Set the path to the uploaded 'english.pickle' file
+english_punkt_path = "path/to/your/uploaded/english.pickle"
+
+# Load the tokenizer from the uploaded file
+nltk.data.path.append(".")
+tokenizer = nltk.data.load(english_punkt_path)
+
+# Use the tokenizer
+text = "This is a sample sentence. Tokenize it."
+sentences = tokenizer.tokenize(text)
+print(sentences)
+
+
+
+
+
+
 
 import spacy
 import tarfile
