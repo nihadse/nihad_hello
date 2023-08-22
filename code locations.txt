@@ -1,4 +1,42 @@
 
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Create your adjacency matrix (replace this with your actual matrix)
+adjacency_matrix = np.array([[0, 1, 1, 0],
+                             [1, 0, 1, 1],
+                             [1, 1, 0, 0],
+                             [0, 1, 0, 0]])
+
+# Create a graph from the adjacency matrix
+G = nx.Graph(adjacency_matrix)
+
+# Assuming you have a list of communities where each community is a list of nodes
+communities = [['node1', 'node2'], ['node3', 'node4']]
+
+# Create a layout for the nodes
+layout = nx.spring_layout(G)  # You can choose different layout algorithms
+
+# Draw nodes with different colors based on communities
+for community_idx, community in enumerate(communities):
+    nodes_in_community = [node for node in community if node in G.nodes]
+    nx.draw_networkx_nodes(G, layout, nodelist=nodes_in_community, node_color=plt.cm.jet(community_idx / len(communities)))
+
+# Draw edges
+nx.draw_networkx_edges(G, layout)
+
+# Add labels if needed
+labels = {i: f"node{i+1}" for i in range(G.number_of_nodes())}
+nx.draw_networkx_labels(G, layout, labels)
+
+# Show the plot
+plt.show()
+
+
+
+
+
 https://github.com/explosion/spacy-models/releases/tag/fr_core_news_sm-3.0.0
 
 
