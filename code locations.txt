@@ -1,3 +1,35 @@
+
+import spacy
+import tarfile
+
+# Path to the downloaded .tar.gz file
+tar_file_path = "/path/to/fr_core_news_sm-3.0.0.tar.gz"
+
+# Directory where you want to extract the model
+extracted_model_dir = "/path/to/extraction/dir"
+
+# Extract the contents of the .tar.gz file
+with tarfile.open(tar_file_path, "r:gz") as tar:
+    tar.extractall(extracted_model_dir)
+
+# List the files in the extracted directory
+import os
+print(os.listdir(extracted_model_dir))
+
+# Load the extracted model using spaCy
+nlp = spacy.load(extracted_model_dir)
+
+# Now you can use the loaded model for NLP tasks
+doc = nlp("Bonjour! Comment ça va?")
+
+
+
+
+
+
+
+
+
 import spacy
 import tarfile
 
