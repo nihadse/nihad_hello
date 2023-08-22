@@ -1,4 +1,63 @@
 
+import pdfplumber
+import spacy
+
+# Load the spaCy French NLP model
+nlp = spacy.load("fr_core_news_sm")
+
+# Load and extract text from a PDF
+def extract_text_from_pdf(pdf_path):
+    with pdfplumber.open(pdf_path) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+# Process user query and generate a response
+def generate_response(pdf_text, user_query):
+    doc = nlp(pdf_text)
+    # Process user query using NLP
+    query_doc = nlp(user_query)
+
+    # Simple example: Extract sentences containing user's query words
+    relevant_sentences = []
+    for sentence in doc.sents:
+        if any(token.text.lower() in query_doc.text.lower() for token in sentence):
+            relevant_sentences.append(sentence.text)
+
+    if relevant_sentences:
+        response = "\n".join(relevant_sentences)
+    else:
+        response = "Je n'ai pas trouvé d'informations pertinentes."
+
+    return response
+
+# Example PDF path
+pdf_path = "example_fr.pdf"
+
+# Extract text from the French PDF
+pdf_text = extract_text_from_pdf(pdf_path)
+
+# Simulate user queries in French
+user_queries = [
+    "Quelle est l'histoire de ce sujet ?",
+    "Parlez-moi des avantages.",
+    "Comment puis-je commencer ?",
+]
+
+# Generate responses for user queries
+for query in user_queries:
+    response = generate_response(pdf_text, query)
+    print(f"User Query: {query}")
+    print(f"Bot Response: {response}\n")
+
+
+
+
+
+
+
+
 
 import PyPDF2
 from transformers import pipeline
