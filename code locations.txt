@@ -1,4 +1,90 @@
 
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+from gensim.models import Word2Vec
+
+# Load your data
+sectors_data = pd.read_csv('sectors_data.csv')
+keywords_data = pd.read_csv('keywords_data.csv')
+
+# Preprocess text data
+keywords_data['processed_keywords'] = keywords_data['keywords'].apply(lambda x: ' '.join(x))
+
+# Merge data frames based on sector information
+merged_data = pd.merge(keywords_data, sectors_data, on='sector')
+
+# Create a dictionary to map sectors to client IDs
+sector_to_client = dict(zip(merged_data['sector'], merged_data['client_id']))
+
+# Create a new data frame with expanded keywords and sectors
+expanded_data = []
+for _, row in merged_data.iterrows():
+    for keyword in row['processed_keywords'].split():
+        sector = sector_to_client.get(row['sector'], None)
+        expanded_data.append({'keyword': keyword, 'sector': sector})
+
+expanded_df = pd.DataFrame(expanded_data)
+
+# Create Word2Vec embeddings
+sentences = [text.split() for text in expanded_df['keyword']]
+word2vec_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, sg=0)  # Adjust parameters
+
+# Average word vectors for each client's keywords
+client_vectors = []
+for sector, group in expanded_df.groupby('sector'):
+    keyword_vectors = [word2vec_model.wv[word] for word in group['keyword']]
+    avg_vector = sum(keyword_vectors) / len(keyword_vectors)
+    client_vectors.append({'sector': sector, 'vector': avg_vector})
+
+# Convert client vectors into a DataFrame
+client_vector_df = pd.DataFrame(client_vectors)
+
+# Split data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(
+    client_vector_df['vector'].to_list(), client_vector_df['sector'], test_size=0.2, random_state=42
+)
+
+# Train a Logistic Regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predict on test data
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+classification_rep = classification_report(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+print("Classification Report:\n", classification_rep)
+
+
+
+
+
+
+
+
+
+
+import pandas as pd from sklearn.model_selection import train_test_split from sklearn.feature_extraction.text import TfidfVectorizer from sklearn.linear_model import LogisticRegression from sklearn.metrics import accuracy_score, classification_report from gensim import corpora, models # Load your data sectors_data = pd.read_csv('sectors_data.csv') keywords_data = pd.read_csv('keywords_data.csv') # Preprocess text data keywords_data['processed_keywords'] = keywords_data['keywords'].apply(lambda x: ' '.join(x)) # Create a dictionary to map sectors to client IDs sector_to_client = dict(zip(sectors_data['sector'], sectors_data['client_id'])) # Create a new data frame with expanded keywords and sectors expanded_data = [] for _, row in keywords_data.iterrows(): for keyword in row['processed_keywords'].split(): sector = sector_to_client.get(row['sector'], None) expanded_data.append({'keyword': keyword, 'sector': sector}) expanded_df = pd.DataFrame(expanded_data) # Create TF-IDF features vectorizer = TfidfVectorizer(max_features=1900)  # Use the total number of keywords X = vectorizer.fit_transform(expanded_df['keyword']) # Assign labels based on sensitivity criteria expanded_df['sensitive'] = expanded_df['sector'].apply(lambda x: 1 if x in ['transportation', 'banking'] else 0) # Perform topic modeling using LDA num_topics = 5  # Adjust the number of topics dictionary = corpora.Dictionary(expanded_df['keyword'].apply(str.split)) corpus = [dictionary.doc2bow(text.split()) for text in expanded_df['keyword']] lda_model = models.LdaModel(corpus, num_topics=num_topics, id2word=dictionary) # Transform the original keywords into topic distributions topic_distributions = [] for text in expanded_df['keyword']: bow = dictionary.doc2bow(text.split()) topic_dist = lda_model.get_document_topics(bow) topic_distributions.append([dist for _, dist in topic_dist]) # Convert the list of topic distributions into a DataFrame topic_df = pd.DataFrame(topic_distributions, columns=[f"topic_{i}" for i in range(num_topics)]) # Combine topic features with TF-IDF features X_combined = pd.concat([pd.DataFrame(X.toarray()), topic_df], axis=1) # Split data into train and test sets X_train, X_test, y_train, y_test = train_test_split(X_combined, expanded_df['sensitive'], test_size=0.2, random_state=42) # Train a Logistic Regression model model = LogisticRegression() model.fit(X_train, y_train) # Predict on test data y_pred = model.predict(X_test) # Evaluate the model accuracy = accuracy_score(y_test, y_pred) classification_rep = classification_report(y_test, y_pred) print("Accuracy:", accuracy) print("Classification Report:\n", classification_rep)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Visa Card Recommendations System
 
 Default (GPT-3.5)
