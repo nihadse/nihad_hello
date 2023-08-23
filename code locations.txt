@@ -1,3 +1,57 @@
+
+
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import TruncatedSVD
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Load your data frames
+keyword_df = pd.read_csv('keyword_data.csv')
+client_df = pd.read_csv('client_data.csv')
+
+# Preprocess keyword data and sector names
+keyword_df['cleaned_keywords'] = keyword_df['keywords'].apply(lambda x: ' '.join([w.lower() for w in x.split()]))
+client_df['cleaned_sector'] = client_df['sector'].apply(lambda x: x.lower())
+
+# Combine cleaned sector names for each keyword group
+sector_keywords = keyword_df.groupby('sector')['cleaned_keywords'].apply(lambda x: ' '.join(x))
+
+# Create a TF-IDF vectorizer
+vectorizer = TfidfVectorizer()
+
+# Fit and transform the sector keywords using TF-IDF
+tfidf_matrix = vectorizer.fit_transform(sector_keywords)
+
+# Apply Latent Semantic Analysis (LSA)
+num_topics = 3  # You can adjust this based on your needs
+lsa = TruncatedSVD(n_components=num_topics)
+lsa_matrix = lsa.fit_transform(tfidf_matrix)
+
+# Calculate cosine similarity between client sectors and LSA vectors
+client_similarities = []
+for index, client_row in client_df.iterrows():
+    client_sector = client_row['cleaned_sector']
+    client_vector = vectorizer.transform([client_sector])
+    client_lsa_vector = lsa.transform(client_vector)
+    
+    similarity_scores = cosine_similarity([client_lsa_vector], lsa_matrix)[0]
+    most_similar_topic_index = similarity_scores.argmax()
+    most_similar_sector = sector_keywords.index[most_similar_topic_index]
+    
+    client_similarities.append((client_row['client_id'], most_similar_sector))
+
+# Create a new data frame with assigned clusters
+clustered_client_df = pd.DataFrame(client_similarities, columns=['client_id', 'assigned_sector'])
+
+# Merge the assigned sectors with the original client data frame
+final_client_df = pd.merge(client_df, clustered_client_df, on='client_id')
+
+# Save the updated client data frame
+final_client_df.to_csv('clustered_client_data.csv', index=False)
+
+
+
+
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
