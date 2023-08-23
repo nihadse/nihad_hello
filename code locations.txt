@@ -1,3 +1,58 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load your data
+keywords_data = pd.read_csv('keywords_data.csv')
+sectors_data = pd.read_csv('sectors_data.csv')
+
+# Preprocess text data
+keywords_data['processed_keywords'] = keywords_data['keywords'].apply(lambda x: ' '.join(x))
+
+# Create TF-IDF features
+vectorizer = TfidfVectorizer(max_features=1000)  # Adjust max_features as needed
+X = vectorizer.fit_transform(keywords_data['processed_keywords'])
+
+# Perform Latent Dirichlet Allocation for topic modeling
+num_topics = 5  # Adjust the number of topics
+lda = LatentDirichletAllocation(n_components=num_topics, random_state=42)
+lda_features = lda.fit_transform(X)
+
+# Combine LDA features with sector information
+combined_data = pd.concat([sectors_data, pd.DataFrame(lda_features)], axis=1)
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(combined_data.drop(columns=['client_id', 'sector']))
+
+# Split data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, combined_data['sector'], test_size=0.2, random_state=42)
+
+# Train a Logistic Regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Predict on test data
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+classification_rep = classification_report(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+print("Classification Report:\n", classification_rep)
+
+
+
+
+
+
+
+
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
