@@ -1,3 +1,88 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+import nltk
+from nltk.tokenize import word_tokenize
+
+# Sample word embeddings DataFrame (replace with your actual data)
+word_embeddings = pd.DataFrame({
+    "keyword": ["transportation", "retail", "agriculture"],
+    "embedding": [
+        np.array([0.3, 0.2, 0.8]),
+        np.array([0.7, 0.6, 0.1]),
+        np.array([0.1, 0.9, 0.4])
+    ]
+})
+
+# Sample clients DataFrame (replace with your actual data)
+clients = pd.DataFrame({
+    "client_id": [1, 2, 3, 4],
+    "sector_description": [
+        "Autoverkaufsagentur",
+        "Einzelhandelsgeschäft",
+        "Gemüsefarm",
+        "Logistikunternehmen"
+    ]
+})
+
+# Load the manually downloaded Punkt tokenizer for German
+punkt_tokenizer = nltk.data.load('path/to/punkt/german.pickle')  # Replace with the actual path
+
+# Tokenize words using the Punkt tokenizer for German
+def tokenize_with_punkt(text):
+    return punkt_tokenizer.tokenize(text.lower())
+
+# Calculate average embedding vectors for keywords and sector descriptions
+def calculate_average_embedding(tokens, embeddings_df):
+    embedding_vectors = [embeddings_df.loc[embeddings_df['keyword'] == token, 'embedding'].values[0] for token in tokens]
+    return np.mean(embedding_vectors, axis=0) if embedding_vectors else np.zeros(embeddings_df['embedding'][0].shape)
+
+# Calculate cosine similarity
+def calculate_similarity(vec1, vec2):
+    return cosine_similarity(vec1.reshape(1, -1), vec2.reshape(1, -1))[0][0]
+
+# Threshold for considering a match
+threshold = 0.7
+
+# List to store results
+results = []
+
+# Semantic text similarity analysis and storing results in DataFrame
+for index, client in clients.iterrows():
+    description = client["sector_description"]
+    description_tokens = tokenize_with_punkt(description)
+    description_embedding = calculate_average_embedding(description_tokens, word_embeddings)
+    
+    best_match = None
+    best_similarity = 0
+    
+    for _, row in word_embeddings.iterrows():
+        keyword = row["keyword"]
+        embedding = row["embedding"]
+        similarity = calculate_similarity(description_embedding, embedding)
+        if similarity > best_similarity:
+            best_similarity = similarity
+            if similarity > threshold:
+                best_match = keyword
+    
+    result = {
+        "client_id": client["client_id"],
+        "sector_description": description,
+        "matched_keyword": best_match,
+        "similarity": best_similarity
+    }
+    results.append(result)
+
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Display the DataFrame
+print(results_df)
+
+
+
+
+
 
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
