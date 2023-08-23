@@ -1,4 +1,75 @@
 
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import nltk
+from nltk.tokenize import word_tokenize
+import pandas as pd
+nltk.download('punkt')
+
+# Pre-trained word embeddings (fictional embeddings for demonstration)
+word_embeddings = {
+    "transportation": np.array([0.3, 0.2, 0.8]),
+    "retail": np.array([0.7, 0.6, 0.1]),
+    "agriculture": np.array([0.1, 0.9, 0.4])
+}
+
+# Client data frame
+clients = [
+    {"client_id": 1, "sector_description": "car selling agency"},
+    {"client_id": 2, "sector_description": "retail store"},
+    {"client_id": 3, "sector_description": "vegetable farm"},
+    {"client_id": 4, "sector_description": "logistics company"}
+]
+
+# Calculate average embedding vectors for keywords and sector descriptions
+def calculate_average_embedding(text, embeddings):
+    tokens = word_tokenize(text.lower())
+    embedding_vectors = [embeddings.get(token, np.zeros(3)) for token in tokens]
+    return np.mean(embedding_vectors, axis=0)
+
+# Calculate cosine similarity
+def calculate_similarity(vec1, vec2):
+    return cosine_similarity(vec1.reshape(1, -1), vec2.reshape(1, -1))[0][0]
+
+# Threshold for considering a match
+threshold = 0.7
+
+# List to store results
+results = []
+
+# Semantic text similarity analysis and storing results in DataFrame
+for client in clients:
+    description = client["sector_description"]
+    description_embedding = calculate_average_embedding(description, word_embeddings)
+    
+    best_match = None
+    best_similarity = 0
+    
+    for keyword, embedding in word_embeddings.items():
+        similarity = calculate_similarity(description_embedding, embedding)
+        if similarity > best_similarity:
+            best_similarity = similarity
+            if similarity > threshold:
+                best_match = keyword
+    
+    result = {
+        "client_id": client["client_id"],
+        "sector_description": description,
+        "matched_keyword": best_match,
+        "similarity": best_similarity
+    }
+    results.append(result)
+
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Display the DataFrame
+print(results_df)
+
+
+
+
+
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
