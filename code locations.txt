@@ -1,3 +1,79 @@
+from transformers import AutoTokenizer, AutoModel
+import torch
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Load French BERT model and tokenizer
+model_name = "camembert-base"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+# Example keyword DataFrame with columns 'Keyword' and 'Embedding'
+# Replace this with your actual keyword DataFrame
+keywords_data = [
+    {"Keyword": "transport", "Embedding": [0.1, 0.2, ...]},
+    {"Keyword": "commerce de détail", "Embedding": [0.3, 0.4, ...]},
+    # ... more keyword entries ...
+]
+keywords_df = pd.DataFrame(keywords_data)
+
+# Example client DataFrame with columns 'ClientID' and 'Sector'
+# Replace this with your actual client DataFrame
+clients_data = [
+    {"ClientID": 1, "Sector": "boutique"},
+    {"ClientID": 2, "Sector": "tabac"},
+    # ... more client entries ...
+]
+clients_df = pd.DataFrame(clients_data)
+
+# Calculate embeddings for each keyword and sector in French
+keyword_embeddings = []
+sector_embeddings = []
+
+for keyword_row in keywords_df.itertuples():
+    keyword = keyword_row.Keyword
+    keyword_tokens = tokenizer(keyword, return_tensors="pt", padding=True, truncation=True)
+    with torch.no_grad():
+        keyword_output = model(**keyword_tokens).last_hidden_state.mean(dim=1).numpy()
+    keyword_embeddings.append(keyword_output)
+
+for sector_row in clients_df.itertuples():
+    sector = sector_row.Sector
+    sector_tokens = tokenizer(sector, return_tensors="pt", padding=True, truncation=True)
+    with torch.no_grad():
+        sector_output = model(**sector_tokens).last_hidden_state.mean(dim=1).numpy()
+    sector_embeddings.append(sector_output)
+
+# Calculate cosine similarity between keyword and sector embeddings
+similarity_scores = cosine_similarity(np.array(keyword_embeddings), np.array(sector_embeddings))
+
+# Create a dictionary to store the results
+client_results = {}
+
+# Map keywords to sectors based on highest similarity score
+for i, client_row in enumerate(clients_df.itertuples()):
+    client_id = client_row.ClientID
+    sector = client_row.Sector
+    max_sim_idx = np.argmax(similarity_scores[:, i])
+    similar_keyword = keywords_df.loc[max_sim_idx, 'Keyword']
+    
+    if client_id not in client_results:
+        client_results[client_id] = {"Sector": sector, "SimilarKeyword": similar_keyword}
+
+print(client_results)
+
+
+
+
+
+
+
+
+
+
+
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
