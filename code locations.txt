@@ -1,4 +1,72 @@
 import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+from sentence_transformers import SentenceTransformer
+
+# Sample keyword DataFrame (replace with your data)
+keyword_data = {
+    "keyword": ["transportation", "retail", "agriculture"],
+    "embedding": [
+        np.array([0.3, 0.2, 0.8]),
+        np.array([0.7, 0.6, 0.1]),
+        np.array([0.1, 0.9, 0.4])
+    ]
+}
+keyword_df = pd.DataFrame(keyword_data)
+
+# Sample clients DataFrame (replace with your data)
+clients_data = {
+    "client_id": [1, 2, 3, 4],
+    "sector_description": [
+        "Autoverkaufsagentur",
+        "Einzelhandelsgeschäft",
+        "Gemüsefarm",
+        "Logistikunternehmen"
+    ]
+}
+clients_df = pd.DataFrame(clients_data)
+
+# Load a pre-trained sentence transformer model (you can choose different models)
+model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+
+# Encode sentences using the model
+def encode_sentence(sentence):
+    return model.encode([sentence])[0]
+
+# Convert keyword embeddings to dictionary
+keyword_embeddings = dict(zip(keyword_df["keyword"], keyword_df["embedding"]))
+
+# Threshold for semantic similarity
+threshold = 0.7
+
+# List to store results
+results = []
+
+# Semantic text similarity analysis
+for _, client in clients_df.iterrows():
+    sector_description = client["sector_description"]
+    sector_embedding = encode_sentence(sector_description)
+    
+    best_match = None
+    best_similarity = 0
+    
+    for keyword, embedding in keyword_embeddings.items():
+        similarity = cosine_similarity([sector_embedding], [embedding])[0][0]
+        if similarity > best_similarity:
+            best_similarity = similarity
+            if similarity > threshold:
+                best_match = keyword
+    
+    results.append({"client_id": client["client_id"], "matched_keyword": best_match})
+
+# Create a DataFrame from the results
+output_df = pd.DataFrame(results)
+
+# Display the results
+print(output_df)
+
+
+import numpy as np
 frimport numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
