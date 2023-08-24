@@ -1,3 +1,59 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from gensim.models import KeyedVectors
+import pandas as pd
+
+# Load GloVe embeddings (replace 'glove.6B.100d.txt' with the actual path)
+glove_path = 'path_to_glove_embeddings/glove.6B.100d.txt'
+glove_model = KeyedVectors.load_word2vec_format(glove_path, binary=False)
+embedding_dim = 100
+
+# Example client DataFrame with columns 'ClientID' and 'Sector'
+# Replace this with your actual client DataFrame
+clients_data = [
+    {"ClientID": 1, "Sector": "boutique"},
+    {"ClientID": 2, "Sector": "tabac"},
+    # ... more client entries ...
+]
+clients_df = pd.DataFrame(clients_data)
+
+# Calculate embeddings for each sector
+def calculate_embedding(text):
+    words = text.split()
+    valid_words = [word for word in words if word in glove_model]
+    if valid_words:
+        embeddings = [glove_model[word] for word in valid_words]
+        return np.mean(embeddings, axis=0)
+    return np.zeros(embedding_dim)
+
+clients_df['Embedding'] = clients_df['Sector'].apply(calculate_embedding)
+
+# Calculate embeddings for each keyword
+keyword_list = ["transport", "commerce de détail", "agriculture"]
+keyword_embeddings = np.array([calculate_embedding(keyword) for keyword in keyword_list])
+
+# Calculate cosine similarity between keyword and sector embeddings
+similarity_scores = cosine_similarity(keyword_embeddings, clients_df['Embedding'].tolist())
+
+# Map keywords to clients based on highest similarity score
+client_results = {}
+for i, keyword in enumerate(keyword_list):
+    max_sim_idx = np.argmax(similarity_scores[i])
+    client_id = clients_df.loc[max_sim_idx, 'ClientID']
+    sector = clients_df.loc[max_sim_idx, 'Sector']
+    
+    if client_id not in client_results:
+        client_results[client_id] = {"Sector": sector, "SimilarKeyword": keyword}
+
+print(client_results)
+
+
+
+
+
+
+
+
 from transformers import AutoTokenizer, AutoModel
 import torch
 import numpy as np
