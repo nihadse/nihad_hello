@@ -1,5 +1,59 @@
 import numpy as np
+frimport numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+from sentence_transformers import SentenceTransformer
+
+# Sample keyword list and clients DataFrame (replace with your data)
+keywords = ["transportation", "retail", "agriculture"]
+clients_df = pd.DataFrame(...)  # Your clients' data
+
+# Load a pre-trained sentence transformer model (you can choose different models)
+model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+
+# Encode sentences using the model
+def encode_sentence(sentence):
+    return model.encode([sentence])[0]
+
+# Sample word embeddings (you can use actual embeddings)
+word_embeddings = {
+    "transportation": encode_sentence("transportation sector of activity"),
+    "retail": encode_sentence("retail sector of activity"),
+    "agriculture": encode_sentence("agriculture sector of activity")
+}
+
+# Threshold for semantic similarity
+threshold = 0.7
+
+# List to store results
+results = []
+
+# Semantic text similarity analysis
+for _, client in clients_df.iterrows():
+    sector_description = client["sector_description"]
+    sector_embedding = encode_sentence(sector_description)
+    
+    best_match = None
+    best_similarity = 0
+    
+    for keyword, embedding in word_embeddings.items():
+        similarity = cosine_similarity([sector_embedding], [embedding])[0][0]
+        if similarity > best_similarity:
+            best_similarity = similarity
+            if similarity > threshold:
+                best_match = keyword
+    
+    results.append({"client_id": client["client_id"], "matched_keyword": best_match})
+
+# Create a DataFrame from the results
+output_df = pd.DataFrame(results)
+
+# Display the results
+print(output_df)
+
+
+
+om sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import nltk
 from nltk.tokenize import word_tokenize
