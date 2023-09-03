@@ -1,3 +1,72 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Sample keyword DataFrame with embeddings (replace with your actual data)
+keyword_embeddings_df = pd.DataFrame({
+    "keyword": ["transport maritime", "commerce de produit alimentaire", "BTP Batiment"],
+    "embedding": [
+        np.array([0.8, 0.3, 0.2]),
+        np.array([0.6, 0.7, 0.1]),
+        np.array([0.2, 0.4, 0.9])
+    ]
+})
+
+# Sample clients DataFrame (replace with your actual data)
+clients_df = pd.DataFrame({
+    "client_id": [1, 2, 3, 4],
+    "sector_description": [
+        "transport maritime merchandise",
+        "commerce",
+        "commerce de produit alimentaire",
+        "BTP Batiment"
+    ]
+})
+
+# Function to calculate cosine similarity
+def calculate_similarity(vec1, vec2):
+    return cosine_similarity(vec1.reshape(1, -1), vec2.reshape(1, -1))[0][0]
+
+# List to store results
+results = []
+
+# Calculate semantic similarity between keyword embeddings and sectors
+for _, row in keyword_embeddings_df.iterrows():
+    keyword = row["keyword"]
+    keyword_embedding = row["embedding"]
+    
+    best_match = None
+    best_similarity = 0
+    
+    for _, client_row in clients_df.iterrows():
+        sector_description = client_row["sector_description"]
+        
+        # You can fetch the sector embedding from your keyword DataFrame if it exists
+        # For this example, we'll assume sector_embeddings_df contains sector embeddings
+        sector_embedding = sector_embeddings_df.loc[sector_embeddings_df['sector_description'] == sector_description, 'embedding'].values[0]
+        
+        similarity = calculate_similarity(keyword_embedding, sector_embedding)
+        
+        if similarity > best_similarity:
+            best_similarity = similarity
+            best_match = sector_description
+    
+    results.append({
+        "keyword": keyword,
+        "matched_sector": best_match,
+        "similarity": best_similarity
+    })
+
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Display the DataFrame
+print(results_df)
+
+
+
+
+
 
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
