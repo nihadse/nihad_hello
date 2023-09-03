@@ -1,5 +1,35 @@
+
+Objet : Demande de changement de carte Visa de Gold à Classique
+
+Cher(e) [Nom du Client],
+
+Je tenais à vous informer que cela fait une semaine depuis que ma charge clientèle m'a souscrit à la carte Visa Gold. Cependant, après une évaluation attentive, je préfère maintenant passer à la carte Visa Classique, mieux adaptée à mes besoins financiers actuels.
+
+Je vous prie de bien vouloir m'assister dans cette transition en m'indiquant les étapes nécessaires. Je suis prêt(e) à fournir toutes les informations requises pour faciliter ce changement.
+
+Votre réactivité serait grandement appréciée. Je vous remercie de votre compréhension et de votre soutien.
+
+Cordialement,
+[Votre Nom]
+[Numéro de Compte]
+[Coordonnées de Contact]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
+f
+rom sklearn.metrics.pairwise import cosine_similarity
 from gensim.models import KeyedVectors
 import pandas as pd
 
