@@ -1,3 +1,81 @@
+
+
+
+
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Sample keyword DataFrame with embeddings (replace with your actual data)
+keyword_embeddings_df = pd.DataFrame({
+    "keyword": ["restauration", "restauration commerciale", "cuisine", "alimentaire"],
+    "embedding": [
+        np.array([1.0, 0.0, 0.0]),
+        np.array([1.0, 0.0, 0.0]),
+        np.array([0.0, 1.0, 0.0]),
+        np.array([0.0, 0.0, 1.0])
+    ]
+})
+
+# Sample clients DataFrame (replace with your actual data)
+clients_df = pd.DataFrame({
+    "client_id": [1, 2, 3, 4],
+    "sector_description": [
+        "restauration commerciale",
+        "cuisine",
+        "alimentaire",
+        "autre"
+    ]
+})
+
+# Function to calculate cosine similarity
+def calculate_similarity(vec1, vec2):
+    return cosine_similarity(vec1.reshape(1, -1), vec2.reshape(1, -1))[0][0]
+
+# List to store results
+results = []
+
+# Set the similarity threshold
+similarity_threshold = 0.8
+
+# Calculate semantic similarity between keyword embeddings and sectors
+for _, client_row in clients_df.iterrows():
+    sector_description = client_row["sector_description"]
+    sector_tokens = sector_description.split()  # Split the sector description into tokens
+    
+    for _, row in keyword_embeddings_df.iterrows():
+        keyword = row["keyword"]
+        keyword_embedding = row["embedding"]
+        
+        # Calculate the average embedding for sector tokens, handling missing tokens gracefully
+        sector_embeddings = [keyword_embeddings_df.loc[keyword_embeddings_df['keyword'] == token, 'embedding'].values for token in sector_tokens]
+        sector_embeddings = [emb[0] for emb in sector_embeddings if len(emb) > 0]
+        
+        if sector_embeddings:  # Check if there are valid embeddings
+            sector_embedding = np.mean(sector_embeddings, axis=0)
+            similarity = calculate_similarity(keyword_embedding, sector_embedding)
+            
+            # Include all sector-keyword pairs in the results
+            results.append({
+                "sector_description": sector_description,
+                "keyword": keyword,
+                "similarity": similarity
+            })
+
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Display the DataFrame
+print(results_df)
+
+
+
+
+
+
+
+
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
