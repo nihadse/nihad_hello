@@ -1,5 +1,5 @@
 
-
+Je me permets de vous contacter car je rencontre actuellement un problème avec Microsoft Outlook qui affecte ma productivité.
 
 
 import numpy as np
