@@ -1,3 +1,57 @@
+
+
+
+
+
+import fitz  # PyMuPDF
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Define the path to your downloaded GloVe file
+glove_file_path = 'path/to/your/glove.6B.100d.txt'  # Adjust the file path and dimension as needed
+
+# Load GloVe vectors into memory
+glove_embeddings = {}
+with open(glove_file_path, 'r', encoding='utf-8') as file:
+    for line in file:
+        values = line.split()
+        word = values[0]
+        vector = np.array(values[1:], dtype='float32')
+        glove_embeddings[word] = vector
+
+# Example user question and PDF document
+user_question = "What is the capital of France?"
+pdf_path = "path/to/your/pdf_document.pdf"  # Replace with the path to your PDF file
+
+# Extract text from the PDF document
+document_text = ""
+pdf_document = fitz.open(pdf_path)
+for page_num in range(len(pdf_document)):
+    page = pdf_document.loadPage(page_num)
+    document_text += page.getText()
+
+# Tokenize and convert words to GloVe vectors
+question_tokens = user_question.lower().split()
+document_tokens = document_text.lower().split()
+
+question_vectors = [glove_embeddings.get(word, np.zeros(100)) for word in question_tokens]
+document_vectors = [glove_embeddings.get(word, np.zeros(100)) for word in document_tokens]
+
+# Calculate cosine similarity
+similarity_score = cosine_similarity([np.mean(question_vectors, axis=0)], [np.mean(document_vectors, axis=0)])[0][0]
+
+print("Similarity Score:", similarity_score)
+
+# Basic answer based on similarity score (you can customize this part)
+if similarity_score > 0.7:
+    print("Answer: Paris is the capital of France.")
+else:
+    print("Answer: I couldn't find a clear answer in the document.")
+
+
+
+
+
 import os
 import PyPDF2
 
