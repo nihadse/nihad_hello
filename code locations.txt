@@ -1,3 +1,57 @@
+import os
+import PyPDF2
+
+# Function to extract text from a PDF file
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with open(pdf_path, 'rb') as pdf_file:
+        pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+        for page_num in range(pdf_reader.numPages):
+            page = pdf_reader.getPage(page_num)
+            text += page.extractText()
+    return text
+
+# Directory where your PDF documents are stored
+pdf_directory = '/path/to/pdf/files'
+
+# Create a dictionary to map file names to their content
+pdf_data = {}
+for filename in os.listdir(pdf_directory):
+    if filename.endswith('.pdf'):
+        pdf_path = os.path.join(pdf_directory, filename)
+        pdf_data[filename] = extract_text_from_pdf(pdf_path)
+
+# Function to search for a query in PDF content
+def search_pdf(query):
+    results = {}
+    for filename, content in pdf_data.items():
+        if query.lower() in content.lower():
+            results[filename] = content
+    return results
+
+# Main loop for the chatbot
+while True:
+    user_input = input("Enter your query (type 'exit' to quit): ")
+    if user_input.lower() == 'exit':
+        break
+    search_results = search_pdf(user_input)
+    if not search_results:
+        print("No matching documents found.")
+    else:
+        print("Matching documents:")
+        for filename, content in search_results.items():
+            print(f"File: {filename}")
+            # You can choose how to display or handle the content here
+
+print("Chatbot terminated.")
+
+
+
+
+
+
+
+
 
 Je me permets de vous contacter car je rencontre actuellement un problème avec Microsoft Outlook qui affecte ma productivité.
 
