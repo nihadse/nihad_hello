@@ -1,3 +1,6 @@
+plt.gca().get_yaxis().set_major_formatter(ScalarFormatter(useOffset=False))
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
