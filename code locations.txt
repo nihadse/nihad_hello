@@ -1,3 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Assuming you have a DataFrame named 'visa_transactions' with columns 'Date' and 'Amount'
+# Ensure that the 'Date' column is in a datetime format
+
+# Convert the 'Date' column to datetime if it's not already in datetime format
+visa_transactions['Date'] = pd.to_datetime(visa_transactions['Date'])
+
+# Sort the DataFrame by the 'Date' column to ensure data is in chronological order
+visa_transactions = visa_transactions.sort_values(by='Date')
+
+# Create a line plot to visualize the transactions over time
+plt.figure(figsize=(12, 6))
+plt.plot(visa_transactions['Date'], visa_transactions['Amount'], marker='o', linestyle='-')
+plt.xlabel('Date')
+plt.ylabel('Amount')
+plt.title('Visa Card Transactions Over Time')
+plt.grid(True)
+plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
+plt.tight_layout()
+
+# Display the plot
+plt.show()
+
 
 
 
