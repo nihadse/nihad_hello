@@ -1,3 +1,45 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Assuming you have a DataFrame called community_df
+
+# Create a dictionary to store graphs for each agency's community
+agency_graphs = {}
+
+# Iterate through unique agencies
+unique_agencies = community_df['Agency'].unique()
+for agency in unique_agencies:
+    agency_graphs[agency] = nx.Graph()
+    
+    # Filter data for the current agency
+    agency_data = community_df[community_df['Agency'] == agency]
+    
+    # Iterate through unique communities
+    unique_communities = agency_data['Community'].unique()
+    for community in unique_communities:
+        community_data = agency_data[agency_data['Community'] == community]
+        
+        # Add nodes and edges to the agency's graph
+        for index, row in community_data.iterrows():
+            client = row['Client']
+            agency_graphs[agency].add_node(client)
+            for other_client in community_data['Client']:
+                if client != other_client:
+                    agency_graphs[agency].add_edge(client, other_client)
+
+# Visualize graphs for each agency
+for agency, graph in agency_graphs.items():
+    plt.figure(figsize=(8, 6))
+    plt.title(f"Graph for Agency: {agency}")
+    pos = nx.spring_layout(graph, seed=42)  # You can set a seed for layout consistency
+    nx.draw(graph, pos, with_labels=True, font_weight='bold', node_color='skyblue', node_size=200, font_size=8, font_color='black')
+    plt.show()
+
+
+
+
+
 
 import networkx as nx
 import matplotlib.pyplot as plt
