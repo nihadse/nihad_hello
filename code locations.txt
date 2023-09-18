@@ -1,3 +1,45 @@
+
+
+
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Assuming you have a DataFrame called community_df
+# with columns: 'FrozenSet', 'Client', 'ID', 'Tiers', 'Localite'
+
+# Iterate through rows in the DataFrame
+for index, row in community_df.iterrows():
+    frozen_set = row['FrozenSet']  # Replace 'FrozenSet' with the actual column name
+    
+    # Convert the frozen set to a list for creating nodes
+    clients = list(frozen_set)
+    
+    # Create a new graph for the current community
+    G = nx.Graph()
+    
+    # Add nodes to the graph with client information
+    for client in clients:
+        client_id = row['Client']
+        tiers = row['Tiers']
+        localite = row['Localite']
+        G.add_node(client, ID=client_id, Tiers=tiers, Localite=localite)
+    
+    # Visualize the graph for the current community
+    plt.figure(figsize=(8, 6))
+    plt.title(f"Community Graph {index + 1}")
+    pos = nx.spring_layout(G, seed=42)  # You can set a seed for layout consistency
+    
+    # Extract node attributes for labeling nodes
+    labels = {client: f"ID: {data['ID']}\nTiers: {data['Tiers']}\nLocalite: {data['Localite']}" for client, data in G.nodes(data=True)}
+    
+    nx.draw(G, pos, with_labels=True, labels=labels, font_weight='bold', node_color='skyblue', node_size=200, font_size=8, font_color='black', edge_color='gray', alpha=0.6)
+    plt.show()
+
+
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import pandas as pd
