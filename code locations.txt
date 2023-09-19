@@ -1,3 +1,68 @@
+
+import networkx as nx
+import community
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Create an empty graph
+G = nx.Graph()
+
+# Create a DataFrame with your data (replace with your actual data)
+data = {
+    "Client_ID": ["Client" + str(i) for i in range(1, 10001)],
+    "Community": [frozenset(["Community1"]), frozenset(["Community1"]), frozenset(["Community2"]),
+                  frozenset(["Community2"]), frozenset(["Community2"])],
+    "agence": ["AgencyA", "AgencyB", "AgencyA", "AgencyC", "AgencyB"],
+    "pay": ["Pay1", "Pay2", "Pay1", "Pay3", "Pay2"]
+}
+
+df = pd.DataFrame(data)
+
+# Create a list of unique community IDs
+unique_communities = df["Community"].unique()
+
+# Create nodes for each client in the DataFrame
+G.add_nodes_from(df["Client_ID"])
+
+# Generate edges based on the community information
+for community_id in unique_communities:
+    community_df = df[df["Community"] == community_id]
+    community_clients = community_df["Client_ID"].tolist()
+    # Generate all possible pairs of clients within the same community and add them as edges
+    edges = [(client1, client2) for client1 in community_clients for client2 in community_clients if client1 != client2]
+    G.add_edges_from(edges)
+
+# Run the Louvain algorithm to detect communities
+partition = community.best_partition(G)
+
+# Update the DataFrame with the Louvain community results
+df["Community"] = df["Client_ID"].map(partition)
+
+# Get a list of unique community IDs
+unique_communities = set(partition.values())
+
+# Create a list of colors for each community
+colors = [plt.cm.viridis(i / len(unique_communities)) for i in range(len(unique_communities))]
+
+# Draw the graph with nodes colored by community (sample 1000 nodes for visualization)
+sampled_nodes = df.sample(n=1000, random_state=42)["Client_ID"].tolist()
+pos = nx.spring_layout(G, k=0.1)  # You can adjust the spring layout parameter
+
+for i, community_id in enumerate(unique_communities):
+    nodes_in_community = [node for node in sampled_nodes if partition[node] == community_id]
+    nx.draw_networkx_nodes(G, pos, nodelist=nodes_in_community, node_color=colors[i], label=f"Community {community_id}")
+
+nx.draw_networkx_edges(G, pos, alpha=0.5)
+nx.draw_networkx_labels(G, pos)
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
 plt.gca().get_yaxis().set_major_formatter(ScalarFormatter(useOffset=False))
 
 
