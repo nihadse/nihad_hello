@@ -1,4 +1,35 @@
 
+import pandas as pd
+import networkx as nx
+
+# Read the co-occurrence matrix from a CSV file
+co_occurrence_matrix = pd.read_csv("/mnt/co_occurrence_matrix.csv")
+
+# Define a threshold for considering co-occurrence
+threshold = 5  # Adjust this threshold as needed
+
+# Extract the client names from the matrix (assuming they are in the first column)
+clients = co_occurrence_matrix.iloc[:, 0].tolist()
+
+# Create an empty graph
+G = nx.Graph()
+
+# Iterate through the co-occurrence matrix to create edges
+for i in range(len(clients)):
+    for j in range(i + 1, len(clients)):
+        co_occurrence_value = co_occurrence_matrix.iloc[i, j]
+        if co_occurrence_value >= threshold:
+            G.add_edge(clients[i], clients[j], weight=co_occurrence_value)
+
+# Now, the graph G contains edges based on your threshold criteria.
+
+
+
+
+
+
+
+
 
 
 
