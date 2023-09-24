@@ -1,3 +1,40 @@
+import gensim.downloader as api
+
+# Load a French pre-trained Word2Vec model
+word2vec_model = api.load("fasttext-wiki-news-subwords-300")
+
+import gensim.downloader as api
+
+# Load a French pre-trained Word2Vec model
+word2vec_model = api.load("fasttext-wiki-news-subwords-300")
+
+# Define the French keyword
+keyword = "santé"  # "Health" in French
+
+# Get similar words based on the keyword
+similar_words = word2vec_model.most_similar(keyword, topn=10)
+
+# Print the similar words
+for word, score in similar_words:
+    print(word, score)
+
+
+
+
+
+
+
+
+
+# Define the French keyword
+keyword = "santé"  # "Health" in French
+
+# Get similar words based on the keyword
+similar_words = word2vec_model.most_similar(keyword, topn=10)
+
+# Print the similar words
+for word, score in similar_words:
+    print(word, score)
 import numpy as np
 import matplotlib.pyplot as plt
 
