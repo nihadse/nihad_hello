@@ -1,3 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create a sample matrix
+matrix = np.array([[0.5, 1.2, 2.0],
+                   [1.8, 0.7, 3.5],
+                   [0.3, 2.3, 1.0]])
+
+# Define a threshold value
+threshold = 1
+
+# Create a binary mask where values greater than the threshold are True
+mask = matrix > threshold
+
+# Set the color for values greater than the threshold
+color = 'red'  # You can choose any color you like
+
+# Create an array of the same shape as the matrix filled with the chosen color
+colored_matrix = np.full_like(matrix, color)
+
+# Replace the color where the mask is False (values less than or equal to the threshold)
+colored_matrix[~mask] = 'white'  # You can use any color here for values <= threshold
+
+# Display the colored matrix
+plt.imshow(colored_matrix)
+
+# Show the plot
+plt.show()
+
+
+
 
 import numpy as np
 import matplotlib.pyplot as plt
