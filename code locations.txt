@@ -9,6 +9,38 @@ matrix = np.array([[0.5, 1.2, 2.0],
 # Define a threshold value
 threshold = 1
 
+# Create a mask where values greater than the threshold are True
+mask = matrix > threshold
+
+# Initialize an array to store the colored matrix with int32 datatype
+colored_matrix = np.zeros_like(matrix, dtype=np.int32)
+
+# Set the integer value 1 for values greater than the threshold
+colored_matrix[mask] = 1  # Set to 1 for values > threshold
+
+# Display the colored matrix
+plt.imshow(colored_matrix, cmap='Reds')  # You can specify the colormap here
+
+# Show the plot
+plt.show()
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create a sample matrix
+matrix = np.array([[0.5, 1.2, 2.0],
+                   [1.8, 0.7, 3.5],
+                   [0.3, 2.3, 1.0]])
+
+# Define a threshold value
+threshold = 1
+
 # Create a binary mask where values greater than the threshold are True
 mask = matrix > threshold
 
