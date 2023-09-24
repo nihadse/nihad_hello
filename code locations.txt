@@ -1,3 +1,19 @@
+from gensim.models import KeyedVectors
+
+# Load the FastText model with .vec extension using KeyedVectors
+model = KeyedVectors.load_word2vec_format('path_to_model.vec', binary=False) 
+
+# Now, you can use the loaded model for word similarity and embedding retrieval.
+
+
+
+
+
+
+
+
+
+
 from gensim.models import FastText
 
 # Load the FastText model with .vec extension
