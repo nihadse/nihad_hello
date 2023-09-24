@@ -1,3 +1,13 @@
+from gensim.models import FastText
+
+# Load the FastText model with .vec extension
+model = FastText.load_fasttext_format('path_to_model.vec')
+
+# Now, you can use the loaded model for word similarity and embedding retrieval.
+
+
+
+
 import gensim.downloader as api
 
 # Load a French pre-trained Word2Vec model
