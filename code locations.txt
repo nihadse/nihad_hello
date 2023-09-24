@@ -1,6 +1,44 @@
 from gensim.models import KeyedVectors
 
 # Load the FastText model with .vec extension using KeyedVectors
+model = KeyedVectors.load_word2vec_format("/mnt/wiki-news-300d-1M-subword.vec", binary=False)
+
+# Define your list of French keywords
+keyword_list = ["sante", "Justice", "Agriculture", "petrole", "chimique"]  # List of keywords
+
+# Create a dictionary to store similar words for each keyword
+similar_words_dict = {}
+
+# Loop through each keyword in the list
+for keyword in keyword_list:
+    # Get similar words based on the keyword
+    similar_words = model.most_similar(keyword, topn=10)
+    
+    # Extract only the words (without scores) and store them in the dictionary
+    similar_words_dict[keyword] = [word for word, _ in similar_words]
+
+# Now, similar_words_dict contains 10 similar words for each keyword in the list.
+# You can access and display them like this:
+for keyword, similar_words in similar_words_dict.items():
+    print(f"Similar words for '{keyword}': {', '.join(similar_words)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from gensim.models import KeyedVectors
+
+# Load the FastText model with .vec extension using KeyedVectors
 model = KeyedVectors.load_word2vec_format('path_to_model.vec', binary=False) 
 
 # Now, you can use the loaded model for word similarity and embedding retrieval.
