@@ -1,3 +1,36 @@
+import pandas as pd
+from gensim.models import KeyedVectors
+
+# Load the FastText model with .vec extension using KeyedVectors
+model = KeyedVectors.load_word2vec_format("/mnt/wiki-news-300d-1M-subword.vec", binary=False)
+
+# Define your list of French keywords
+keyword_list = ["sante", "Justice", "Agriculture", "petrole", "chimique"]  # List of keywords
+
+# Create a dictionary to store similar words for each keyword
+similar_words_dict = {}
+
+# Loop through each keyword in the list
+for keyword in keyword_list:
+    # Get similar words based on the keyword
+    similar_words = model.most_similar(keyword, topn=10)
+    
+    # Extract only the words (without scores) and store them in the dictionary
+    similar_words_dict[keyword] = [word for word, _ in similar_words]
+
+# Create a DataFrame from the dictionary
+df = pd.DataFrame.from_dict(similar_words_dict, orient='index', columns=['Similar_Word_1', 'Similar_Word_2', 'Similar_Word_3', 'Similar_Word_4', 'Similar_Word_5', 'Similar_Word_6', 'Similar_Word_7', 'Similar_Word_8', 'Similar_Word_9', 'Similar_Word_10'])
+
+# Reset the index to have the keywords as a column
+df.reset_index(inplace=True)
+df.rename(columns={'index': 'Original_Keyword'}, inplace=True)
+
+# Now, 'df' contains the original keywords and their generated similar words.
+# You can access and display them as needed.
+print(df)
+
+
+
 from gensim.models import KeyedVectors
 
 # Load the FastText model with .vec extension using KeyedVectors
