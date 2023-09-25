@@ -1,3 +1,16 @@
+Subject: Date de Déchéance de Ma Licence Alteryx
+
+Cher(e) [Colleague's Name],
+
+Je tiens à vous informer que la date de déchéance de ma licence Alteryx est prévue pour le [date]. Si vous avez besoin d'assistance ou d'accès à des projets après cette date, n'hésitez pas à me contacter à l'avance pour que nous puissions organiser cela de manière appropriée.
+
+Cordialement,
+[Votre Nom]
+
+
+
+
+
 import pandas as pd
 from gensim.models import KeyedVectors
 
