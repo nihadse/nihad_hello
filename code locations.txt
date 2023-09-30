@@ -1,11 +1,52 @@
-Subject: Date de Déchéance de Ma Licence Alteryx
+Tout d'abord, je tiens à souligner que j'ai travaillé chez BNP Paribas en tant que junior data scientist pendant un an. 
 
-Cher(e) [Colleague's Name],
+J'ai fait tout mon possible pour accomplir mes missions avec enthousiasme . 
+J'adore mon travail et je suis désireuse de continuer à apprendre et à progresser au sein de cette entreprise.
 
-Je tiens à vous informer que la date de déchéance de ma licence Alteryx est prévue pour le [date]. Si vous avez besoin d'assistance ou d'accès à des projets après cette date, n'hésitez pas à me contacter à l'avance pour que nous puissions organiser cela de manière appropriée.
+j'ai travaillé sur les projects suivant, notamment :
 
-Cordialement,
-[Votre Nom]
+Système de recommandation de produits bancaires.
+Système de détection de fraudes pour la conformité.
+Suppression de données sensibles de clients en 3 secondes grâce à la NLP.
+Chatbot pour les ressources humaines.
+
+
+
+Le CDO était très satisfait de mon travail.
+
+Je voudrais maintenant parler de l'offre de CDI qui m'a été faite, avec le titre de data analyst. 
+
+Depuis que j'ai commencé à travailler en tant que data scientist, je souhaite rester dans ce domaine. 
+
+omar m'a assurée que seul le titre changerait (de data scientist à data analyst), mais que les missions et les projets resteraient les mêmes.
+
+il semble illogique et contraire au principe de l'identité de logique. Le titre d'une profession a une signification précise.  
+il est donc incohérent que le titre ne corresponde pas aux fonctions.
+
+Comme je l'ai mentionné précédemment, j'apprécie énormément de travailler au sein de cette équipe et de l'environnement de BNP Paribas
+
+j'ai l'intention de rester ici pendant une longue période.
+
+
+Par conséquent, je vous prie de bien vouloir revoir l'offre de contrat que vous m'avez proposée. 
+
+Je tiens vraiment à devenir data scientist, car je suis passionne par ce domaine et j'ai pour objectif de redoubler d'efforts si nécessaire.
+
+Si vous avez la moindre question, n'hésitez pas à me contacter à tout moment. Merci
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
