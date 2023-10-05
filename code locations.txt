@@ -1,63 +1,4 @@
 
-Objet : Demande d'un nouvel écran en raison de la détérioration de ma vision
-
-Cher [Nom du destinataire],
-
-Je rencontre actuellement des difficultés de vision au travail, et il est devenu de plus en plus évident que cette détérioration est liée à l'utilisation de mon écran actuel. Le médecin du travail m'a également recommandé de consulter un ophtalmologiste pour évaluer et traiter ce problème.
-
-Dans cette optique, je souhaiterais donc demander un nouvel écran qui pourrait améliorer ma situation et contribuer à préserver ma santé visuelle. Je vous remercie de prendre en considération cette demande et je suis prêt à fournir des détails supplémentaires si nécessaire.
-
-Cordialement,
-[Votre nom]
-[Votre poste]
-
-
-
-
-
-
-
-
-
-
-
-
-Tout d'abord, je tiens à souligner que j'ai travaillé chez BNP Paribas en tant que junior data scientist pendant un an. 
-
-J'ai fait tout mon possible pour accomplir mes missions avec enthousiasme . 
-J'adore mon travail et je suis désireuse de continuer à apprendre et à progresser au sein de cette entreprise.
-
-j'ai travaillé sur les projects suivant, notamment :
-
-Système de recommandation de produits bancaires.
-Système de détection de fraudes pour la conformité.
-Suppression de données sensibles de clients en 3 secondes grâce à la NLP.
-Chatbot pour les ressources humaines.
-
-
-
-Le CDO était très satisfait de mon travail.
-
-Je voudrais maintenant parler de l'offre de CDI qui m'a été faite, avec le titre de data analyst. 
-
-Depuis que j'ai commencé à travailler en tant que data scientist, je souhaite rester dans ce domaine. 
-
-omar m'a assurée que seul le titre changerait (de data scientist à data analyst), mais que les missions et les projets resteraient les mêmes.
-
-il semble illogique et contraire au principe de l'identité de logique. Le titre d'une profession a une signification précise.  
-il est donc incohérent que le titre ne corresponde pas aux fonctions.
-
-Comme je l'ai mentionné précédemment, j'apprécie énormément de travailler au sein de cette équipe et de l'environnement de BNP Paribas
-
-j'ai l'intention de rester ici pendant une longue période.
-
-
-Par conséquent, je vous prie de bien vouloir revoir l'offre de contrat que vous m'avez proposée. 
-
-Je tiens vraiment à devenir data scientist, car je suis passionne par ce domaine et j'ai pour objectif de redoubler d'efforts si nécessaire.
-
-Si vous avez la moindre question, n'hésitez pas à me contacter à tout moment. Merci
-
 
 
 
@@ -105,11 +46,7 @@ df.rename(columns={'index': 'Original_Keyword'}, inplace=True)
 
 # Now, 'df' contains the original keywords and their generated similar words.
 # You can access and display them as needed.
-print(df)
-
-
-
-from gensim.models import KeyedVectors
+print(df)from gensim.models import KeyedVectors
 
 # Load the FastText model with .vec extension using KeyedVectors
 model = KeyedVectors.load_word2vec_format("/mnt/wiki-news-300d-1M-subword.vec", binary=False)
