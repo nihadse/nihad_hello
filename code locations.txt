@@ -1,3 +1,27 @@
+
+for _, sector_row in sectors_df.iterrows():
+    sector_description = sector_row["sector_description"]
+    sector_tokens = sector_description.split()
+    sector_embeddings = []
+
+    for _, keyword_row in keyword_embeddings_df.iterrows():
+        keyword = keyword_row["keyword"]
+        keyword_embedding = keyword_row["embedding"]
+
+        # Check if the keyword is present in the sector description
+        if keyword in sector_description:
+            similarity = calculate_similarity(keyword_embedding, sector_embedding)
+
+            if similarity > similarity_threshold:
+                results.append({
+                    "sector_description": sector_description,
+                    "keyword": keyword,
+                    "similarity": similarity
+                })
+
+
+
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
