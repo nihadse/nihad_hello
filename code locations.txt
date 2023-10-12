@@ -1,3 +1,28 @@
+import pandas as pd
+import numpy as np
+
+# Create a sample DataFrame
+data = {'Value': [0.5, 2, 3.5, 1.2, 4, 0.8]}
+df = pd.DataFrame(data)
+
+# Define the conditions and corresponding labels
+conditions = [
+    (df['Value'] >= 0) & (df['Value'] <= 1),
+    (df['Value'] == 2),
+    (df['Value'] >= 3)
+]
+
+choices = ['Bien', 'Tolerant', 'Bad']
+
+# Use np.select to create a new column 'Classification'
+df['Classification'] = np.select(conditions, choices, default='')
+
+print(df)
+
+
+
+
+
 
 
 import numpy as np
