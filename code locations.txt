@@ -1,3 +1,89 @@
+
+
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Sample sector data with multiple columns
+sectors_data = {
+    "sector_description": ["CULTURE COMPOSANTS ELECTRONIQUES FABRICATION MATERIEL AUDIO ET TABACS",
+                           "BTP TRAVAUX PUBLICS cannabis",
+                           "TRANSPORTS AERIENS",
+                           "TRANSPORTS MARITIMES DE MARCHANDISES",
+                           "Culture du cannabis",
+                           "PRATIQUES MEDICALES ET AUXILIAIRES",
+                           "COMMERCE DE GROS PRODUITS ALIMENTAIRES SERVICES DE TELECOMMUNICATIONS AUTRES SERVICES DE REPARATION AUX PARTICULIERS",
+                           "COMMERCE DE GROS DE MATERIELS ET EQUIPEMENTS PROFESSION"],
+    "other_column1": ["Additional data 1", "Additional data 2", "Additional data 3", "Additional data 4", "Additional data 5", "Additional data 6", "Additional data 7", "Additional data 8"],
+    "other_column2": ["Some more data 1", "Some more data 2", "Some more data 3", "Some more data 4", "Some more data 5", "Some more data 6", "Some more data 7", "Some more data 8"]
+}
+
+# List of columns to test for semantic similarity
+columns_to_test = ["other_column1", "other_column2"]
+
+# Sample multi-word keywords that represent sentences or phrases
+class_sensitive_keywords = ['tabacs', 'transport maritime', 'BTP TRAVAUX', "Agriculture", 'Peche']
+
+# Sample keyword DataFrame with embeddings (replace with your actual data)
+keyword_data = {
+    "keyword": class_sensitive_keywords,
+    "embedding": [
+        np.array([1.0, 0.0, 0.011]),
+        np.array([0.7, 0.7, 0.0]),
+        np.array([0.5, 0.5, 0.0]),
+        np.array([0.0, 0.0, 1.0]),
+        np.array([0.0, 0.0, 0.0])
+    ]
+}
+keyword_embeddings_df = pd.DataFrame(keyword_data)
+
+# Function to calculate cosine similarity
+def calculate_similarity(vec1, vec2):
+    return cosine_similarity(vec1.reshape(1, -1), vec2.reshape(1, -1))[0][0]
+
+# List to store results
+results = []
+
+# Set the similarity threshold to 0.8
+similarity_threshold = 0.8
+
+# Calculate semantic similarity between sectors and keywords for selected columns
+for column in columns_to_test:
+    for _, sector_row in sectors_df.iterrows():
+        sector_description = sector_row[column]
+        sector_description = sector_description.lower()  # Convert to lowercase
+
+        for _, keyword_row in keyword_embeddings_df.iterrows():
+            keyword = keyword_row["keyword"]
+            keyword = keyword.lower()  # Convert to lowercase
+            keyword_embedding = keyword_row["embedding"]
+
+            # Check if the keyword (after stemming) is present in the sector description using case-insensitive matching
+            if keyword in sector_description:
+                similarity = calculate_similarity(keyword_embedding, keyword_embedding)  # You can change this if needed
+
+                if similarity > similarity_threshold:
+                    results.append({
+                        "column_name": column,
+                        "sector_description": sector_row["sector_description"],
+                        "keyword": keyword_row["keyword"],
+                        "similarity": similarity
+                    })
+
+# Create a DataFrame from the results
+results_df = pd.DataFrame(results)
+
+# Print or use the results as needed
+print(results_df)
+
+
+
+
+
+
+
+
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
