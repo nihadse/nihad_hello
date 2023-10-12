@@ -1,3 +1,45 @@
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Load your data into a DataFrame (replace 'your_data.csv' with your data file)
+# df = pd.read_csv('your_data.csv')
+
+# Assuming you have a 'PerformanceMetric' column that represents performance
+
+# Feature selection: Select relevant columns (excluding non-numeric and unnecessary columns)
+features = df.select_dtypes(include='number')
+
+# Standardize the data
+scaler = StandardScaler()
+data = scaler.fit_transform(features)
+
+# Choose the number of clusters (you can tune this parameter)
+n_clusters = 3
+
+# Apply K-Means clustering
+kmeans = KMeans(n_clusters=n_clusters, random_state=0)
+df['Cluster'] = kmeans.fit_predict(data)
+
+# Visualization (for 2D data)
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=df, x='Feature1', y='Feature2', hue='Cluster', palette='viridis')
+plt.title('K-Means Clustering')
+
+# Display the results
+print("Clustered Data:")
+print(df)
+plt.show()
+
+
+
+
+
+
+
 from sklearn.preprocessing import OrdinalEncoder
 import pandas as pd
 
