@@ -1,3 +1,19 @@
+from sklearn.preprocessing import OrdinalEncoder
+import pandas as pd
+
+# Create a sample DataFrame with the 'Status' column
+data = {'Status': ['bien', 'mauvais', 'très bien', 'bien', 'très bien', 'mauvais']}
+df = pd.DataFrame(data)
+
+# Create an instance of the OrdinalEncoder
+encoder = OrdinalEncoder(categories=[['mauvais', 'bien', 'très bien']])
+
+# Fit and transform the 'Status' column
+df['NumericStatus'] = encoder.fit_transform(df[['Status']])
+
+print(df)
+
+
 import pandas as pd
 import numpy as np
 
