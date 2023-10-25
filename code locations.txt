@@ -1,3 +1,4 @@
+filtered_df = dl[~dl['Libelle_complementaire_operation'].str.contains('COM RET GAB', na=False)]
 
 
 di['Gab'] = dl.apply(lambda row: 'COM RET GAB VISA' if isinstance(row['Libelle_complementaire_operation'], str) else '', axis=1)
