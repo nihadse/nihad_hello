@@ -1,5 +1,6 @@
 
 
+di['Gab'] = dl.apply(lambda row: 'COM RET GAB VISA' if isinstance(row['Libelle_complementaire_operation'], str) else '', axis=1)
 
 
 
