@@ -1,1 +1,0 @@
-tmp['mean_time_to_tran_day'] = (np.round((((tmp['MAX_DATE'] - tmp['MIN_DATE']).dt.total_seconds() / 60) / 60) / 24) / tmp['COUNT']).astype('int')
