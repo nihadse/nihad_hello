@@ -1,0 +1,27 @@
+import pandas as pd
+
+# Sample DataFrame
+data = {'ClientID': [1, 1, 2, 2, 3],
+        'References': ['ref1', 'ref2', 'ref2', 'ref3', 'ref1']}
+df = pd.DataFrame(data)
+
+# Create an empty dictionary to store the occurrences
+occurrence_dict = {}
+
+# Loop through each row of the DataFrame
+for _, row in df.iterrows():
+    client_id = row['ClientID']
+    reference = row['References']
+
+    if client_id not in occurrence_dict:
+        occurrence_dict[client_id] = {}
+
+    if reference not in occurrence_dict[client_id]:
+        occurrence_dict[client_id][reference] = 0
+
+    occurrence_dict[client_id][reference] += 1
+
+# Convert the dictionary to a DataFrame
+occurrence_matrix = pd.DataFrame(occurrence_dict).fillna(0)
+
+print(occurrence_matrix)
