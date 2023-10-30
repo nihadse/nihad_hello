@@ -1,0 +1,51 @@
+import pandas as pd
+import numpy as np
+from pyvis.network import Network
+import networkx as nx
+import community
+
+# Load the co-occurrence matrix
+co_occurrence_matrix = pd.read_csv('/mnt/limit_data/co_occurrence_matrix.csv')
+
+# Extract the names of clients
+clients = co_occurrence_matrix.columns[1:].tolist()
+
+# Add 1 to the end of the range to compensate for the offset
+matrix = co_occurrence_matrix.iloc[:len(co_occurrence_matrix) + 1, 1:len(co_occurrence_matrix) + 1].values
+
+# Add 1 to the end of the range to compensate for the offset
+matrix = np.where(matrix < -5, 1, matrix)
+
+# The elements of the diagonal should equal zero
+np.fill_diagonal(matrix, 0)
+
+matrix = np.triu(matrix, k=1)
+
+# Create a graph from the matrix
+graph = nx.from_numpy_array(matrix)
+
+# Detect communities using the Louvain algorithm
+communities = community.best_partition(graph)
+
+# Filter communities based on a minimum size (e.g., 21)
+filtered_communities = [c for c in communities if len(c) >= 21]
+
+# Create a NetworkX graph and add nodes for communities
+G = nx.Graph()
+for community_id, community in enumerate(filtered_communities):
+    for client in community:
+        G.add_node(client, community=community_id)
+
+# Add edges between clients (customize as needed)
+
+# Create a Pyvis Network
+net = Network(height="500px", width="800px", notebook=True)
+
+# Add nodes to the Pyvis Network
+for node, data in G.nodes(data=True):
+    net.add_node(node, color=data["community"])
+
+# Add edges to the Pyvis Network (customize as needed)
+
+# Visualize the Pyvis Network
+net.show("community_graph.html")
