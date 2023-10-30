@@ -1,0 +1,51 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import StrMethodFormatter
+
+# Assuming you have your data in a pandas DataFrame, you can create it like this:
+data = [
+    ["Numero_compte1", "2023-10-28", 100.50],
+    ["Numero_compte2", "2023-10-28", 75.25],
+    # Add more rows with data here
+]
+columns = ["Numero_compte", "date_op_gab", "Montant_mvt_comptable"]
+data_tend = pd.DataFrame(data, columns=columns)
+
+# Convert the date column to datetime format
+data_tend["date_op_gab"] = pd.to_datetime(data_tend["date_op_gab"])
+
+# Group the data by month and calculate the total transaction amount
+daily_usage = data_tend.groupby(data_tend["date_op_gab"].dt.strftime('%B'))["Montant_mvt_comptable"].sum()
+
+# Define a custom order for months
+custom_order = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+# Reorder the data based on the custom order
+daily_usage = daily_usage.reindex(custom_order)
+
+# Create a Line plot to visualize the tendency with added color
+plt.figure(figsize=(10, 6))
+
+# Customize line color, marker color, and background color
+line_color = 'r'  # Red
+marker_color = 'b'  # Blue
+
+plt.plot(daily_usage.index, daily_usage.values, marker='o', color=line_color, markersize=8, markerfacecolor=marker_color)
+
+plt.xlabel("Months")
+plt.ylabel("Total Transaction Amount")
+plt.title("Monthly Visa Card Usage Tendency")
+
+# Format the x-axis tick labels to display month names
+plt.xticks(range(len(custom_order)), daily_usage.index, rotation=45)
+
+# Format the y-axis to display numbers in base-10 notation
+y_format = StrMethodFormatter('{x:.0f}')
+plt.gca().yaxis.set_major_formatter(y_format)
+
+# Add labels to the data points
+for month, amount in zip(daily_usage.index, daily_usage.values):
+    plt.text(month, amount, f"{amount:.0f}", ha='left', va='bottom', fontsize=10)
+
+plt.tight_layout()
+plt.show()
