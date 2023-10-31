@@ -1,0 +1,22 @@
+import pandas as pd
+
+# Sample DataFrame
+data = {'Id': ['id555566069', 'id666661234', 'id777775432']}
+df = pd.DataFrame(data)
+
+# Define a function to map IDs to classes
+def map_id_to_class(id):
+    if id.startswith('55555'):
+        return 'X'
+    elif id.startswith('66666'):
+        return 'T'
+    elif id.startswith('77777'):
+        return 'U'
+    else:
+        return None
+
+# Add a new "Class" column based on the mapping function
+df['Class'] = df['Id'].apply(map_id_to_class)
+
+# Now, df['Class'] contains the corresponding class values
+print(df)
