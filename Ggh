@@ -1,36 +1,20 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 
-# Assuming you have your data in a pandas DataFrame, you can create it like this:
-data = [
-    ["Numero_compte1", "2023-10-28", 100.50],
-    ["Numero_compte2", "2023-10-28", 75.25],
-    # Add more rows with data here
-]
-columns = ["Numero_compte", "date_op_gab", "Montant_mvt_comptable"]
-data_tend = pd.DataFrame(data, columns=columns)
+# Load your dataset (replace 'client_transactions.csv' with your file)
+df = pd.read_csv("client_transactions.csv")
 
-# Convert the date column to datetime format
-data_tend["date_op_gab"] = pd.to_datetime(data_tend["date_op_gab"])
+# Convert the 'date_op_gab' column to a datetime object and set it as the index
+df['date_op_gab'] = pd.to_datetime(df['date_op_gab'])
+df.set_index('date_op_gab', inplace=True)
 
-# Group the data by date and calculate the total transaction amount
-daily_usage = data_tend.groupby(data_tend["date_op_gab"].dt.year)["Montant_mvt_comptable"].sum()
+# Group data by week and sum the withdrawal amounts for each week
+weekly_withdrawals = df['retrace operations gab'].resample('W').sum()
 
-# Create a Line plot to visualize the tendency
+# Plot the weekly withdrawals
 plt.figure(figsize=(10, 6))
-
-plt.plot(daily_usage.index, daily_usage.values, marker='o')
-
-plt.xlabel("Year")
-plt.ylabel("Total Transaction Amount")
-plt.title("Visa Card Usage Tendency")
-
-# Format the x-axis tick labels to display years as integers
-plt.xticks(daily_usage.index, [int(year) for year in daily_usage.index])
-
-# Format the y-axis to avoid scientific notation
-plt.gca().get_yaxis().set_major_formatter(ScalarFormatter(useOffset=False))
-
-plt.tight_layout()
+weekly_withdrawals.plot(kind='bar')
+plt.title('Weekly Withdrawals')
+plt.xlabel('Week')
+plt.ylabel('Withdrawal Amount')
 plt.show()
