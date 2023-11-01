@@ -1,3 +1,26 @@
+import tarfile
+
+def extract_tar_gz(tar_gz_file, output_dir):
+  """Extracts a tar.gz file to the specified output directory.
+
+  Args:
+    tar_gz_file: The path to the tar.gz file.
+    output_dir: The path to the output directory.
+  """
+
+  with tarfile.open(tar_gz_file, "r:gz") as tar_file:
+    tar_file.extractall(output_dir)
+
+
+# Example usage:
+
+tar_gz_file = "/path/to/download.tar.gz"
+output_dir = "/path/to/output_dir"
+
+extract_tar_gz(tar_gz_file, output_dir)
+
+
+
 from PIL import Image
 import pytesseract
 import PyPDF2
