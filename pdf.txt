@@ -2,6 +2,32 @@ import PyPDF2
 
 # Ouvrir le fichier PDF en mode lecture binaire
 with open('votre_fichier.pdf', 'rb') as pdf_file:
+    # Créer un objet PdfReader
+    pdf_reader = PyPDF2.PdfReader(pdf_file)
+
+    # Vérifier que le PDF est lisible
+    if not pdf_reader.isEncrypted:
+        # Créer une variable pour stocker le texte extrait
+        text = ''
+
+        # Parcourir chaque page du PDF
+        for page_number in range(len(pdf_reader.pages)):
+            # Obtenir la page
+            page = pdf_reader.pages[page_number]
+
+            # Extraire le texte de la page
+            page_text = page.extract_text()
+
+            # Ajouter le texte de la page à la variable text
+            text += page_text
+
+# Afficher le texte extrait
+print(text)
+
+import PyPDF2
+
+# Ouvrir le fichier PDF en mode lecture binaire
+with open('votre_fichier.pdf', 'rb') as pdf_file:
     # Créer un objet PDFReader
     pdf_reader = PyPDF2.PdfFileReader(pdf_file)
 
