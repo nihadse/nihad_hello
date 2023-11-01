@@ -1,3 +1,31 @@
+from PyPDF2 import PdfReader
+
+def extract_text_from_pdf(pdf_file):
+  """Extracts text from a PDF file using PdfReader.
+
+  Args:
+    pdf_file: The path to the PDF file.
+
+  Returns:
+    A string containing the extracted text.
+  """
+
+  pdf_reader = PdfReader(pdf_file)
+  extracted_text = ""
+  for page in pdf_reader.pages:
+    extracted_text += page.extractText()
+
+  return extracted_text
+
+
+# Example usage:
+
+pdf_file = "/path/to/pdf.pdf"
+extracted_text = extract_text_from_pdf(pdf_file)
+
+# Print the extracted text.
+print(extracted_text)
+
 import PyPDF2
 
 # Ouvrir le fichier PDF en mode lecture binaire
