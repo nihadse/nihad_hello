@@ -1,3 +1,43 @@
+from PIL import Image
+import pytesseract
+import PyPDF2
+
+# Ouvrez le PDF scanné
+pdf_file = open('votre_fichier.pdf', 'rb')
+pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+pdf_writer = PyPDF2.PdfFileWriter()
+
+# Parcourez chaque page du PDF scanné
+for page_number in range(pdf_reader.numPages):
+    page = pdf_reader.getPage(page_number)
+    
+    # Convertissez la page en une image PIL (Pillow)
+    image = page.extract_text()  # Extrayez la page en tant qu'image (scannée)
+
+    # Utilisez Tesseract pour extraire le texte de l'image
+    text = pytesseract.image_to_string(image)
+    
+    # Créez une nouvelle page avec le texte extrait
+    pdf_page = PyPDF2.pdf.PageObject.createTextPage(text)
+    
+    # Ajoutez la nouvelle page au PDF de sortie
+    pdf_writer.addPage(pdf_page)
+
+# Enregistrez le PDF textuel
+with open('pdf_textuel.pdf', 'wb') as output_pdf_file:
+    pdf_writer.write(output_pdf_file)
+
+# Fermez le PDF d'origine
+pdf_file.close()
+
+
+
+
+
+
+
+
+
 from PyPDF2 import PdfReader
 
 def extract_text_from_pdf(pdf_file):
