@@ -1,3 +1,32 @@
+import mt103
+
+# Read the MT103 message from a file
+with open("mt103.txt", "r") as f:
+    mt103_message = f.read()
+
+# Parse the MT103 message
+mt103 = MT103(mt103_message)
+
+# Access the different fields of the MT103 message
+print("Sender's Reference:", mt103.basic_header.sender_reference)
+print("Time Indication:", mt103.basic_header.time_indication)
+print("Bank Operation Code:", mt103.text.bank_operation_code)
+print("Instruction Code:", mt103.text.instruction_code)
+print("Transaction Type Code:", mt103.text.transaction_type_code)
+print("Value Date/Currency/Interbank Settled Amount:", mt103.value_date_currency_interbank_settled_amount)
+print("Currency/Instructed Amount:", mt103.currency_instructed_amount)
+print("Exchange Rate:", mt103.exchange_rate)
+print("Ordering Customer (Payer) or Address of the Remitter:", mt103.ordering_customer)
+print("Ordering Institution (Payer's Bank):", mt103.ordering_institution)
+print("Sender's Correspondent (Bank Sending the Message):", mt103.senders_correspondent)
+print("Receiver's Correspondent (Bank Receiving the Message):", mt103.receivers_correspondent)
+print("Beneficiary Institution (Beneficiary's Bank):", mt103.beneficiary_institution)
+print("Beneficiary Customer (Beneficiary):", mt103.beneficiary_customer)
+print("Account Number of the Beneficiary:", mt103.account_number_of_the_beneficiary)
+
+
+
+
 from mt103 import MT103
 
 # Read the MT103 message from a file
