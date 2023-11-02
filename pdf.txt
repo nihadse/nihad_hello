@@ -1,3 +1,13 @@
+import mt103
+
+# Use dir() to list all modules and attributes in the mt103 package
+module_list = [name for name in dir(mt103) if not name.startswith("__")]
+
+# Print the list of modules in the mt103 package
+print(module_list)
+
+
+
 import tarfile
 
 def extract_tar_gz(tar_gz_file, output_dir):
