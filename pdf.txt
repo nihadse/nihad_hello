@@ -1,3 +1,21 @@
+from mt103 import MT103
+
+# Read the MT103 message from a file
+with open("mt103.txt", "r") as f:
+    mt103_message = f.read()
+
+# Parse the MT103 message
+mt103 = MT103(mt103_message)
+
+# Access the different fields of the MT103 message
+print("Basic header:", mt103.basic_header)
+print("Bank operation code:", mt103.text.bank_operation_code)
+print("Complete message:", mt103)
+
+
+
+
+
 import mt103
 
 # Use dir() to list all modules and attributes in the mt103 package
