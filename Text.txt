@@ -1,3 +1,32 @@
+
+# Chargement des Packages
+
+Dans cette section, nous allons charger les packages et les bibliothèques Python nécessaires pour faciliter notre projet de détection de fraude au sein des communautés en utilisant la théorie des graphes. Ces packages sont essentiels pour la manipulation des données, la visualisation et l'apprentissage automatique. Voici la liste des packages que nous avons importés :
+
+1. **pandas** : Utilisé pour la manipulation et l'analyse des données.
+2. **seaborn** : Une bibliothèque de visualisation de données basée sur matplotlib.
+3. **openpyxl** : Permet de travailler avec des fichiers Excel.
+4. **numpy** : Fournit un support pour les fonctions mathématiques et les tableaux.
+5. **networkx** : Une bibliothèque puissante pour la création, la manipulation et l'étude des réseaux complexes.
+6. **re** : Fournit des opérations d'expressions régulières.
+7. **pickle** : Utilisé pour la sérialisation et la désérialisation des objets Python.
+8. **time** : Pour les fonctions et mesures liées au temps.
+9. **matplotlib** : Nous permet de créer diverses visualisations de données.
+10. **collections** : Fournit des structures de données et des algorithmes supplémentaires.
+11. **datetime** : Pour travailler avec les dates et les heures.
+12. **sklearn.model_selection** : Fait partie de scikit-learn, utilisé pour la division des données et l'évaluation des modèles.
+13. **sklearn.tree** : Contient DecisionTreeClassifier pour les tâches d'apprentissage automatique.
+14. **sklearn.linear_model** : Pour la modélisation de régression linéaire.
+15. **sklearn.feature_extraction.text** : Prend en charge le traitement des données textuelles à l'aide de CountVectorizer.
+16. **sklearn.metrics** : Contient la métrique de score d'exactitude pour l'évaluation des modèles.
+17. **warnings** : Aide à gérer les messages d'avertissement dans le code.
+18. **pyvis.network** : Utilisé pour créer des visualisations interactives de réseaux.
+19. **community** : Fait partie de networkx, pour la détection de communautés dans les graphes.
+
+Ces packages joueront un rôle crucial dans notre projet, de la prétraitement et l'analyse des données à la visualisation des graphes et à l'apprentissage automatique pour la détection de la fraude. Plongeons dans la mise en œuvre de notre algorithme de détection de fraude au sein des communautés en utilisant ces bibliothèques.
+
+
+
 import pytesseract
 from pdf2image import convert_from_path
 
