@@ -1,3 +1,25 @@
+import pytesseract
+from pdf2image import convert_from_path
+
+# Path to your scanned PDF
+pdf_path = 'your_swift_messages.pdf'  # Replace with the path to your scanned PDF
+
+# Convert each page of the scanned PDF to an image and extract text
+extracted_text = ""
+images = convert_from_path(pdf_path)
+
+for image in images:
+    text = pytesseract.image_to_string(image)
+    extracted_text += text
+
+# Print or process the extracted text as needed
+print(extracted_text)
+
+
+
+
+
+
 
 import PyPDF2
 import pytesseract
