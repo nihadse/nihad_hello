@@ -1,0 +1,11 @@
+import pytesseract.pytesseract as pytesseract
+from PIL import Image
+
+# Open the scanned image
+image = Image.open('your_swift_message.png')  # Replace with the path to your image file
+
+# Perform OCR to extract text
+extracted_text = pytesseract.image_to_string(image)
+
+# Print or process the extracted text as needed
+print(extracted_text)
