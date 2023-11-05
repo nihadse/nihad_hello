@@ -1,3 +1,23 @@
+# Description du Jeu de Données
+
+Nous avons importé un jeu de données qui comprend les informations suivantes. Voici les types de données associés à chaque colonne :
+
+1. **Numero_compte** : Texte (object)
+2. **RACINE** : Entier (int64)
+3. **ORDINAL** : Entier (int64)
+4. **Date_operation_Atlas** : Texte (object)
+5. **NO_MVT_DANS_OPERATION** : Entier (int64)
+6. **Libelle_operation** : Texte (object)
+7. **Libelle_complementaire_operation** : Texte (object)
+8. **Code_operation** : Entier (int64)
+9. **Montant_evt_comptable** : Flottant (float64)
+10. **Reference_denotage** : Texte (object)
+11. **Reference_client** : Entier (int64)
+12. **Date Valeur comptable** : Texte (object)
+
+Ce jeu de données semble contenir une variété de types de données, notamment des données textuelles, des entiers et des valeurs décimales. Avant de poursuivre notre analyse, nous devrons peut-être effectuer des transformations ou des nettoyages de données en fonction de ces types. Il est essentiel de comprendre ces types pour travailler efficacement avec les données.
+
+
 
 # Chargement des Packages
 
