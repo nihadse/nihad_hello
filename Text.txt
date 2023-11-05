@@ -1,3 +1,41 @@
+
+import PyPDF2
+import pytesseract
+from PIL import Image
+
+# Open the scanned PDF
+pdf_path = 'your_swift_messages.pdf'  # Replace with the path to your scanned PDF
+pdf_file = open(pdf_path, 'rb')
+pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+
+# Initialize a variable to store the extracted text
+extracted_text = ""
+
+# Loop through each page of the PDF
+for page_num in range(pdf_reader.numPages):
+    page = pdf_reader.getPage(page_num)
+    
+    # Convert the scanned page to an image
+    page_image = page.extract_text() 
+    page_image = Image.frombytes('L', page_image.size, page_image)
+    
+    # Perform OCR to extract text from the image
+    text = pytesseract.image_to_string(page_image)
+    
+    # Append the extracted text from this page to the result
+    extracted_text += text
+
+# Close the PDF file
+pdf_file.close()
+
+# Print or process the extracted text as needed
+print(extracted_text)
+
+
+
+
+
+
 import pytesseract.pytesseract as pytesseract
 from PIL import Image
 
