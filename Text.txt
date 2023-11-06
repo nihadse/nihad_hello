@@ -1,4 +1,27 @@
 import pandas as pd
+
+# Assuming you have a DataFrame 'df' with columns 'client_id' and 'transaction_date'
+# Replace 'df' with the actual variable containing your dataset
+
+# Convert 'transaction_date' to a datetime object if it's not already
+df['transaction_date'] = pd.to_datetime(df['transaction_date'])
+
+# Create a new column 'transaction_month' to store the month of each transaction
+df['transaction_month'] = df['transaction_date'].dt.to_period('M')
+
+# Group the data by 'client_id' and 'transaction_month' and count the number of transactions
+client_monthly_transaction_counts = df.groupby(['client_id', 'transaction_month']).size().reset_index(name='transaction_count')
+
+# Calculate the mean number of transactions for each client ID and month
+mean_monthly_transaction_count = client_monthly_transaction_counts.groupby('client_id')['transaction_count'].mean()
+
+print(mean_monthly_transaction_count)
+
+
+
+
+
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load your transaction data from a CSV file
