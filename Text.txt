@@ -1,3 +1,82 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load your dataset into a Pandas DataFrame
+# Replace 'your_dataset.csv' with the actual file path or URL of your dataset
+df = pd.read_csv('your_dataset.csv')
+
+# Dataset Overview
+total_transactions = len(df)
+start_date = df['transaction_date'].min()
+end_date = df['transaction_date'].max()
+unique_clients = df['client_id'].nunique()
+
+# Summary Statistics
+total_inflow = df[df['transaction_type'].isin(['deposit', 'transfer_in'])]['amount'].sum()
+total_outflow = df[df['transaction_type'].isin(['withdrawal', 'transfer_out'])]['amount'].sum()
+average_transaction_amount = df['amount'].mean()
+largest_deposit = df[df['transaction_type'] == 'deposit']['amount'].max()
+largest_withdrawal = df[df['transaction_type'] == 'withdrawal']['amount'].max()
+
+# Distribution of Transactions
+transaction_types = df['transaction_type'].value_counts()
+transaction_amounts = df['amount']
+
+# Generate the Pie Chart
+plt.figure(figsize=(8, 8))
+plt.pie(transaction_types, labels=transaction_types.index, autopct='%1.1f%%')
+plt.title('Distribution of Transaction Types')
+plt.show()
+
+# Generate the Histogram
+plt.figure(figsize=(10, 6))
+plt.hist(transaction_amounts, bins=20, color='blue', alpha=0.7)
+plt.xlabel('Transaction Amount')
+plt.ylabel('Frequency')
+plt.title('Distribution of Transaction Amounts')
+plt.show()
+
+# New Feature Suggestions
+# 1. Transaction Frequency
+df['transaction_date'] = pd.to_datetime(df['transaction_date'])
+df['transaction_frequency'] = df.groupby('client_id')['transaction_date'].diff().dt.days
+
+# 2. Transaction Categories (Replace with your own logic)
+# df['transaction_category'] = ...
+
+# 3. Transaction Patterns
+# df['transaction_patterns'] = ...
+
+# 4. Daily/Weekly/Monthly Aggregates
+# df['daily_balance'] = df.groupby(['client_id', pd.Grouper(key='transaction_date', freq='D')])['amount'].cumsum()
+# df['weekly_balance'] = df.groupby(['client_id', pd.Grouper(key='transaction_date', freq='W')])['amount'].cumsum()
+# df['monthly_balance'] = df.groupby(['client_id', pd.Grouper(key='transaction_date', freq='M')])['amount'].cumsum()
+
+# 5. Balance Change
+# df['balance_change'] = df.groupby('client_id')['amount'].cumsum()
+
+# 6. Client Segmentation
+# df['client_segment'] = ...
+
+# 7. Transaction Time Analysis
+# df['transaction_hour'] = df['transaction_date'].dt.hour
+# df['transaction_day'] = df['transaction_date'].dt.day
+
+# Save the updated DataFrame with new features to a new CSV file
+df.to_csv('updated_dataset.csv', index=False)
+
+# You can further customize and expand these features based on your specific dataset and analysis needs.
+
+
+
+
+
+
+
+
+
+
 
 import pandas as pd
 
