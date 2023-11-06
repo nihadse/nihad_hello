@@ -1,3 +1,36 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load your transaction data from a CSV file
+df = pd.read_csv("transactions.csv")
+
+# Convert the "Date" column to datetime format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Set the "Date" column as the DataFrame index
+df.set_index('Date', inplace=True)
+
+# Calculate the monthly SMA for each client ID
+window_size = 1  # Monthly window size
+sma_df = df.groupby("Client ID")['Amount'].rolling(window=window_size, freq='M').mean().reset_index()
+sma_df.rename(columns={'Amount': f'SMA_{window_size}_Monthly'}, inplace=True)
+
+# Visualize the monthly SMAs for each client ID
+for client_id in sma_df['Client ID'].unique():
+    client_data = sma_df[sma_df['Client ID'] == client_id]
+    plt.figure(figsize=(12, 6))
+    plt.plot(client_data['Date'], client_data[f'SMA_{window_size}_Monthly'], label=f'SMA_{window_size}_Monthly')
+    plt.plot(df[df['Client ID'] == client_id].index, df[df['Client ID'] == client_id]['Amount'], label='Amount')
+    plt.title(f'Monthly SMA for Client ID {client_id}')
+    plt.xlabel('Date')
+    plt.ylabel('Amount')
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+
+
+
 
 import pandas as pd
 import matplotlib.pyplot as plt
