@@ -1,3 +1,21 @@
+# Sample list of client names (you would replace this with your actual client data)
+client_names = ['John Doe', 'Alice Smith', 'Bob Johnson']
+
+# Example DataFrame with a 'complimentary' column
+data = {'complimentary': ['John Doe', 'Eve Johnson', 'Alice Smith', 'David Lee']}
+df = pd.DataFrame(data)
+
+# Check if names in 'complimentary' column match client names
+df['is_client'] = df['complimentary'].isin(client_names)
+
+# Print the resulting DataFrame
+print(df)
+
+
+
+
+
+
 import pandas as pd import numpy as np # Load your client data into a Pandas DataFrame # Replace 'your_client_data.csv' with the actual file path or URL of your client data df = pd.read_csv('your_client_data.csv') # 1. Transaction Frequency # Calculate the average number of transactions per day for each client. df['transaction_date'] = pd.to_datetime(df['transaction_date']) df['transaction_frequency'] = df.groupby('client_id')['transaction_date'].diff().dt.days # 2. Preferred Transaction Type # Identify the most common transaction type for each client. df['preferred_transaction_type'] = df.groupby('client_id')['transaction_type'].transform(lambda x: x.mode().iloc[0]) # 3. Average Transaction Amount # Calculate the average transaction amount for each client. df['average_transaction_amount'] = df.groupby('client_id')['amount'].transform('mean') # 4. Recency of Activity # Calculate the number of days since the last transaction for each client. df['recency_of_activity'] = (df['transaction_date'].max() - df.groupby('client_id')['transaction_date'].transform('max')).dt.days # 5. Client Tenure # Calculate the number of days since the first transaction for each client. df['client_tenure'] = (df['transaction_date'].max() - df.groupby('client_id')['transaction_date'].transform('min')).dt.days # 6. Spending Habits # Analyze spending patterns by calculating the proportion of transactions that are withdrawals. df['withdrawal_proportion'] = df.groupby('client_id')['transaction_type'].transform(lambda x: (x == 'withdrawal').mean()) # 7. Transaction Day and Time # Extract the day of the week and hour of the day for each transaction. df['transaction_day'] = df['transaction_date'].dt.day_name() df['transaction_hour'] = df['transaction_date'].dt.hour # 8. Cumulative Transaction Count # Calculate the cumulative number of transactions for each client. df['cumulative_transaction_count'] = df.groupby('client_id').cumcount() + 1 # 9. Client Segmentation # Use the behavior features to segment clients into groups, e.g., active, passive, high spenders, low spenders. # You can use clustering or predefined criteria for segmentation. # Save the updated DataFrame with behavior analysis features to a new CSV file df.to_csv('updated_client_data.csv', index=False) # These features can help you gain insights into your clients' behaviors and tailor your analysis accordingly.
 
 
