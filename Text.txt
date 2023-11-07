@@ -1,3 +1,22 @@
+
+# Sample DataFrames with 'name' and 'complimentary' columns
+client_names_data = {'name': ['John Doe', 'Alice Smith', 'Bob Johnson']}
+complimentary_data = {'complimentary': ['John Doe', 'Eve Johnson', 'Alice Smith', 'David Lee']}
+client_names_df = pd.DataFrame(client_names_data)
+complimentary_df = pd.DataFrame(complimentary_data)
+
+# Check if names in 'complimentary' column match client names
+complimentary_df['is_client'] = complimentary_df['complimentary'].isin(client_names_df['name'])
+
+# Print the resulting DataFrame with 'is_client' column
+print(complimentary_df)
+
+
+
+
+
+
+
 # Sample list of client names (you would replace this with your actual client data)
 client_names = ['John Doe', 'Alice Smith', 'Bob Johnson']
 
