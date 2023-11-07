@@ -1,3 +1,72 @@
+import pandas as pd import numpy as np # Load your client data into a Pandas DataFrame # Replace 'your_client_data.csv' with the actual file path or URL of your client data df = pd.read_csv('your_client_data.csv') # 1. Transaction Frequency # Calculate the average number of transactions per day for each client. df['transaction_date'] = pd.to_datetime(df['transaction_date']) df['transaction_frequency'] = df.groupby('client_id')['transaction_date'].diff().dt.days # 2. Preferred Transaction Type # Identify the most common transaction type for each client. df['preferred_transaction_type'] = df.groupby('client_id')['transaction_type'].transform(lambda x: x.mode().iloc[0]) # 3. Average Transaction Amount # Calculate the average transaction amount for each client. df['average_transaction_amount'] = df.groupby('client_id')['amount'].transform('mean') # 4. Recency of Activity # Calculate the number of days since the last transaction for each client. df['recency_of_activity'] = (df['transaction_date'].max() - df.groupby('client_id')['transaction_date'].transform('max')).dt.days # 5. Client Tenure # Calculate the number of days since the first transaction for each client. df['client_tenure'] = (df['transaction_date'].max() - df.groupby('client_id')['transaction_date'].transform('min')).dt.days # 6. Spending Habits # Analyze spending patterns by calculating the proportion of transactions that are withdrawals. df['withdrawal_proportion'] = df.groupby('client_id')['transaction_type'].transform(lambda x: (x == 'withdrawal').mean()) # 7. Transaction Day and Time # Extract the day of the week and hour of the day for each transaction. df['transaction_day'] = df['transaction_date'].dt.day_name() df['transaction_hour'] = df['transaction_date'].dt.hour # 8. Cumulative Transaction Count # Calculate the cumulative number of transactions for each client. df['cumulative_transaction_count'] = df.groupby('client_id').cumcount() + 1 # 9. Client Segmentation # Use the behavior features to segment clients into groups, e.g., active, passive, high spenders, low spenders. # You can use clustering or predefined criteria for segmentation. # Save the updated DataFrame with behavior analysis features to a new CSV file df.to_csv('updated_client_data.csv', index=False) # These features can help you gain insights into your clients' behaviors and tailor your analysis accordingly.
+
+
+
+
+
+import pandas as pd
+
+# Load the updated client data with behavior analysis features
+df = pd.read_csv('updated_client_data.csv')
+
+# 1. Transaction Frequency Analysis
+# Analyze the transaction frequency distribution for clients.
+transaction_frequency_stats = df['transaction_frequency'].describe()
+# You can create histograms or box plots to visualize the distribution.
+
+# 2. Preferred Transaction Type Analysis
+# Determine the most common transaction types among clients.
+preferred_transaction_type_counts = df['preferred_transaction_type'].value_counts()
+
+# 3. Average Transaction Amount Analysis
+# Analyze the distribution of average transaction amounts for clients.
+average_transaction_amount_stats = df['average_transaction_amount'].describe()
+# Create histograms or box plots for visualization.
+
+# 4. Recency of Activity Analysis
+# Understand how recently clients have been active.
+recency_stats = df['recency_of_activity'].describe()
+
+# 5. Client Tenure Analysis
+# Analyze how long clients have been with your business.
+tenure_stats = df['client_tenure'].describe()
+
+# 6. Spending Habits Analysis
+# Analyze spending patterns by examining withdrawal proportions.
+withdrawal_proportions_stats = df['withdrawal_proportion'].describe()
+
+# 7. Transaction Day and Time Analysis
+# Identify common transaction days and hours.
+transaction_day_counts = df['transaction_day'].value_counts()
+transaction_hour_counts = df['transaction_hour'].value_counts()
+
+# 8. Cumulative Transaction Count Analysis
+# Analyze the cumulative transaction count over time for each client.
+# This can help identify trends in client activity.
+# You can create time series plots for visualization.
+
+# 9. Client Segmentation Analysis
+# Apply clustering algorithms or predefined criteria to segment clients.
+# Analyze the characteristics and behaviors of each segment separately.
+
+# You can use various data visualization libraries like Matplotlib or Seaborn to create plots and charts to visualize the results of your analysis.
+
+# Example: Creating a bar chart for transaction day analysis
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+plt.bar(transaction_day_counts.index, transaction_day_counts.values)
+plt.title('Transaction Day Analysis')
+plt.xlabel('Day of the Week')
+plt.ylabel('Transaction Count')
+plt.show()
+
+# You can repeat similar visualization and analysis for other behavior features.
+
+
+
+
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
