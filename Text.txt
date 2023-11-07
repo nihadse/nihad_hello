@@ -1,6 +1,51 @@
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+# Assuming your results_communautes is a DataFrame with columns "Client ID" and "Frozenset ID"
+
+# Create an empty graph for each unique "Frozenset ID"
+frozenset_graphs = {}
+unique_frozenset_ids = results_communautes["Frozenset ID"].unique()
+color_map = dict(zip(unique_frozenset_ids, mcolors.TABLEAU_COLORS))  # Assign unique colors
+
+for frozenset_id in unique_frozenset_ids:
+    G = nx.Graph()
+    frozenset_graphs[frozenset_id] = G
+
+# Add nodes and edges to the respective frozenset graph
+for index, row in results_communautes.iterrows():
+    client_id = row["Client ID"]
+    frozenset_id = row["Frozenset ID"]
+    
+    G = frozenset_graphs[frozenset_id]
+    G.add_node(client_id)
+    
+    # Add edges based on your criteria (if needed)
+
+# Visualize each frozenset graph with unique colors
+for frozenset_id, G in frozenset_graphs.items():
+    pos = nx.spring_layout(G)  # You can choose a different layout as needed
+    
+    # Get the unique color for this frozenset_id
+    node_colors = [color_map[frozenset_id] for _ in G.nodes()]
+    
+    plt.figure()
+    nx.draw(G, pos, with_labels=True, node_color=node_colors)
+    plt.title(f"Graph for Frozenset ID {frozenset_id}")
+    plt.show()
+
+
+
+
+
+
+
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
 
 # Assuming your results_communautes is a DataFrame with columns "Client ID" and "Frozenset ID"
 
