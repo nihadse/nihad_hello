@@ -6,6 +6,31 @@ data = {'ID': [1, 2, 3, 4, 5],
         'label': ['Verment', 'Purchase', 'Verment', 'Transfer', 'Verment']}
 df = pd.DataFrame(data)
 
+# Define the label you want to extract
+label_to_extract = 'Verment'
+
+# Create the new column 'amount_Verment' based on the label
+df['amount_Verment'] = df.apply(lambda row: row['amount'] if row['label'] == label_to_extract else 0, axis=1)
+
+# Print the resulting DataFrame
+print(df)
+
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# Sample DataFrame with 'ID', 'amount', and 'label' columns
+data = {'ID': [1, 2, 3, 4, 5],
+        'amount': [100, 200, 150, 50, 300],
+        'label': ['Verment', 'Purchase', 'Verment', 'Transfer', 'Verment']}
+df = pd.DataFrame(data)
+
 # Function to extract the amount based on the label
 def extract_amount(label, label_to_extract):
     if label == label_to_extract:
