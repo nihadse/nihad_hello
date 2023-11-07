@@ -1,3 +1,41 @@
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Assuming your results_communautes is a DataFrame with columns "Client ID" and "Frozenset ID"
+
+# Create an empty graph for each unique "Frozenset ID"
+frozenset_graphs = {}
+
+for frozenset_id in results_communautes["Frozenset ID"].unique():
+    G = nx.Graph()
+    frozenset_graphs[frozenset_id] = G
+
+# Add nodes and edges to the respective frozenset graph
+for index, row in results_communautes.iterrows():
+    client_id = row["Client ID"]
+    frozenset_id = row["Frozenset ID"]
+    
+    G = frozenset_graphs[frozenset_id]
+    G.add_node(client_id)
+    
+    # Add edges based on your criteria (if needed)
+
+# Visualize each frozenset graph
+for frozenset_id, G in frozenset_graphs.items():
+    pos = nx.spring_layout(G)  # You can choose a different layout as needed
+    plt.figure()
+    nx.draw(G, pos, with_labels=True)
+    plt.title(f"Graph for Frozenset ID {frozenset_id}")
+    plt.show()
+
+
+
+
+
+
+
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
