@@ -1,6 +1,48 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+# Create an empty graph for each agency
+agency_graphs = {}
+
+for agency in results_communautes["Agency"].unique():
+    G = nx.Graph()
+    agency_graphs[agency] = G
+
+# Add nodes and edges to the respective agency graph
+for index, row in results_communautes.iterrows():
+    client_id = row["Client ID"]
+    agency = row["Agency"]
+    frozenset_id = row["Frozenset ID"]
+    
+    G = agency_graphs[agency]
+    G.add_node(client_id)
+    
+    # Add edges based on Frozenset ID
+    # Assuming you want to connect nodes within the same Frozenset ID
+    for other_index, other_row in results_communautes.iterrows():
+        if other_row["Frozenset ID"] == frozenset_id and other_row["Client ID"] != client_id:
+            G.add_edge(client_id, other_row["Client ID"])
+
+# Visualize each agency graph
+for agency, G in agency_graphs.items():
+    pos = nx.spring_layout(G)  # You can choose a different layout as needed
+    plt.figure()
+    nx.draw(G, pos, with_labels=True)
+    plt.title(f"Graph for Agency {agency}")
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
 # Assuming your results_communautes is a DataFrame with columns "Client ID," "Agency," and "Frozenset ID"
 
 # Create an empty graph for each agency
