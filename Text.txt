@@ -1,3 +1,48 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Create an empty graph
+G = nx.Graph()
+
+# Create a dictionary to store the nodes' agency information
+agency_dict = {}
+
+# Add nodes and edges to the graph based on your DataFrame
+for index, row in results_communautes.iterrows():
+    client_id = row["Client ID"]
+    agency = row["Agency"]
+    amount = row["Transaction Amount"]
+    frozenset_id = row["Frozenset ID"]
+    
+    G.add_node(client_id)
+    agency_dict[client_id] = agency
+
+# Add edges between nodes based on your criteria (e.g., transaction amount, frozenset ID)
+
+# Group nodes by agency
+agency_communities = {}
+for node, agency in agency_dict.items():
+    if agency in agency_communities:
+        agency_communities[agency].append(node)
+    else:
+        agency_communities[agency] = [node]
+
+# Visualize the graph with different colors for each agency's community
+pos = nx.spring_layout(G)  # You can choose a different layout as needed
+
+for agency, nodes in agency_communities.items():
+    nx.draw_networkx_nodes(G, pos, nodelist=nodes, label=agency)
+    nx.draw_networkx_labels(G, pos, labels={node: node for node in nodes})
+
+# Add edges, customize colors, and labels as needed
+
+plt.axis('off')
+plt.show()
+
+
+
+
+
 
 
 
