@@ -1,3 +1,10 @@
+
+
+Pour détecter l'emplacement des distributeurs automatiques de billets (ATM), vous pouvez utiliser un classificateur d'arbre de décision, ce qui peut vous aider dans votre détection géographique. Voici comment vous pouvez aborder cette tâche en utilisant un classificateur d'arbre de décision
+
+
+
+
 Retraits multiples en un temps court : Si un titulaire de carte effectue de multiples retraits en espèces en un laps de temps très court, cela peut être suspect. Par exemple, plusieurs retraits en quelques minutes ou heures. Retraits fréquents : Des retraits fréquents et réguliers, en particulier à des ATM situés dans des zones inhabituelles par rapport aux habitudes du titulaire de la carte, peuvent être suspects.
 
 
