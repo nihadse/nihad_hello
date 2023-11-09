@@ -1,3 +1,45 @@
+Retraits multiples en un temps court : Si un titulaire de carte effectue de multiples retraits en espèces en un laps de temps très court, cela peut être suspect. Par exemple, plusieurs retraits en quelques minutes ou heures. Retraits fréquents : Des retraits fréquents et réguliers, en particulier à des ATM situés dans des zones inhabituelles par rapport aux habitudes du titulaire de la carte, peuvent être suspects.
+
+
+import pandas as pd
+
+# Charger vos données de transactions dans un DataFrame Pandas
+data = pd.read_csv('votre_fichier_de_transactions.csv')
+
+# Trier les données par client et par date
+data.sort_values(by=['ID_client', 'date_transaction'], inplace=True)
+
+# Définir un seuil pour le temps entre les retraits multiples (en minutes)
+seuil_temps_entre_retraits = 60  # Par exemple, 60 minutes (1 heure)
+
+# Définir un seuil pour le nombre maximum de retraits en un temps court
+seuil_retraits_en_un_temps_court = 3  # Par exemple, plus de 3 retraits en 1 heure
+
+# Créer une colonne avec le temps écoulé depuis la transaction précédente pour chaque client
+data['temps_ecoule'] = data.groupby('ID_client')['date_transaction'].diff().dt.total_seconds() / 60
+
+# Identifier les retraits multiples en un temps court
+data['retraits_multiples'] = data['temps_ecoule'] < seuil_temps_entre_retraits
+
+# Identifier les retraits fréquents
+data['retraits_frequents'] = data.groupby('ID_client')['retraits_multiples'].rolling(window=seuil_retraits_en_un_temps_court).sum().reset_index(level=0, drop=True)
+
+# Filtrer les transactions suspectes
+transactions_suspectes = data[(data['retraits_multiples']) | (data['retraits_frequents'])]
+
+# Afficher les transactions suspectes
+print(transactions_suspectes)
+
+
+
+
+
+
+
+
+
+
+
 import pandas as pd import folium # Exemple de données de transactions avec des informations de localisation (latitude et longitude) data = pd.read_csv('votre_fichier.csv') # Création d'une carte interactive avec Folium m = folium.Map(location=[latitude_moyenne, longitude_moyenne], zoom_start=6)  # Définissez la position initiale de la carte et le niveau de zoom # Marquage des emplacements des ATM sur la carte for index, row in data.iterrows(): folium.Marker([row['latitude'], row['longitude']]).add_to(m) # Affichage de la carte m.save('carte_atm.html')
 
 
