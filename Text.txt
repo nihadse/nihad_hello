@@ -1,3 +1,45 @@
+La détection de communautés dans les fraudes et les fuites de capitaux implique la recherche de schémas de comportement inhabituels ou coordonnés entre plusieurs titulaires de cartes Visa. Les actions suspectes de porteurs de cartes Visa dans ce contexte peuvent inclure :
+
+Transactions coordonnées : Plusieurs titulaires de carte effectuent des transactions similaires ou coordonnées en peu de temps.
+
+Transactions croisées : Plusieurs titulaires de carte effectuent des transactions entre eux de manière répétée.
+
+Utilisation de cartes multiples : Des titulaires de carte utilisent fréquemment différentes cartes Visa pour effectuer des transactions frauduleuses.
+
+Partage d'informations de carte : Les titulaires de carte partagent des informations de carte Visa, telles que les numéros de carte, pour effectuer des transactions frauduleuses.
+
+Transactions internationales soudaines : Des achats ou des retraits d'argent sont effectués à l'étranger de manière inattendue.
+
+Utilisation de comptes multiples : Des titulaires de carte créent et utilisent plusieurs comptes Visa sous des noms différents pour dissimuler leurs activités.
+
+Utilisation d'adresses de livraison suspectes : Les fraudes peuvent impliquer des adresses de livraison inhabituelles ou fictives.
+
+Transactions de montants inhabituellement élevés : Des paiements ou des achats de grande valeur qui dépassent la norme du titulaire de la carte.
+
+Activité en dehors des heures habituelles : Des transactions effectuées en dehors des heures d'utilisation habituelles de la carte.
+
+Retraits d'espèces importants et coordonnés : Des groupes de titulaires de carte effectuent des retraits d'espèces importants et coordonnés à partir de distributeurs automatiques.
+
+La détection de communautés dans les fraudes et les fuites de capitaux repose sur l'analyse de ces schémas pour identifier des groupes de fraudeurs qui travaillent ensemble. Les émetteurs de cartes Visa utilisent des outils avancés pour repérer de telles activités suspectes et prévenir les fraudes. Si vous êtes un émetteur de cartes Visa et que vous soupçonnez de telles activités, il est essentiel de contacter les autorités compétentes pour enquêter sur la situation.
+
+
+
+
+
+Send a message
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import networkx as nx
 import matplotlib.pyplot as plt
