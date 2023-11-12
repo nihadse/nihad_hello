@@ -1,3 +1,25 @@
+import pandas as pd
+import numpy as np
+
+# Example DataFrame
+data = {'clientbid': [1, 2, 1, 3, 2, 3],
+        'date': ['06/05/2012', '06/05/2012', '07/05/2012', '08/05/2012', '06/05/2012', '06/05/2012']}
+
+transactions = pd.DataFrame(data)
+
+# Convert date column to datetime format
+transactions['date'] = pd.to_datetime(transactions['date'], format='%d/%m/%Y')
+
+# Create a co-occurrence matrix
+co_occurrence_matrix = pd.crosstab(transactions['clientbid'], transactions['date']).values
+
+print(co_occurrence_matrix)
+
+
+
+
+
+
 
 import numpy as np
 
