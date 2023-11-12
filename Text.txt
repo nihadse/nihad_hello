@@ -1,4 +1,40 @@
 
+def calculate_co_occurrence_matrix(data, window_size=2):
+    """Calculates the co-occurrence matrix for a given dataset.
+
+    Args:
+        data: A list of lists, where each inner list represents a transaction.
+        window_size: The size of the context window.
+
+    Returns:
+        A NumPy array representing the co-occurrence matrix.
+    """
+
+    # Create a counter to track the co-occurrences.
+    co_occurrences = Counter()
+
+    # Iterate over the transactions.
+    for transaction in data:
+        # Create a context window for each word in the transaction.
+        for i in range(len(transaction)):
+            window = transaction[i:i + window_size]
+
+            # Iterate over the words in the context window.
+            for j in range(len(window)):
+                # If the current word is not the same as the center word,
+                # increment the co-occurrence count.
+                if window[j] != transaction[i]:
+                    co_occurrences[(window[j], transaction[i])] += 1
+
+    # Convert the counter to a NumPy array.
+    co_occurrence_matrix = np.array([list(co_occurrences.values())])
+
+    # Return the co-occurrence matrix.
+    return co_occurrence_matrix
+
+
+
+
 
 Pour détecter l'emplacement des distributeurs automatiques de billets (ATM), vous pouvez utiliser un classificateur d'arbre de décision, ce qui peut vous aider dans votre détection géographique. Voici comment vous pouvez aborder cette tâche en utilisant un classificateur d'arbre de décision
 
