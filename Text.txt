@@ -1,3 +1,46 @@
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+# Load a pre-trained BERT model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Example DataFrame
+data = {'Names': ['saliha', 'john', 'salih', 'maria', 'saliyah', 'jon']}
+df = pd.DataFrame(data)
+
+# Function to calculate pairwise similarity
+def calculate_similarity(df, column_name, model):
+    embeddings = model.encode(df[column_name].tolist(), convert_to_tensor=True)
+    similarity_matrix = util.pytorch_cos_sim(embeddings, embeddings)
+    return similarity_matrix
+
+# Calculate similarity matrix
+similarity_matrix = calculate_similarity(df, 'Names', model)
+
+# Create DataFrame to store the most similar names
+most_similar_data = {'Name1': [], 'Name2': [], 'Similarity_Score': []}
+
+# Extract most similar names for each name
+threshold = 0.8  # Set your similarity threshold
+
+for i in range(len(df)):
+    most_similar_index = similarity_matrix[i].argsort()[-2].item()  # Index of the second highest similarity (excluding self)
+    most_similar_score = similarity_matrix[i][most_similar_index].item()
+
+    most_similar_data['Name1'].append(df['Names'].tolist())  # Append all names to 'Name1'
+    most_similar_data['Name2'].append(df['Names'][most_similar_index])
+    most_similar_data['Similarity_Score'].append(most_similar_score)
+
+# Create DataFrame from the collected data
+most_similar_df = pd.DataFrame(most_similar_data)
+
+# Display the DataFrame
+print(most_similar_df)
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
