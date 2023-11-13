@@ -1,3 +1,41 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+# Load a pre-trained BERT model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Example DataFrame
+data = {'Names': ['saliha', 'john', 'salih', 'maria', 'saliyah', 'jon']}
+df = pd.DataFrame(data)
+
+# Function to calculate pairwise similarity
+def calculate_similarity(df, column_name, model):
+    embeddings = model.encode(df[column_name].tolist(), convert_to_tensor=True)
+    similarity_matrix = util.pytorch_cos_sim(embeddings, embeddings)
+    return similarity_matrix
+
+# Calculate similarity matrix
+similarity_matrix = calculate_similarity(df, 'Names', model)
+
+# Extract most similar pairs and their similarity scores
+threshold = 0.8  # Set your similarity threshold
+most_similar_pairs = []
+
+for i in range(len(df)):
+    for j in range(i + 1, len(df)):
+        similarity_score = similarity_matrix[i][j].item()
+        if similarity_score > threshold:
+            most_similar_pairs.append((df['Names'][i], df['Names'][j], similarity_score))
+
+# Display most similar pairs with similarity scores
+print("Most Similar Pairs and Their Similarity Scores:")
+for pair in most_similar_pairs:
+    print(f"{pair[0]} - {pair[1]} : Similarity Score = {pair[2]:.4f}")
+
+
+
+
+
 
 
 import pandas as pd
