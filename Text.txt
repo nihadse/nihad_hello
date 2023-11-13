@@ -1,4 +1,60 @@
 
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+from fuzzywuzzy import fuzz
+
+# Load a pre-trained BERT model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Function to correct names in a DataFrame column
+def correct_names_bert(df, column_name, model, similarity_threshold=0.8, fuzzy_threshold=90):
+    corrected_names = []
+    similarity_scores = []
+
+    for name in df[column_name]:
+        # Get BERT embeddings for names
+        name_embedding = model.encode(name, convert_to_tensor=True)
+
+        # Find similar names
+        similar_names = [
+            other_name
+            for other_name in df[column_name]
+            if util.pytorch_cos_sim(name_embedding, model.encode(other_name, convert_to_tensor=True)) > similarity_threshold
+            or fuzz.ratio(name, other_name) > fuzzy_threshold
+        ]
+
+        # If there are similar names, choose the most similar one
+        if similar_names:
+            most_similar_name = max(similar_names, key=lambda x: util.pytorch_cos_sim(name_embedding, model.encode(x, convert_to_tensor=True)))
+            corrected_names.append(most_similar_name)
+            similarity_scores.append(util.pytorch_cos_sim(name_embedding, model.encode(most_similar_name, convert_to_tensor=True)).item())
+        else:
+            corrected_names.append(name)
+            similarity_scores.append(1.0)  # Default similarity for the original name
+
+    return corrected_names, similarity_scores
+
+# Example DataFrame
+data = {'Names': ['saliha', 'john', 'salih', 'maria']}
+df = pd.DataFrame(data)
+
+# Correct names in the 'Names' column using BERT embeddings and fuzzy matching
+corrected_names, similarity_scores = correct_names_bert(df, 'Names', model)
+
+# Add corrected names and similarity scores to the DataFrame
+df['Corrected_Names'] = corrected_names
+df['Similarity_Scores'] = similarity_scores
+
+# Display the DataFrame
+print(df)
+
+
+
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
