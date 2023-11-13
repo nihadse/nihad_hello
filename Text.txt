@@ -1,3 +1,14 @@
+
+import zipfile
+
+zip_file_path = 'your_zip_file.zip'
+extract_folder = 'destination_folder'
+
+with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_folder)
+
+
+
 Great! If you have a DataFrame with a column containing both correct and potentially misspelled names, you can apply the similarity detection and correction process to the entire column. Here's an example using pandas, assuming you already have a pre-trained Word2Vec model: python
 
 
