@@ -1,3 +1,59 @@
+
+import pandas as pd
+from gensim.models import Word2Vec
+from nltk.tokenize import word_tokenize
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Load pre-trained Word2Vec model (you need to have the model file)
+word2vec_model = Word2Vec.load("path/to/word2vec/model")
+
+# Function to vectorize a name
+def vectorize_name(name, model):
+    tokens = word_tokenize(name.lower())  # Assuming names are in lowercase
+    vectors = [model.wv[token] for token in tokens if token in model.wv]
+    return np.mean(vectors, axis=0) if vectors else None
+
+# Function to correct names in a DataFrame column
+def correct_names(df, column_name, model, similarity_threshold=0.8):
+    corrected_names = []
+
+    for name in df[column_name]:
+        vec_name = vectorize_name(name, model)
+
+        # Find similar names
+        similar_names = [
+            other_name
+            for other_name in df[column_name]
+            if cosine_similarity([vec_name], [vectorize_name(other_name, model)])[0][0] > similarity_threshold
+        ]
+
+        # If there are similar names, choose the most similar one
+        if similar_names:
+            most_similar_name = max(similar_names, key=lambda x: cosine_similarity([vec_name], [vectorize_name(x, model)])[0][0])
+            corrected_names.append(most_similar_name)
+        else:
+            corrected_names.append(name)
+
+    return corrected_names
+
+# Example DataFrame
+data = {'Names': ['saliha', 'john', 'salih', 'maria']}
+df = pd.DataFrame(data)
+
+# Correct names in the 'Names' column
+df['Corrected_Names'] = correct_names(df, 'Names', word2vec_model)
+
+# Display the DataFrame
+print(df)
+
+
+
+
+
+
+
+
 import pandas as pd
 import numpy as np
 
