@@ -1,3 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import precision_recall_curve, auc, f1_score
+
+# Assuming max_similarity_df is available
+# Calculate precision, recall, and F1 score for different thresholds
+precision, recall, thresholds = precision_recall_curve(max_similarity_df['Max_Similarity_Score'], pos_label=None)
+f1_scores = 2 * (precision * recall) / (precision + recall)
+
+# Plot precision-recall curve
+plt.plot(recall, precision, label='Precision-Recall Curve')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.legend()
+plt.show()
+
+# Plot F1 scores at different thresholds
+plt.plot(thresholds, f1_scores[:-1], label='F1 Score')
+plt.xlabel('Threshold')
+plt.ylabel('F1 Score')
+plt.title('F1 Score at Different Thresholds')
+plt.legend()
+plt.show()
+
+# Find the threshold that maximizes F1 score
+best_threshold = thresholds[np.argmax(f1_scores)]
+print(f'Best Threshold (Max F1 Score): {best_threshold}')
+
+
+
+
+
+
+
+
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
