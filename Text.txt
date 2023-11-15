@@ -1,3 +1,79 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+import torch
+
+# Load a pre-trained BERT model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Example DataFrame
+data = {'Names': ['saliha', 'john', 'salih', 'maria', 'saliyah', 'jon']}
+df = pd.DataFrame(data)
+
+# Function to calculate pairwise Euclidean distance
+def calculate_euclidean_distance(df, column_name, model):
+    embeddings = model.encode(df[column_name].tolist(), convert_to_tensor=True)
+    euclidean_distances = torch.cdist(embeddings, embeddings, p=2)  # Using p=2 for Euclidean distance
+    return euclidean_distances
+
+# Calculate Euclidean distance matrix
+euclidean_distances = calculate_euclidean_distance(df, 'Names', model)
+
+# Create DataFrame to store the max Euclidean distance results
+max_distance_data = {'Name1': [], 'Name2': [], 'Max_Euclidean_Distance': []}
+
+# Extract max Euclidean distance for each name
+threshold_distance = 1.5  # Adjust as needed
+considered_pairs = set()  # Keep track of considered pairs to avoid duplicates
+
+for i in range(len(df)):
+    # Exclude self-distance and find the max distance
+    distance_row = euclidean_distances[i].clone()
+    distance_row[i] = float('inf')  # Exclude self-distance
+    max_dissimilar_index = distance_row.argmin().item()
+    max_distance = euclidean_distances[i][max_dissimilar_index].item()
+
+    # Ensure the pair is considered only once and meets the threshold
+    current_pair = (df['Names'][i], df['Names'][max_dissimilar_index])
+    reversed_pair = (df['Names'][max_dissimilar_index], df['Names'][i])
+
+    if (
+        current_pair not in considered_pairs
+        and reversed_pair not in considered_pairs
+        and max_distance >= threshold_distance
+    ):
+        considered_pairs.add(current_pair)
+        max_distance_data['Name1'].append(df['Names'][i])
+        max_distance_data['Name2'].append(df['Names'][max_dissimilar_index])
+        max_distance_data['Max_Euclidean_Distance'].append(max_distance)
+
+# Create DataFrame from the collected data
+max_distance_df = pd.DataFrame(max_distance_data)
+
+# Drop duplicate rows
+max_distance_df = max_distance_df.drop_duplicates()
+
+# Create a new column 'Names2' in df and assign values from 'Name2' column
+df['Names2'] = df['Names'].replace(dict(zip(max_distance_df['Name1'], max_distance_df['Name2'])))
+
+# Add a new column 'Euclidean_Distance' in df
+df['Euclidean_Distance'] = df.apply(lambda row: max_distance_df[
+    (max_distance_df['Name1'] == row['Names']) & (max_distance_df['Name2'] == row['Names2'])
+]['Max_Euclidean_Distance'].values[0] if not max_distance_df[
+    (max_distance_df['Name1'] == row['Names']) & (max_distance_df['Name2'] == row['Names2'])
+].empty else None, axis=1)
+
+# Display the modified DataFrame
+print(df)
+
+
+
+
+
+
+
+
+
+
 
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
