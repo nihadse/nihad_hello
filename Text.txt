@@ -1,4 +1,28 @@
 
+import pandas as pd
+
+# Assuming your DataFrame is named df
+grouped_df = df.groupby('lib account').agg({
+    'amount': 'sum',
+    'lib complimentary': 'count',
+    'name': lambda x: ', '.join(x)
+}).reset_index()
+
+# Rename columns for clarity
+grouped_df.columns = ['lib account', 'total_amount', 'lib_count', 'client_names']
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Merci de me confirmer la disponibilité des documents afin que je puisse les récupérer.
 
