@@ -1,3 +1,10 @@
+Bonjour Farah KARA,
+
+Je vous remercie sincèrement pour vos chaleureuses félicitations suite à ma validation au poste de Data Analyst. Je suis ravi(e) de faire partie de l'équipe
+
+
+
+
 
 import pandas as pd
 
