@@ -6,7 +6,26 @@ import pandas as pd
 df1 = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6], 'C': ['x', 'y', 'z']})
 df2 = pd.DataFrame({'A': [7, 8, 3], 'B': [10, 11, 12], 'C': ['a', 'b', 'c']})
 
-# Specify the condition for updating rows
+# Specify the conditimport pandas as pd
+
+data1 = {'Name': ['Nihad', 'Lila'], 'Age': [34, 54]}
+data2 = {'Name': ['Nihad', 'Sima', 'Lila'], 'Age': [77, 57, 54], 'Nick Name': ['Nina', 'so-so', None]}
+
+df1 = pd.DataFrame(data1)
+df2 = pd.DataFrame(data2)
+
+merged_df = pd.merge(df1, df2, on='Name', how='left')
+merged_df['Age_x'] = merged_df['Age_y'].combine_first(merged_df['Age_x'])
+merged_df['Nick Name_x'] = merged_df['Nick Name_y'].combine_first(merged_df['Nick Name_x'])
+
+result_df = merged_df[['Name', 'Age_x', 'Nick Name_x']]
+result_df = result_df.rename(columns={'Age_x': 'Age', 'Nick Name_x': 'Nick Name'})
+
+print(result_df)
+
+
+
+ion for updating rows
 condition = df1['A'] == df2['A']
 
 # Update specific rows in df1 with values from df2
