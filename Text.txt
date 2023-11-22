@@ -1,3 +1,26 @@
+import spacy
+
+# Load the French language model
+nlp = spacy.load("fr_core_news_sm")
+
+# Define your list of words
+word_list = ["table", "nihad", "car"]
+
+# Define the target word
+target_word = "kitchen"
+
+# Calculate similarity between each word in the list and the target word
+similarities = {word: nlp(target_word).similarity(nlp(word)) for word in word_list}
+
+# Print the results
+for word, similarity in similarities.items():
+    print(f"Similarity between '{target_word}' and '{word}': {similarity}")
+
+
+
+
+
+
 
 
 import spacy
