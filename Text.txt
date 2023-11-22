@@ -1,3 +1,38 @@
+
+
+import spacy
+
+# Charger le modèle linguistique en français
+nlp = spacy.load("fr_core_news_sm")
+
+# Remplacez "cuisine" par un mot plus commun si nécessaire
+mot_a_chercher = "cuisine"
+
+# Obtenir le vecteur de mot pour le mot choisi
+if mot_a_chercher in nlp.vocab:
+    vecteur_mot = nlp(mot_a_chercher).vector
+else:
+    raise ValueError(f"Le mot '{mot_a_chercher}' n'est pas dans le vocabulaire de spaCy.")
+
+# Trouver des mots similaires
+mots_similaires = []
+for mot in nlp.vocab:
+    if mot.has_vector and mot.is_lower:
+        similitude = vecteur_mot.dot(mot.vector)
+        mots_similaires.append((mot.text, similitude))
+
+# Trier les mots similaires par similitude décroissante
+mots_similaires = sorted(mots_similaires, key=lambda x: x[1], reverse=True)
+
+# Extraire tous les mots similaires
+champ_lexical = [mot[0] for mot in mots_similaires]
+
+print(champ_lexical)
+
+
+
+
+
 import spacy
 
 # Charger le modèle linguistique en français
