@@ -1,5 +1,42 @@
 import spacy
 
+# Charger le modèle spaCy pour le français
+nlp = spacy.load("fr_core_news_sm")
+
+# Listes des secteurs d'activité et des mots-clés
+secteurs_activite = ["construction des bâtiments", "fabrication materiel audio et vidéo", "activitie du banque commerciale", "articles métiers plastiques", "produit pharmaceutique", "distribution automobile et réparation", "restauration", "publicité", "industrie alimentaire", "hôpitaux et cliniques", "gros Pneumatiques"]
+keywords = ["pharmaceutique", "banque", "btp", "restauration", "voiture"]
+
+# Fonction pour calculer la similarité sémantique entre deux textes
+def calculate_similarity(text1, text2):
+    doc1 = nlp(text1)
+    doc2 = nlp(text2)
+    return doc1.similarity(doc2)
+
+# Classer les secteurs d'activité en fonction de la similarité sémantique avec les mots-clés
+classified_sectors = {}
+
+for secteur in secteurs_activite:
+    similarities = [calculate_similarity(secteur, keyword) for keyword in keywords]
+    max_similarity = max(similarities)
+    max_keyword = keywords[similarities.index(max_similarity)]
+    classified_sectors[secteur] = max_keyword
+
+# Afficher les résultats
+for secteur, keyword in classified_sectors.items():
+    print(f"Secteur d'activité: {secteur}, Keyword associé: {keyword}")
+
+
+
+
+Pour classer les secteurs d'activité en utilisant la similarité sémantique avec les mots-clés, vous pouvez utiliser la bibliothèque spaCy en Python. Assurez-vous d'installer la langue française modèle spaCy fr_core_news_sm si vous ne l'avez pas déjà fait.
+
+
+
+
+
+import spacy
+
 # Load the French language model
 nlp = spacy.load("fr_core_news_sm")
 
@@ -2402,7 +2439,7 @@ pdf_file.close()
 # Print or process the extracted text as needed
 print(extracted_text)
 
-
+Pour classer les secteurs d'activité en utilisant la similarité sémantique avec les mots-clés, vous pouvez utiliser la bibliothèque spaCy en Python. Assurez-vous d'installer la langue française modèle spaCy fr_core_news_sm si vous ne l'avez pas déjà fait.
 
 
 
