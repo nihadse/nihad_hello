@@ -1,3 +1,28 @@
+
+
+
+
+import spacy
+
+# Charger le modèle spaCy pour le français
+nlp = spacy.load("fr_core_news_sm")
+
+# Texte contenant le mot "banque" (vous pouvez adapter cela à votre contexte)
+texte = "La banque commerciale offre une variété de services financiers."
+
+# Analyser le texte avec spaCy
+doc = nlp(texte)
+
+# Extraire le champ lexical associé au mot "banque"
+lexical_champ_banque = [token.text for token in doc if token.is_alpha]
+
+# Afficher les résultats
+print("Champ lexical de la banque:", lexical_champ_banque)
+
+
+
+
+
 import spacy
 
 # Charger le modèle spaCy pour le français
