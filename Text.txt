@@ -1,3 +1,18 @@
+
+
+Objet : Enthousiasme et Engagement pour Contribuer à [Nom de la Banque]
+
+Cher/Chère [Nom du destinataire],
+
+Je suis ravi(e) de rejoindre l'équipe de [Nom de la banque] et souhaite exprimer mon fort enthousiasme. Ma motivation inébranlable et mon engagement à contribuer de manière significative seront des atouts pour atteindre les objectifs de l'équipe. Je suis impatient(e) de discuter de la manière dont mes compétences peuvent bénéficier à [Nom de la banque].
+
+Cordialement,
+
+
+
+
+
+
 import spacy
 
 # Charger le modèle spaCy pour le français
