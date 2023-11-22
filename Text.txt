@@ -1,4 +1,33 @@
 from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import WordNetCorpusReader
+
+# Set the path to the directory where you have the OMW files
+path_to_omw_french = "/path/to/omw"
+
+# Load the French Wordnet from OMW
+omw_reader = WordNetCorpusReader(path_to_omw_french, '.*\.tab')
+wn.attach('omw-fra', omw_reader)
+
+# Word related to cuisine in French
+cuisine_related_word = "cuisine"
+
+# Get the synsets for the word
+synsets = wn.synsets(cuisine_related_word, lang='fra')
+
+# Extract lemmas from synsets
+lemmas = [lemma.name() for synset in synsets for lemma in synset.lemmas('fra')]
+
+# Display the first 30 lemmas
+print(lemmas[:30])
+
+
+
+
+
+
+
+
+from nltk.corpus import wordnet as wn
 
 # Set the path to the directory where you extracted Open Multilingual Wordnet (OMW) for French
 path_to_omw_french = "/path/to/omw"
