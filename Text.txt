@@ -1,3 +1,41 @@
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
+# Load the paraphrase-MiniLM-L6-v2 model
+model = SentenceTransformer("prithivida/paraphrase-MiniLM-L6-v2")
+
+# Example sectors and keywords
+sectors = ["technology", "finance", "healthcare"]
+keywords = ["innovation", "investment", "medicine"]
+
+# Get embeddings for sectors and keywords
+sector_embeddings = model.encode(sectors, convert_to_tensor=True)
+keyword_embeddings = model.encode(keywords, convert_to_tensor=True)
+
+# Calculate cosine similarity between sector and keyword embeddings
+similarity_matrix = util.pytorch_cos_sim(sector_embeddings, keyword_embeddings).numpy()
+
+# Create a DataFrame to store the results
+results_df = pd.DataFrame(index=sectors, columns=["Most Matched Keyword", "Similarity Score"])
+
+# Display the similarity between sectors and keywords
+for i, sector in enumerate(sectors):
+    max_similarity_index = similarity_matrix[i].argmax()
+    most_matched_keyword = keywords[max_similarity_index]
+    similarity_score = similarity_matrix[i, max_similarity_index]
+    results_df.loc[sector] = [most_matched_keyword, similarity_score]
+
+# Print the results DataFrame
+print(results_df)
+
+
+
+
+
+
+
+
+
 from sentence_transformers import SentenceTransformer
 import pandas as pd
 
