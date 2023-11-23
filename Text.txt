@@ -1,3 +1,44 @@
+from sentence_transformers import SentenceTransformer
+import pandas as pd
+
+# Assuming you have a DataFrame df with a column 'LIBELLE_CODE_SECTORIEL1'
+
+# Extract unique values from the specified column
+unique_values = df['LIBELLE_CODE_SECTORIEL1'].unique()
+
+# Build corpus based on unique values
+def build_corpus(texts):
+    corpus = []
+    for sentence in texts:
+        word_list = sentence.split(" ")
+        corpus.append(word_list)
+    return corpus
+
+# Word embeddings function
+def vect_generator(sentence):
+    sentence_embeddings = model.encode(sentence)
+    return sentence_embeddings
+
+# Example usage:
+model = SentenceTransformer('your_model_name_or_path')  # Replace with the actual model name or path
+
+for value in unique_values:
+    subset_df = df[df['LIBELLE_CODE_SECTORIEL1'] == value]
+    texts = subset_df['your_text_column']  # Replace 'your_text_column' with the actual column containing text data
+    corpus = build_corpus(texts)
+    
+    # Assuming you want to get embeddings for each sentence in the corpus
+    for sentence in corpus:
+        embeddings = vect_generator(" ".join(sentence))
+        # Do something with the embeddings
+
+
+
+
+
+
+
+
 import spacy
 
 # Charger le modèle linguistique en français
