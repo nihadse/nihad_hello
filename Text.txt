@@ -1,3 +1,10 @@
+import pandas as pd
+import string
+
+# Assuming df is your DataFrame and 'text' is the column containing French text
+df['text'] = df['text'].apply(lambda x: x.translate(str.maketrans("", "", string.punctuation)))
+
+
 
 
 Objet : Enthousiasme et Engagement pour Contribuer à [Nom de la Banque]
