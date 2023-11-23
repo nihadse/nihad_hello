@@ -1,19 +1,24 @@
+
 import pandas as pd
-import string
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
-# Assuming df is your DataFrame and 'text' is the column containing French text
-df['text'] = df['text'].apply(lambda x: x.translate(str.maketrans("", "", string.punctuation)))
+# Example DataFrame
+data = {'text': ["This is the first example text.",
+                 "And here is the second example text, which is different."]}
+
+df = pd.DataFrame(data)
+
+# Using TfidfVectorizer to tokenize and calculate TF-IDF
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(df['text'])
+
+# Calculate cosine similarity between texts
+similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+print(similarity_matrix)
 
 
-
-
-Objet : Enthousiasme et Engagement pour Contribuer à [Nom de la Banque]
-
-Cher/Chère [Nom du destinataire],
-
-Je suis ravi(e) de rejoindre l'équipe de [Nom de la banque] et souhaite exprimer mon fort enthousiasme. Ma motivation inébranlable et mon engagement à contribuer de manière significative seront des atouts pour atteindre les objectifs de l'équipe. Je suis impatient(e) de discuter de la manière dont mes compétences peuvent bénéficier à [Nom de la banque].
-
-Cordialement,
 
 
 
