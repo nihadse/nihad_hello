@@ -1,5 +1,40 @@
 import pandas as pd
 
+# Assuming you already have loaded 'keywords' as a list and 'sectors' DataFrame and computed embeddings and similarity_matrix
+
+# Your existing code...
+
+# Convert 'keywords' list to a DataFrame
+keywords_df = pd.DataFrame(keywords, columns=['key', 'class'])
+
+# Create a DataFrame to store the results
+results_df = pd.DataFrame(index=sectors, columns=["Most Matched Keyword", "Similarity Score"])
+
+# Display the similarity between sectors and keywords
+for i, sector in enumerate(sectors):
+    max_similarity_index = similarity_matrix[i].argmax()
+    
+    most_matched_keyword = keywords_df.loc[max_similarity_index, "key"]
+    similarity_score = similarity_matrix[i, max_similarity_index]
+    
+    results_df.loc[sector] = [most_matched_keyword, similarity_score]
+
+# Merge results_df with the 'keywords' DataFrame based on the 'Most Matched Keyword' column
+results_df = pd.merge(results_df, keywords_df, left_on='Most Matched Keyword', right_on='key', how='left')
+
+# Drop the extra 'key' column
+results_df = results_df.drop('key', axis=1)
+
+# Display or use results_df as needed
+print(results_df)
+
+
+
+
+
+
+import pandas as pd
+
 # Assuming you already have loaded 'keywords' and 'sectors' DataFrames and computed embeddings and similarity_matrix
 
 # Your existing code...
