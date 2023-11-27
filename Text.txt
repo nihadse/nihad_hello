@@ -1,3 +1,8 @@
+Priez de bien vouloir solliciter l'attribution d'un ordinateur portable de société pour faciliter l'exécution de mes tâches professionnelles.
+
+
+
+
 import pandas as pd
 
 # Assuming you already have loaded 'keywords' as a list and 'sectors' DataFrame and computed embeddings and similarity_matrix
