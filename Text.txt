@@ -1,3 +1,49 @@
+from transformers import CamembertModel, CamembertTokenizer
+from scipy.spatial.distance import cosine
+import torch
+import tarfile
+import os
+
+# Replace 'your_downloaded_file.tar.gz' with the actual name of your downloaded file
+tar_file_path = 'your_downloaded_file.tar.gz'
+extracted_directory = '/path/to/extracted/directory'  # Replace with the desired extraction directory
+
+# Create the extraction directory if it doesn't exist
+os.makedirs(extracted_directory, exist_ok=True)
+
+# Extract the contents of the tar.gz file
+with tarfile.open(tar_file_path, 'r:gz') as tar:
+    tar.extractall(path=extracted_directory)
+
+print(f"Contents extracted to: {extracted_directory}")
+
+# Load downloaded CamemBERT model and tokenizer
+model_directory = os.path.join(extracted_directory, "camembert-base")  # Adjust if needed
+model = CamembertModel.from_pretrained(model_directory)
+tokenizer = CamembertTokenizer.from_pretrained(model_directory)
+
+# Your input sentences
+sentence1 = "btp Batiment"
+sentence2 = "construction de Batiment residential et non residential"
+
+# Encode the sentences
+tokens1 = tokenizer(sentence1, return_tensors="pt")
+tokens2 = tokenizer(sentence2, return_tensors="pt")
+
+# Get contextual embeddings
+with torch.no_grad():
+    embeddings1 = model(**tokens1).last_hidden_state.mean(dim=1)
+    embeddings2 = model(**tokens2).last_hidden_state.mean(dim=1)
+
+# Calculate cosine similarity
+similarity = 1 - cosine(embeddings1, embeddings2)
+
+print(f"Semantic Similarity: {similarity:.4f}")
+
+
+
+
+
 import tarfile
 import os
 
