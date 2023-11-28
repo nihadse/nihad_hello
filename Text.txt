@@ -1,15 +1,23 @@
-Objet : Demande d'accès quotidien à Hugging Face
+import tarfile
+import os
 
-Cher [Nom du destinataire],
+# Replace 'your_downloaded_file.tar.gz' with the actual name of your downloaded file
+file_path = 'your_downloaded_file.tar.gz'
+extracted_directory = '/path/to/extracted/directory'  # Replace with the desired extraction directory
 
-Je sollicite un accès quotidien à Hugging Face pour renforcer nos projets en science des données chez [Nom de l'entreprise]. Cet accès régulier est crucial pour optimiser nos opérations quotidiennes.
+# Create the extraction directory if it doesn't exist
+os.makedirs(extracted_directory, exist_ok=True)
+
+# Extract the contents of the tar.gz file
+with tarfile.open(file_path, 'r:gz') as tar:
+    tar.extractall(path=extracted_directory)
+
+print(f"Contents extracted to: {extracted_directory}")
 
 
 
 
 
-
-Priez de bien vouloir solliciter l'attribution d'un ordinateur portable de société pour faciliter l'exécution de mes tâches professionnelles.
 
 
 
