@@ -1,3 +1,57 @@
+
+
+Introduction :
+
+Introduction de notre système de génération AI destiné à créer de nouvelles procédures à partir de la documentation existante et celle fournie par l'éditeur.
+
+Objectifs :
+
+L'objectif est de simplifier le processus de transition en générant automatiquement des procédures à partir de la documentation existante et des données fournies par l'éditeur. Cela concerne environ 270 processus métiers susceptibles d'être impactés par un changement d'outil.
+
+Fonctionnalité :
+
+Notre système AI exploite des capacités génératives avancées pour analyser la documentation existante et les données de l'éditeur, créant ainsi des procédures pertinentes et actualisées.
+
+Étapes de l'Expérience :
+
+Étape 1 : Mettre en place une base solide pour le système génératif, garantissant la précision des nouvelles procédures.Étapes 2 et 3 : Générer des procédures spécifiques pour les processus métiers impactés et évaluer leur efficacité.
+
+Valeur Attendue :
+
+Des gains significatifs de temps, une mise à jour rapide des procédures et une réduction des erreurs liées au changement d'outil.
+
+Données Internes et Vérifications :
+
+Utilisation de données internes pour personnaliser les nouvelles procédures.Mise en place de vérifications rigoureuses pour garantir la précision et la fiabilité du contenu généré.
+
+Évolutivité :
+
+Le système AI est conçu pour s'adapter aux besoins de génération de procédures pour l'ensemble des 270 processus métiers impactés.
+
+Confidentialité et Conformité :
+
+Des mesures strictes sont en place pour garantir la confidentialité des informations sensibles, et le système génératif respecte toutes les normes de conformité pertinentes.
+
+Adoption et Impact :
+
+Prévoyez un impact positif sur l'efficacité du flux de travail, la simplification du processus de transition, et une réduction des délais liés à la mise à jour des procédures.
+
+Conclusion :
+
+En résumé, notre système de génération AI se positionne comme une solution cruciale pour faciliter la transition, en générant de manière automatisée des procédures actualisées pour les 270 processus métiers impactés par le changement d'outil.
+
+You
+
+Translatevit to English act like professional in English formal
+
+
+
+
+
+
+
+
+
 from transformers import CamembertModel, CamembertTokenizer
 from scipy.spatial.distance import cosine
 import torch
