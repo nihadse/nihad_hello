@@ -1,3 +1,43 @@
+Introduction:
+
+Introduction of our AI generation system designed to create new procedures from existing documentation and that provided by the vendor.
+
+Objectives:
+
+The objective is to streamline the transition process by automatically generating procedures from existing documentation and vendor-supplied data. This encompasses approximately 270 business processes that may be affected by a tool change.
+
+Functionality:
+
+Our AI system leverages advanced generative capabilities to analyze existing documentation and vendor data, thereby creating relevant and updated procedures.
+
+Experiment Steps:
+
+Step 1: Establish a solid foundation for the generative system, ensuring the accuracy of the new procedures.Steps 2 and 3: Generate specific procedures for impacted business processes and evaluate their effectiveness.
+
+Expected Value:
+
+Significant time savings, rapid updating of procedures, and a reduction in errors associated with tool changes.
+
+Internal Data and Checks:
+
+Use of internal data to customize the new procedures.Implementation of rigorous checks to ensure the accuracy and reliability of the generated content.
+
+Scalability:
+
+The AI system is designed to adapt to the procedural generation needs for all 270 impacted business processes.
+
+Confidentiality and Compliance:
+
+Strict measures are in place to ensure the confidentiality of sensitive information, and the generative system adheres to all relevant compliance standards.
+
+Adoption and Impact:
+
+Anticipate a positive impact on workflow efficiency, the simplification of the transition process, and a reduction in timelines associated with procedure updates.
+
+Conclusion:
+
+In summary, our AI generation system stands as a crucial solution to facilitate the transition by automatically generating updated procedures for the 270 business processes impacted by the tool change.
+
 
 
 Introduction :
