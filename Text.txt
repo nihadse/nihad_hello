@@ -1,3 +1,43 @@
+
+1. Ouverture (5 secondes) : Un message accrocheur comme “Transformer les défis en opportunités avec l’IA”.
+
+2. Problématique (10 secondes) :
+
+“Netreveal repère des opérations individuelles suspectes, mais nous sommes confrontés à un casse-tête : identifier des réseaux de clients qui, en respectant astucieusement les seuils, orchestrent des retraits massifs à l’étranger, échappant ainsi à notre surveillance.”
+
+3. Présentation de SENTINELIA (10 secondes) :
+
+“En plongeant dans les abysses des données avec Python dans Domino Datalab, notre équipe transforme des giga-octets de transactions en réseaux intelligibles, exposant les intrications de fraude que les méthodes standards ne peuvent pas détecter.”
+
+4. Démarche IA (15 secondes) :
+
+“Nos analyses révèlent des réseaux cachés, comme jamais auparavant, en connectant des points qui semblaient indépendants, démasquant ainsi les stratagèmes de fuite de capitaux avec une précision révolutionnaire.”
+
+5. Résultats et Impact (15 secondes) :
+
+“Ce que vous voyez ici, c’est l’impact de SENTINELIA : la mise en lumière des réseaux clandestins, traduite en visualisations claires, révélant les structures cachées derrière les fuites de capitaux.”
+L idée de vous présenter , 10 seconde , en suite on rentre dans le vif du sujet
+Le point 4 et 5 on va afficher le code python et les résultat , en avec une voie off
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Experiment Objectives
 
 Step 1 (Primary Experiment Focus):
