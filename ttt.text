@@ -1,3 +1,27 @@
+Real estate purchase
+
+Detection of customer groups involved in illegal currency transfers abroad via Visa cards.
+
+Successful proof of concept (POC) for the detection algorithm.
+
+Visual representation of links between clients (Withdrawal in Turkey), before and after model execution:
+
+Matrix of similarity co-occurrences of clients.
+
+Matrix of communities identified by the model.
+
+Top 10 client communities (Example from the POC: Turkey).
+
+
+
+
+
+
+
+
+
+
+
 detecter des fuites des capitaux
 opère par des comminautes de clients
 
