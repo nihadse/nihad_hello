@@ -1,3 +1,58 @@
+from flask import Flask, render_template
+import pandas as pd
+import util  # Assuming util contains the pytorch_cos_sim function
+
+app = Flask(__name__)
+
+# Read CSV files and perform data processing
+df = pd.read_csv('/mnt/Output Entreprise Personne Morale.csv')
+df = df[df['Libellé code sectorielh'] != 'CODE TECHNIQUE ATTRIBUE AUX PARTICULIERS'].dropna(subset=['Libellé code sectoriel1'])
+
+keywords = pd.read_csv('/mnt/keyword_class.csv', delimiter)
+keywords.rename(columns={'class': 'secteur_sonar'}, inplace=True)
+keywords['Sensibilité'] = keywords['Sensibilité'].str.replace('e', 'e', regex=True).str.replace('E', 'E', regex=True)
+keywords['key'] = keywords['key'].str.replace('e', 'e', regex=True)
+keywords['secteur sonar'] = keywords['secteur_sonar'].str.replace('e', 'e', regex=True)
+keywords['key'] = keywords['key'].str.replace('e', 'e', regex=True)
+keywords['key'] = keywords['key'].str.lower()
+keywords['key'] = keywords['key'].astype(str)
+
+sectors = df['Libellé code sectoriels'].unique()
+
+sector_embeddings = model.encode(sectors, convert_to_tensor=True)
+keyword_embeddings = model.encode(keywords, convert_to_tensor=True)
+
+similarity_matrix = util.pytorch_cos_sim(sector_embeddings, keyword_embeddings).numpy()
+
+results_df = pd.DataFrame(index=sectors, columns=["Most Matched Keyword", "Similarity Score"])
+
+for i, sector in enumerate(sectors):
+    max_similarity_index = similarity_matrix[i].argmax()
+    most_matched_keyword = keywords.iloc[max_similarity_index]['key']
+    similarity_score = similarity_matrix[i, max_similarity_index]
+
+    results_df.loc[sector] = [most_matched_keyword, similarity_score]
+
+results_df = pd.merge(results_df, keywords, left_on='Most Matched Keyword', right_on='key', how='left')
+results_df = results_df.rename(columns={'index': 'Libellé code sectoriels'}).drop('key', axis=1)
+
+# Define Flask routes
+@app.route('/')
+def index():
+    return render_template('index.html', data=results_df.to_html())
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
 
 import pandas as pd
 
