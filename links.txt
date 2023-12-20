@@ -1,3 +1,48 @@
+**Rapport sur l'Analyse de Similarité Sémantique entre les Mots-Clés et les Secteurs d'Activité Utilisant les Embeddings de Mots**
+
+*Introduction :*
+Cette étude se concentre sur l'évaluation de la similarité sémantique entre un fichier de mots-clés et les secteurs d'activité en utilisant les embeddings de mots. L'objectif est de classifier les secteurs en fonction des relations sémantiques identifiées à travers les embeddings de mots.
+
+*Méthodologie :*
+1. **Entrée de Données :**
+   - Utilisation de deux fichiers d'entrée :
+      - Fichier de Mots-Clés : Contient des mots-clés pertinents pour l'analyse.
+      - Fichier de Secteurs : Englobe les secteurs d'activité à classer.
+
+2. **Embeddings de Mots :**
+   - Application de techniques d'embedding de mots pour représenter les mots sous forme de vecteurs dans un espace multidimensionnel.
+   - Utilisation d'embeddings pré-entraînés ou d'embeddings entraînés sur les données fournies.
+
+3. **Calcul de la Similarité Sémantique :**
+   - Mesure de la similarité sémantique entre les mots-clés et les secteurs en utilisant la similarité cosinus ou d'autres métriques appropriées.
+   - Établissement d'un seuil de classification basé sur les scores de similarité.
+
+*Résultats :*
+   - Identification des relations sémantiques entre les mots-clés et les secteurs.
+   - Classification des secteurs en fonction du seuil établi pour la similarité.
+
+*Conclusion :*
+   - Résumé des résultats et de leur pertinence par rapport à l'objectif.
+   - Suggestions pour de futures recherches ou améliorations de la méthodologie.
+
+*Recommandations :*
+   - Recommandations pour affiner le processus de classification ou explorer des approches alternatives.
+
+*Remerciements :*
+   - Remerciements pour tout outil, ensemble de données ou ressource utilisé dans l'analyse.
+
+*Références :*
+   - Citation de la littérature pertinente, des outils ou des méthodologies utilisés.
+
+*Annexe :*
+   - Inclusion de toute information supplémentaire, extraits de code ou détails additionnels soutenant l'analyse.
+
+*Note :*
+Ce rapport offre une vue d'ensemble concise de l'analyse de similarité sémantique réalisée entre les mots-clés et les secteurs à l'aide des embeddings de mots, en mettant l'accent sur la méthodologie employée. Pour une compréhension plus détaillée, veuillez vous référer à l'annexe jointe et aux matériaux supplémentaires.
+
+
+
+
 https://designs.ai/imagemaker/start/en
 
 
