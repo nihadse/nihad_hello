@@ -1,3 +1,41 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Assuming you have your data in a list of tuples like (sector, keyword, similarity_score)
+data = [("Finance", "investment", 0.8),
+        ("Technology", "innovation", 0.6),
+        ("Healthcare", "medical", 0.7),
+        # Add more data as needed
+       ]
+
+# Unpack data into separate lists
+sectors, keywords, similarity_scores = zip(*data)
+
+# Create a DataFrame for easier plotting with Seaborn
+import pandas as pd
+df = pd.DataFrame({'Sector': sectors, 'Keyword': keywords, 'Similarity Score': similarity_scores})
+
+# Plotting the graph using Seaborn
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=df, x='Sector', y='Keyword', hue='Similarity Score', palette='viridis', s=100, alpha=0.8)
+
+# Adding labels and legend
+plt.xlabel('Sector of Activity')
+plt.ylabel('Related Keywords')
+plt.title('Sector of Activity vs. Related Keywords')
+plt.legend(title='Similarity Score')
+
+# Display the plot
+plt.show()
+
+
+
+
+
+
+
+
+
 
 from sklearn.cluster import KMeans
 import numpy as np
