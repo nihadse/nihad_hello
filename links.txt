@@ -1,3 +1,37 @@
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Assuming you have a DataFrame named 'df' with columns 'sector', 'keyword', and 'similarity'
+# Replace this with your actual DataFrame and column names
+# df = ...
+
+# Create a graph
+G = nx.Graph()
+
+# Add nodes and edges based on your data
+for index, row in df.iterrows():
+    G.add_node(row['sector'])
+    G.add_node(row['keyword'])
+    G.add_edge(row['sector'], row['keyword'], weight=row['similarity'])
+
+# Position nodes based on sectors
+pos = nx.spring_layout(G, seed=42)
+
+# Draw the graph with node colors and sizes based on similarity scores
+edge_labels = {(i, j): f"{G[i][j]['weight']:.2f}" for i, j in G.edges()}
+nx.draw_networkx_nodes(G, pos, node_size=700)
+nx.draw_networkx_labels(G, pos)
+nx.draw_networkx_edges(G, pos)
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+
+plt.show()
+
+
+
+
+
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 
