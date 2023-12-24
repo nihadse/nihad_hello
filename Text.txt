@@ -1,3 +1,51 @@
+from sklearn.cluster import KMeans
+import numpy as np
+
+# Replace these with your actual class and keyword embeddings
+class_embeddings = [...]  # Your class embeddings
+keyword_embeddings = [...]  # Your keyword embeddings
+keywords = [...]  # Your keywords
+
+# Check if the lengths of embeddings and keywords match
+if len(class_embeddings) != len(keyword_embeddings) or len(class_embeddings) != len(keywords):
+    raise ValueError("Lengths of class_embeddings, keyword_embeddings, and keywords must match.")
+
+# Combine class and keyword embeddings into a single matrix
+data_matrix = np.concatenate((class_embeddings, keyword_embeddings), axis=0)
+
+# Determine the number of clusters based on the number of classes
+num_clusters = len(class_embeddings)
+
+# Apply K-means clustering
+kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+clusters = kmeans.fit_predict(data_matrix)
+
+# Assign each keyword to a cluster
+clustered_data = {}
+for i, cluster in enumerate(clusters):
+    if cluster not in clustered_data:
+        clustered_data[cluster] = []
+    
+    # Check if the index is within bounds
+    if i < len(keywords) and i < len(class_embeddings):
+        clustered_data[cluster].append((keywords[i], class_embeddings[i]))
+    else:
+        print(f"Index {i} is out of bounds for keywords or class_embeddings.")
+
+# Print or further analyze the clustered data
+for cluster, data_points in clustered_data.items():
+    print(f"Cluster {cluster + 1}:")
+    for data_point in data_points:
+        print(f"Keyword: {data_point[0]}, Class Embedding: {data_point[1]}")
+    print("\n")
+
+
+
+
+
+
+
+
 from flask import Flask, render_template
 import pandas as pd
 import util  # Assuming util contains the pytorch_cos_sim function
