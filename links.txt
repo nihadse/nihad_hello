@@ -7,6 +7,73 @@ import matplotlib.pyplot as plt
 
 # Assuming you have word embeddings for keywords and client sectors of activity
 keyword_embeddings = np.array([[0.1, 0.2, 0.3], [0.2, 0.3, 0.4], ...])  # Replace with your actual embeddings
+sector_embeddings = np.array([[0.4, 0.5, 0.6], [0.5, 0.6, 0.7], ...])  # Replace with your actual embeddings
+keywords = ["keyword1", "keyword2", ...]  # Replace with your actual keywords
+sectors = ["sector1", "sector2", ...]  # Replace with your actual sectors
+
+# Perform k-means clustering on keyword embeddings
+n_clusters = len(keywords)
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+cluster_labels_keywords = kmeans.fit_predict(keyword_embeddings)
+
+# Find the most similar keyword for each sector
+cluster_assignments_sectors = []
+for sector_embedding in sector_embeddings:
+    similarities = cosine_similarity([sector_embedding], keyword_embeddings)[0]
+    most_similar_keyword_index = np.argmax(similarities)
+    cluster_assignments_sectors.append(cluster_labels_keywords[most_similar_keyword_index])
+
+# Visualize clustered data using t-SNE
+all_embeddings = np.concatenate([keyword_embeddings, sector_embeddings], axis=0)
+tsne = TSNE(n_components=2, random_state=42)
+embedded = tsne.fit_transform(all_embeddings)
+
+# Separate the embeddings back into keyword and sector
+keyword_embedded = embedded[:len(keyword_embeddings)]
+sector_embedded = embedded[len(keyword_embeddings):]
+
+# Plotting t-SNE results with cluster labels for keywords and assigned clusters for sectors
+plt.figure(figsize=(8, 8))
+
+# Plotting keywords
+for i, keyword in enumerate(keywords):
+    plt.scatter(keyword_embedded[i, 0], keyword_embedded[i, 1], label=f'Cluster {cluster_labels_keywords[i]}', marker='o')
+    plt.text(keyword_embedded[i, 0], keyword_embedded[i, 1], keywords[i], fontsize=8)
+
+# Plotting sectors
+for i, sector in enumerate(sectors):
+    assigned_cluster = cluster_assignments_sectors[i]
+    plt.scatter(sector_embedded[i, 0], sector_embedded[i, 1], label=f'Assigned Cluster {assigned_cluster}', marker='x')
+    plt.text(sector_embedded[i, 0], sector_embedded[i, 1], sectors[i], fontsize=8)
+
+# Add labels and legend
+plt.title('t-SNE Visualization of Word Embeddings with K-Means Cluster Labels for Keywords and Assigned Clusters for Sectors')
+plt.xlabel('Dimension 1')
+plt.ylabel('Dimension 2')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# Assuming you have word embeddings for keywords and client sectors of activity
+keyword_embeddings = np.array([[0.1, 0.2, 0.3], [0.2, 0.3, 0.4], ...])  # Replace with your actual embeddings
 client_embeddings = np.array([[0.4, 0.5, 0.6], [0.5, 0.6, 0.7], ...])  # Replace with your actual embeddings
 similarity_scores = np.array([0.8, 0.7, 0.9, ...])  # Replace with your actual similarity scores
 keywords = ["keyword1", "keyword2", ...]  # Replace with your actual keywords
