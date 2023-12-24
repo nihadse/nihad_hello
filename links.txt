@@ -1,4 +1,69 @@
 import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.metrics.pairwise import cosine_similarity
+from factor_analyzer import FactorAnalyzer
+import matplotlib.pyplot as plt
+
+# Assuming you have word embeddings for keywords and client sectors of activity
+keyword_embeddings = np.array([[0.1, 0.2, 0.3], [0.2, 0.3, 0.4], ...])  # Replace with your actual embeddings
+sector_embeddings = np.array([[0.4, 0.5, 0.6], [0.5, 0.6, 0.7], ...])  # Replace with your actual embeddings
+keywords = ["keyword1", "keyword2", ...]  # Replace with your actual keywords
+sectors = ["sector1", "sector2", ...]  # Replace with your actual sectors
+
+# Perform k-means clustering on keyword embeddings
+n_clusters = len(keywords)
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+cluster_labels_keywords = kmeans.fit_predict(keyword_embeddings)
+
+# Find the most similar keyword for each sector
+cluster_assignments_sectors = []
+for sector_embedding in sector_embeddings:
+    similarities = cosine_similarity([sector_embedding], keyword_embeddings)[0]
+    most_similar_keyword_index = np.argmax(similarities)
+    cluster_assignments_sectors.append(cluster_labels_keywords[most_similar_keyword_index])
+
+# Create a DataFrame for factor analysis
+data = pd.DataFrame(keyword_embeddings, columns=[f"dim{i+1}" for i in range(keyword_embeddings.shape[1])])
+
+# Factor Analysis
+fa = FactorAnalyzer(n_factors=n_clusters, rotation=None)
+fa.fit(data)
+
+# Visualize factor loadings
+loadings = fa.loadings_
+plt.figure(figsize=(8, 6))
+plt.scatter(loadings[:, 0], loadings[:, 1], color='blue')
+for i, txt in enumerate(keywords):
+    plt.annotate(txt, (loadings[i, 0], loadings[i, 1]), fontsize=8)
+plt.title('Factor Loadings for Keywords')
+plt.xlabel('Factor 1 Loading')
+plt.ylabel('Factor 2 Loading')
+plt.show()
+
+# Visualize assigned clusters for sectors
+plt.figure(figsize=(8, 6))
+plt.scatter(loadings[:, 0], loadings[:, 1], color='blue')
+for i, txt in enumerate(keywords):
+    plt.annotate(txt, (loadings[i, 0], loadings[i, 1]), fontsize=8)
+for i, sector in enumerate(sectors):
+    plt.scatter(loadings[i, 0], loadings[i, 1], color='red')
+    plt.annotate(sector, (loadings[i, 0], loadings[i, 1]), fontsize=8)
+plt.title('Factor Loadings for Keywords with Assigned Clusters for Sectors')
+plt.xlabel('Factor 1 Loading')
+plt.ylabel('Factor 2 Loading')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.manifold import TSNE
