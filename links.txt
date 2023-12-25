@@ -1,3 +1,13 @@
+word_list = ['word1', 'word2', 'word3']  # Replace with your list of words
+
+embeddings = [model[word] for word in word_list if word in model]
+
+
+
+
+
+
+
 from gensim.models import KeyedVectors
 import gzip
 
