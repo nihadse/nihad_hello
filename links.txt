@@ -1,3 +1,66 @@
+import pandas as pd
+from gensim.models import Word2Vec
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Load your CSV files
+df = pd.read_csv('/mnt/Output_Entreprise_Personne_Morale.csv')
+
+# Remove rows where 'Libellé code sectoriels' is not equal to the specified value
+df = df[df['Libellé code sectoriels'] != 'CODE TECHNIQUE ATTRIBUE AUX PARTICULIERS']
+
+# Drop rows with missing values in 'Libellé code sectoriels'
+df = df.dropna(subset=["Libellé code sectoriels"])
+
+# Convert 'Libellé code sectoriels' to lowercase
+df['Libellé code sectoriels'] = df['Libellé code sectoriels'].str.lower()
+
+# Read keyword CSV file
+keywords = pd.read_csv('/mnt/keyword_class.csv', delimiter=';')
+keywords.rename(columns={'class': 'secteur_sonar'}, inplace=True)
+
+# Convert 'key' column to lowercase and to list
+keywords['key'] = keywords['key'].str.lower()
+keywords_list = keywords['key'].astype(str).tolist()
+
+# Load your pre-trained Word2Vec model
+model = Word2Vec.load('/path/to/your/word2vec/model')
+
+# Get embeddings for sectors and keywords
+sector_embeddings = np.array([model.wv[sector] for sector in sectors])
+keyword_embeddings = np.array([model.wv[keyword] for keyword in keywords_list])
+
+# Calculate cosine similarity between sector and keyword embeddings
+similarity_matrix = cosine_similarity(sector_embeddings, keyword_embeddings)
+
+# Create a DataFrame to store the results
+results_df = pd.DataFrame(index=sectors, columns=["Most Matched Keyword", "Similarity Score"])
+
+# Display the similarity between sectors and keywords
+for i, sector in enumerate(sectors):
+    max_similarity_index = np.argmax(similarity_matrix[i])
+    most_matched_keyword = keywords_list[max_similarity_index]
+    similarity_score = similarity_matrix[i, max_similarity_index]
+    results_df.loc[sector] = [most_matched_keyword, similarity_score]
+
+# Reset the index of results_df
+results_df.reset_index(inplace=True)
+
+# Merge results_df with the 'keywords' DataFrame based on the 'Most Matched Keyword' column
+results_df = pd.merge(results_df, keywords, left_on="Most Matched Keyword", right_on="key", how='left')
+results_df.rename(columns={"index": "Libellé code
+
+
+
+
+
+
+
+
+
+
+
+
 word_list = ['word1', 'word2', 'word3']  # Replace with your list of words
 
 embeddings = [model[word] for word in word_list if word in model]
