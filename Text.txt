@@ -1,5 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Embedding, LSTM, Dense, Concatenate
+from tensorflow.keras.preprocessing.text import Tokenizer
+
 from tensorflow.keras.models import Model
 import numpy as np
 
