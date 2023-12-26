@@ -1,3 +1,44 @@
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Embedding, Flatten, Dense, Concatenate
+from tensorflow.keras.models import Model
+
+# Define Siamese network architecture
+input_keywords = Input(shape=(max_keywords_length,))
+input_sectors = Input(shape=(max_sectors_length,))
+
+embedding_layer = Embedding(input_dim=vocab_size, output_dim=embedding_dim)
+
+embedded_keywords = embedding_layer(input_keywords)
+embedded_sectors = embedding_layer(input_sectors)
+
+flatten_layer = Flatten()
+
+flattened_keywords = flatten_layer(embedded_keywords)
+flattened_sectors = flatten_layer(embedded_sectors)
+
+concatenated = Concatenate()([flattened_keywords, flattened_sectors])
+dense_layer = Dense(128, activation='relu')(concatenated)
+output_layer = Dense(1, activation='sigmoid')(dense_layer)
+
+siamese_model = Model(inputs=[input_keywords, input_sectors], outputs=output_layer)
+
+# Compile and train the model
+siamese_model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+siamese_model.fit([keywords_train, sectors_train], labels_train, epochs=num_epochs, batch_size=batch_size)
+
+# Inference
+similarity_scores = siamese_model.predict([new_keywords, new_sectors])
+
+# Classify based on threshold
+predictions = (similarity_scores > threshold).astype(int)
+
+
+
+
+
+
+
+
 import pandas as pd
 from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
