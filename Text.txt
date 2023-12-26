@@ -1,3 +1,64 @@
+from tensorflow.keras.layers import Input, Embedding, LSTM, Dense, Concatenate
+from tensorflow.keras.models import Model
+import numpy as np
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+# Example data
+keywords_data = ["machine learning", "data analysis", "software development"]
+sectors_data = ["technology", "Finance", "healthcare"]
+
+# Tokenize keywords and sectors
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts(keywords_data + sectors_data)
+
+# Convert text data to sequences
+keywords_sequences = tokenizer.texts_to_sequences(keywords_data)
+sectors_sequences = tokenizer.texts_to_sequences(sectors_data)
+
+# Pad sequences to a fixed length
+max_keywords_length = 18  # Adjust based on your data
+max_sectors_length = 20   # Adjust based on your data
+
+keywords_sequences_padded = pad_sequences(keywords_sequences, maxlen=max_keywords_length, padding='post')
+sectors_sequences_padded = pad_sequences(sectors_sequences, maxlen=max_sectors_length, padding='post')
+
+# Example labels (binary indicating similarity: 1 or dissimilarity: 0)
+num_samples = len(keywords_data)
+labels_train = np.random.randint(2, size=num_samples)  # Replace with your actual labels
+
+# Define Siamese network architecture
+input_keywords = Input(shape=(max_keywords_length,))
+input_sectors = Input(shape=(max_sectors_length,))
+
+embedding_layer = Embedding(input_dim=vocab_size, output_dim=embedding_dim)
+
+embedded_keywords = embedding_layer(input_keywords)
+embedded_sectors = embedding_layer(input_sectors)
+
+lstm_layer = LSTM(50)  # Adjust units based on your data
+
+encoded_keywords = lstm_layer(embedded_keywords)
+encoded_sectors = lstm_layer(embedded_sectors)
+
+concatenated = Concatenate()([encoded_keywords, encoded_sectors])
+dense_layer = Dense(128, activation='relu')(concatenated)
+output_layer = Dense(1, activation='sigmoid')(dense_layer)
+
+siamese_model = Model(inputs=[input_keywords, input_sectors], outputs=output_layer)
+
+# Compile and train the model
+siamese_model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+siamese_model.fit([keywords_train, sectors_train], labels_train, epochs=num_epochs, batch_size=batch_size)
+
+
+
+
+
+
+
+
+
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
