@@ -1,3 +1,11 @@
+L'objectif est de classifier les secteurs d'activité selon leur classe de sensibilité (Low, Medium, High, Very High). 
+Les secteurs d'activité permettent de catégoriser nos clients ayant une activité économique de même nature. 
+Nous disposons d'un fichier référentiel comprenant des secteurs d'activité sonar avec leurs sensibilités associées. 
+Par exemple, le secteur sonar "Transports aériens", classifié en "Low", englobe es secteurs d'activité tels que les transports aériens, la construction aéronautique spatiale et les transports spatiaux. Une approche vise à classifier les secteurs d'activité en attribuant des classes de sensibilité basées sur la similarité lexicale entre les secteurs à classifier et les secteurs sonar.
+
+
+
+
 from tensorflow.keras.layers import Input, Embedding, LSTM, Dense, Concatenate
 from tensorflow.keras.models import Model
 import numpy as np
