@@ -1,3 +1,39 @@
+Objectif :
+
+L'objectif principal est de classer les secteurs d'activité en exploitant les relations sémantiques entre les mots-clés et les descriptions de secteurs grâce aux embeddings de mots.
+Méthodologie :
+
+Entrée de Données :
+
+Utilisation de deux fichiers d'entrée : l'un contenant des mots-clés (keyword_class) extraits du fichier 'Paramétrages Sonar V23 Sheet Activités Fichier de Secteurs'.
+Embeddings de Mots : Application de techniques d'embedding pour représenter les mots sous forme de vecteurs dans un espace multidimensionnel.
+Calcul de la Similarité Sémantique :
+
+Mesure de la similarité sémantique à l'aide de la similarité cosinus entre les mots-clés et les secteurs.
+Établissement d'un seuil de classification basé sur les scores de similarité.
+Résultats :
+
+Identification des relations sémantiques entre les mots-clés et les secteurs.
+Classification des secteurs en fonction du seuil établi pour la similarité.
+Conclusion :
+
+Cette méthodologie vise à améliorer la classification des secteurs dans le Projet FLAG ABC en intégrant une compréhension sémantique grâce aux embeddings de mots et aux mesures de similarité.
+Cette présentation en une diapositive offre un aperçu concis de l'approche, mettant l'accent sur les données d'entrée, les étapes de la méthodologie et les résultats attendus.
+
+
+
+
+
+Message ChatGPT…
+
+ChatGPT can make mistakes. Consider checking important information.
+
+
+
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
