@@ -1,3 +1,64 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+# Assuming df, keywords, sectors are already defined
+
+# Filter df based on a condition
+df_filtered = df[df['Libellé code sectoriell'] != 'CODE TECHNIQUE ATTRIBUE AUX PARTICULIERS']
+
+# Drop NaN values in the specified column
+df_filtered = df_filtered.dropna(subset=['Libellé code sectoriell'])
+
+# Rename a column in keywords DataFrame
+keywords = keywords.rename({'class': 'secteur_sonar'}, axis=1)
+
+# Get a list of keywords from the 'key' column
+keyword_list = keywords['key'].to_list()
+
+# Get unique values from a column in df
+unique_sectors = df_filtered['Libellé code sectoriell_modif'].unique()
+
+# Get embeddings for sectors and keywords
+sector_embeddings = model.encode(unique_sectors, convert_to_tensor=True)
+keyword_embeddings = model.encode(keyword_list, convert_to_tensor=True)
+
+# Calculate cosine similarity between sector and keyword embeddings
+similarity_matrix = util.pytorch_cos_sim(sector_embeddings, keyword_embeddings).numpy()
+
+# Create a DataFrame to store the results
+results_df = pd.DataFrame(index=unique_sectors, columns=["Most Matched Keyword", "Similarity Score"])
+
+# Display the similarity between sectors and keywords
+for i, sector in enumerate(unique_sectors):
+    max_similarity_index = similarity_matrix[i].argmax()
+    most_matched_keyword = keyword_list[max_similarity_index]
+    similarity_score = similarity_matrix[i, max_similarity_index]
+    results_df.loc[sector] = [most_matched_keyword, similarity_score]
+
+# Reset the index of results_df
+results_df.reset_index(inplace=True)
+
+# Merge results_df with the 'keywords' DataFrame based on the 'Most Matched Keyword' column
+results_df = pd.merge(results_df, keywords, left_on='Most Matched Keyword', right_on='key', how='left')
+
+# Rename columns in results_df
+results_df = results_df.rename({'index': 'Libellé code sectoriell_modif'}, axis=1)
+
+# Drop the extra 'key' column
+results_df = results_df.drop('key', axis=1)
+
+# Add 'Libellé code sectoriell' column to results_df
+results_df['Libellé code sectoriell'] = df_filtered[df_filtered['Libellé code sectoriell_modif'].isin(results_df['Libellé code sectoriell_modif'])]['Libellé code sectoriell'].values
+
+
+
+
+
+
+
+
+
+
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Embedding, Flatten, Dense, Concatenate
 from tensorflow.keras.models import Model
