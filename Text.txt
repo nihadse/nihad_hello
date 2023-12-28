@@ -1,3 +1,14 @@
+
+Objet : Demande d'Anticipation de Congé
+
+Cher(e) [Nom du Manager],
+
+Je souhaite anticiper un jour de congé pour le [date souhaitée]. Je vous prie de bien vouloir considérer favorablement ma demande. Merci de me confirmer votre validation.
+
+Cordialement, [Votre Nom Complet]
+
+
+
 # Create a legend only for markers
 legend_elements = [Line2D([0], [0], marker='o', color='w', markerfacecolor='w', markersize=10, label='Cluster (Keywords)'),
                    Line2D([0], [0], marker='x', color='w', markerfacecolor='w', markersize=10, label='Assigned Cluster (Sectors)')]
