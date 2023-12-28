@@ -1,3 +1,53 @@
+
+# Assuming you want to plot the first 10 sectors
+selected_sectors = sectors[:10]
+selected_sector_embeddings = sector_embeddings[:10]
+
+# Find the top 10 most similar keywords for each selected sector
+selected_related_keywords = []
+for sector_embedding in selected_sector_embeddings:
+    similarities = util.pytorch_cos_sim(sector_embedding, keyword_embeddings).numpy()
+    most_similar_keyword_indices = np.argsort(similarities)[0][-10:][::-1]
+    related_keywords = [keywords[idx] for idx in most_similar_keyword_indices]
+    selected_related_keywords.append(related_keywords)
+
+# Flatten the list of related keywords
+flattened_related_keywords = [keyword for sublist in selected_related_keywords for keyword in sublist]
+
+# Visualize clustered data using t-SNE for selected sectors and their related keywords
+selected_embeddings = np.concatenate([keyword_embeddings, selected_sector_embeddings], axis=0)
+tsne = TSNE(n_components=2, random_state=47)
+embedded = tsne.fit_transform(selected_embeddings)
+
+# Separate the embeddings back into keyword and sector
+selected_keyword_embedded = embedded[:len(keywords)]
+selected_sector_embedded = embedded[len(keywords):]
+
+# Plotting t-SNE results with cluster labels for related keywords and assigned clusters for selected sectors
+plt.figure(figsize=(10, 10))
+
+# Plotting related keywords for selected sectors
+for i, sector_embedding in enumerate(selected_sector_embedded):
+    for j, related_keyword in enumerate(selected_related_keywords[i]):
+        plt.scatter(sector_embedding[0], sector_embedding[1], label=f'Related Keyword {j+1}: {related_keyword}', marker='x')
+        plt.text(sector_embedding[0], sector_embedding[1], selected_sectors[i], fontsize=8)
+
+# Add labels and legend
+plt.title('t-SNE Visualization of Related Keywords for Selected Sectors')
+plt.xlabel('Dimension 1')
+plt.ylabel('Dimension 2')
+plt.legend()
+plt.show()
+
+
+
+
+
+
+
+
+
+
 # Assuming you want to plot only the first 10 sectors
 selected_sectors = sectors[:10]
 selected_sector_embeddings = sector_embeddings[:10]
