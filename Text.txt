@@ -1,4 +1,46 @@
 
+# Assuming you want to plot only the first 10 sectors
+selected_sectors = sectors[:10]
+selected_sector_embeddings = sector_embeddings[:10]
+
+# Find most similar keywords for each selected sector
+selected_cluster_labels = []
+for sector_embedding in selected_sector_embeddings:
+    similarities = util.pytorch_cos_sim(sector_embedding, keyword_embeddings).numpy()
+    most_similar_keyword_index = np.argsort(similarities)[0][-1]
+    selected_cluster_labels.append(cluster_labels_keywords[most_similar_keyword_index])
+
+# Visualize clustered data using t-SNE for selected sectors and their most similar keywords
+selected_embeddings = np.concatenate([keyword_embeddings, selected_sector_embeddings], axis=0)
+tsne = TSNE(n_components=2, random_state=47)
+embedded = tsne.fit_transform(selected_embeddings)
+
+# Separate the embeddings back into keyword and sector
+selected_keyword_embedded = embedded[:len(keywords)]
+selected_sector_embedded = embedded[len(keywords):]
+
+# Plotting t-SNE results with cluster labels for selected keywords and assigned clusters for selected sectors
+plt.figure(figsize=(8, 8))
+
+# Plotting selected keywords
+for i, keyword in enumerate(keywords):
+    plt.scatter(selected_keyword_embedded[i, 0], selected_keyword_embedded[i, 1], label=f'Cluster {cluster_labels_keywords[i]}', marker='o')
+    plt.text(selected_keyword_embedded[i, 0], selected_keyword_embedded[i, 1], keywords[i], fontsize=8)
+
+# Plotting selected sectors
+for i, sector_embedding in enumerate(selected_sector_embedded):
+    plt.scatter(sector_embedding[0], sector_embedding[1], label=f'Assigned Cluster {selected_cluster_labels[i]}', marker='x')
+    plt.text(sector_embedding[0], sector_embedding[1], selected_sectors[i], fontsize=8)
+
+# Add labels and legend
+plt.title('t-SNE Visualization of Word Embeddings with K-Means Cluster Labels for Keywords and Assigned Clusters for Selected Sectors')
+plt.xlabel('Dimension 1')
+plt.ylabel('Dimension 2')
+plt.legend()
+plt.show()
+
+
+
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
