@@ -1,3 +1,73 @@
+
+import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.metrics import pairwise_distances_argmin_min
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# Read data
+df = pd.read_csv("/mnt/Output_Entreprise_Personne_Morale.csv")
+
+# Data preprocessing
+df = df.dropna(subset=['Libellé code sectoriels'])
+df['Libellé code sectoriels modif'] = df['Libellé code sectoriels']
+keywords = pd.read_csv('/mnt/keyword_class.csv', delimiter)
+
+# Clean and preprocess keywords
+keywords = keywords.rename(columns={'class': 'secteur_sonar'})
+keywords['key'] = keywords['key'].str.lower().astype(str).tolist()
+
+# Get embeddings for sectors and keywords
+sector_embeddings = model.encode(df['Libellé code sectoriels'].unique(), convert_to_tensor=True)
+keyword_embeddings = model.encode(keywords['key'].to_list(), convert_to_tensor=True)
+
+# Perform k-means clustering on keyword embeddings
+n_clusters = min(10, len(keywords))
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+cluster_labels_keywords = kmeans.fit_predict(keyword_embeddings)
+
+# Find the most similar keyword for each sector
+similarities = util.pytorch_cos_sim(sector_embeddings, keyword_embeddings).numpy()
+most_similar_keyword_indices = np.argsort(similarities, axis=1)[:, -1]
+cluster_assignments_sectors = cluster_labels_keywords[most_similar_keyword_indices]
+
+# Visualize clustered data using t-SNE
+all_embeddings = np.concatenate([keyword_embeddings, sector_embeddings], axis=0)
+embedded_tsne = TSNE(n_components=2, random_state=47).fit_transform(all_embeddings)
+
+# Separate the embeddings back into keyword and sector
+keyword_embedded = embedded_tsne[:len(keyword_embeddings)]
+sector_embedded = embedded_tsne[len(keyword_embeddings):]
+
+# Plotting t-SNE results with cluster labels for keywords and assigned clusters for sectors
+plt.figure(figsize=(8, 8))
+
+# Plotting selected sectors
+selected_sectors = df['Libellé code sectoriels'].unique()[:10]
+for i, sector in enumerate(selected_sectors):
+    sector_index = np.where(df['Libellé code sectoriels'].unique() == sector)[0][0]
+    plt.scatter(sector_embedded[sector_index, 0], sector_embedded[sector_index, 1],
+                label=f'Sector: {sector}', marker='x')
+
+    # Plotting related keywords
+    related_keywords = keywords['key'][cluster_assignments_sectors[sector_index] == cluster_labels_keywords]
+    for j, keyword in enumerate(related_keywords[:10]):
+        plt.scatter(keyword_embedded[keywords['key'].index(keyword), 0], keyword_embedded[keywords['key'].index(keyword), 1],
+                    label=f'Keyword: {keyword}', marker='o')
+
+# Add labels and legend
+plt.title('t-SNE Visualization of Word Embeddings with K-Means Cluster Labels for Selected Sectors and Related Keywords')
+plt.xlabel('Dimension 1')
+plt.ylabel('Dimension 2')
+plt.legend()
+plt.show()
+
+
+
+
+
+
 L'objectif est de classifier les secteurs d'activité selon leur classe de sensibilité (Low, Medium, High, Very High). 
 Les secteurs d'activité permettent de catégoriser nos clients ayant une activité économique de même nature. 
 Nous disposons d'un fichier référentiel comprenant des secteurs d'activité sonar avec leurs sensibilités associées. 
