@@ -1,3 +1,12 @@
+# Create a legend only for markers
+legend_elements = [Line2D([0], [0], marker='o', color='w', markerfacecolor='w', markersize=10, label='Cluster (Keywords)'),
+                   Line2D([0], [0], marker='x', color='w', markerfacecolor='w', markersize=10, label='Assigned Cluster (Sectors)')]
+
+# Add legend
+plt.legend(handles=legend_elements)
+
+
+
 
 # Assuming you want to plot the first 10 sectors
 selected_sectors = sectors[:10]
