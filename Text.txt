@@ -1,4 +1,18 @@
 
+Objet : Assistance requise - Problème persistant de vérification par téléphone
+
+Cher support technique,
+
+Je rencontre des difficultés lors de la création de mon compte Azure Microsoft OpenAI, spécifiquement lors de la vérification par téléphone. Malgré des tentatives répétées, je suis bloqué à l'étape de vérification. Mon manager a également rencontré le même problème. Pouvez-vous m'aider à examiner et résoudre ce problème rapidement ?
+
+Merci de votre assistance.
+
+Cordialement, [Votre Nom Complet]
+
+
+
+
+
 je tiens à souligner que l'identifiant tiers (ID tiers) est présent dans tous les fichiers envoyés.
 
 
