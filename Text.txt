@@ -1,3 +1,8 @@
+Je vous contacte afin de pouvoir suivre avec vous le prochain atelier.
+
+
+
+
 ChatGPT Turbo 35 is a language model optimized for conversational tasks, specifically designed to work with inputs formatted as a conversation[1]. It is part of the GPT-3.5 series and is currently used by the free version of ChatGPT[5]. The GPT-35-Turbo model is an improvement over the previous GPT-3 and GPT-3.5 models, as it is optimized for conversational tasks and uses a specific chat-like transcript format called Chat Markup Language (ChatML)[1].
 
 To work with the GPT-35-Turbo model, you need to specify a model version when creating a deployment[1]. The model is conversation-in and message-out, meaning it expects input formatted in a specific chat-like transcript format[1]. The messages variable passes an array of dictionaries with different roles in the conversation, such as user, assistant, and system[2].
