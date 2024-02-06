@@ -1,17 +1,12 @@
 
 
-Objet : Demande d'accès et d'affichage pour "I"
+Bonjour,
 
-Cher/Chère [Nom],
+J'espère que vous allez bien. Je vous écris pour signaler un problème d'accès à notre compte Azure. Je rencontre des difficultés pour passer l'étape de la vérification du numéro de téléphone, même après avoir installé l'application Microsoft Authenticator. Aucun appel de vérification n'a été reçu sur le numéro associé.
 
-Je rencontre actuellement un problème d'affichage avec l'accès à "I" dans la liste de la barre. Cet affichage est crucial pour mon travail. Pourriez-vous s'il vous plaît résoudre ce problème en accordant l'accès nécessaire et en incluant "I" dans la liste de la barre ?
-
-Merci de votre prompte attention.
+Pouvons-nous trouver une solution pour résoudre ce problème d'accès ? Merci d'avance pour votre aide.
 
 Cordialement,
-[Votre Nom]
-
-
 
 
 
