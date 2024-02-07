@@ -1,19 +1,19 @@
+Of course, here's a more formal version:
 
-Objet: Ajout de numéros de téléphone à la liste autorisée pour la connectivité
+---
 
-Cher/Chère [Nom du destinataire],
+Bonjour,
 
-J'espère que vous allez bien. Suite à notre réunion d'hier avec l'équipe, je tenais à vous fournir mon numéro de téléphone ainsi que celui de mon manager pour les ajouter à la liste des numéros autorisés pour la connectivité.
+Je tenais à vous informer que le dernier fichier reçu correspond parfaitement à l'extraction demandée. Je vous remercie pour votre diligence et votre professionnalisme.
 
-Mon numéro de téléphone : [Votre numéro de téléphone]
-Numéro de téléphone de mon manager : [Numéro de téléphone de votre manager]
-
-Veuillez prendre les mesures nécessaires pour débloquer ces numéros et les ajouter à la liste autorisée.
-
-Je vous remercie pour votre attention à cette demande.
+Je reste à votre disposition pour toute collaboration future.
 
 Cordialement,
-[Votre nom]
+Nihad
+
+
+
+
 
 
 
