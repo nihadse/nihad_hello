@@ -1,3 +1,10 @@
+Bien sûr, voici une version sans le mot "attribuée":
+
+"Nous avons actualisé les indicateurs clés de performance (KPI) par tiers. Le taux global de qualité des tiers pour le mois de janvier est de 87%, comparé à 90% en décembre 2023, ce qui représente une baisse. Cette variation peut être liée à l'intégration de nouvelles données."
+
+
+
+
 Le taux des KPI de janvier à 89% par rapport à décembre 2023 à 90% est influencé par l'intégration de nouvelles données. Ces ajouts peuvent avoir entraîné des incohérences, impactant ainsi le taux global. Nous devons examiner ces données pour identifier les variations et appliquer des mesures correctives pour maintenir des performances élevées.
 
 
