@@ -1,3 +1,24 @@
+Subject: Demande de balayage des tiers de la base Atlas
+
+Bonjour à tous et à toutes,
+
+Nous vous contactons pour vous informer de notre demande de balayage exhaustif de tous les tiers de la base Atlas afin d'identifier les clients exerçant des activités sensibles, conformément à la table des activités sensibles établie.
+
+Cette démarche s'inscrit dans le cadre de notre engagement envers la conformité réglementaire et la sécurité des données. Il est essentiel d'identifier et de surveiller attentivement les activités sensibles pour garantir la protection de nos clients et de notre entreprise contre tout risque potentiel.
+
+La méthode que nous utiliserons pour cette tâche repose sur l'approche du traitement du langage naturel (NLP), qui permet d'analyser le contenu textuel des informations des tiers dans Atlas. Cette méthode utilise la similarité sémantique entre les mots-clés associés aux activités sensibles et les données fournies dans Atlas.
+
+Nous vous remercions par avance pour votre collaboration dans cette démarche cruciale. Votre contribution à cette initiative aidera à renforcer nos efforts en matière de conformité et de sécurité.
+
+N'hésitez pas à nous contacter si vous avez des questions ou des préoccupations.
+
+Cordialement,
+[Votre nom]
+[Votre poste/Service]
+[Votre entreprise/organisation]
+
+
+
 
 
 
