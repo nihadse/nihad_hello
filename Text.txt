@@ -1,3 +1,15 @@
+Objet : Relance Demande Extraction Données
+
+Bonjour [Nom],
+
+Je vous rappelle ma demande d'extraction de données [insérer date]. Votre aide est précieuse pour [expliquer l'importance]. Merci pour votre retour rapide.
+
+Cordialement, [Votre nom]
+
+
+
+
+
 Subject: Demande de balayage des tiers de la base Atlas
 
 Bonjour à tous et à toutes,
