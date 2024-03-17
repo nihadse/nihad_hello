@@ -1,3 +1,16 @@
+Subject: Problème Identifié dans le Fichier P310
+
+Bonjour,
+
+Nous avons identifié un problème dans le fichier P310. Par exemple, le champ 'nom de jeune fille de la mère' n'est pas renseigné. Cependant, l'équipe OMC nous a informés qu'ils l'avaient saisi.
+
+Cordialement,
+
+[Your Name]
+
+
+
+
 Objet : Problème avec le fichier d'extraction du mois en cours
 
 Cher [Nom de l'expéditeur],
