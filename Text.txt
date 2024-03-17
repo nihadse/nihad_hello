@@ -1,3 +1,17 @@
+Objet : Problème avec le fichier d'extraction du mois en cours
+
+Cher [Nom de l'expéditeur],
+
+Nous avons identifié un problème avec le fichier d'extraction que vous nous avez envoyé pour ce mois. Le champ du nom de la mère semble ne pas être renseigné correctement, malgré les tentatives de saisie mentionnées par l'équipe de OMC. Nous avons vérifié minutieusement, mais le nom n'a pas été trouvé. Pourriez-vous s'il vous plaît réexaminer le fichier et nous fournir une version corrigée dès que possible ? Des données précises et complètes sont essentielles pour nos dossiers. Merci pour votre attention à cette question. Si vous avez besoin de plus d'informations, n'hésitez pas à me contacter.
+
+Cordialement,
+[Votre nom]
+
+
+
+
+
+
 Objet: Mise à jour des Indicateurs Clés de Performance pour le mois dernier
 
 Cher/chère [Destinataire],
