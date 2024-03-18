@@ -1,3 +1,11 @@
+Parfait, voici la phrase mise à jour pour inclure le lien dans votre e-mail :
+
+---
+
+Je tenais également à vous informer que j'ai inclus une capture vidéo de l'écran pour illustrer le problème. Voici le lien : [Insérer le lien ici].
+
+
+
 Subject: Problème identifié dans le fichier P320
 
 Bonjour,
