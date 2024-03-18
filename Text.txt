@@ -1,3 +1,21 @@
+Subject: Problème identifié dans le fichier P320
+
+Bonjour,
+
+Nous avons récemment identifié un problème dans le fichier P320, notamment concernant le champ "nom de jeune fille de la mère" qui n'est pas renseigné correctement. Malgré cela, l'équipe OMC nous a informés qu'elle avait saisi cette information.
+
+Nous aimerions obtenir des éclaircissements sur cette situation afin de comprendre et de résoudre le problème de manière efficace. Pourriez-vous svp nous fournir plus de détails sur la manière dont cette information a été saisie, et si elle a été intégrée correctement dans le système ?
+
+Nous vous remercions par avance pour votre coopération et votre diligence dans la résolution de ce problème.
+
+Cordialement,
+
+[Votre Nom]
+[Votre Poste/Service]
+[Votre Entreprise/Organisation]
+
+
+
 Subject: Problème Identifié dans le Fichier P310
 
 Bonjour,
