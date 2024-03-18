@@ -1,3 +1,28 @@
+Objet : Confirmation de suppression de compte et inscription à un nouveau compte, avec enregistrement vidéo
+
+Cher/chère [Nom du destinataire],
+
+J'espère que vous allez bien. Je souhaite vous notifier que j'ai supprimé mon compte précédent avec [Nom de la plateforme/service].
+
+De plus, je me suis récemment inscrit(e) pour un nouveau compte en utilisant les identifiants suivants :
+
+Nom d'utilisateur : [Votre nouveau nom d'utilisateur]
+Adresse e-mail : [Votre nouvelle adresse e-mail]
+Mot de passe : [Votre nouveau mot de passe]
+
+Veuillez mettre à jour vos dossiers en conséquence.
+
+Afin de faciliter la transition, je vous ai également enregistré une courte vidéo démontrant le processus de suppression du compte ainsi que la création du nouveau compte. Vous pouvez la visionner en suivant ce lien : [Insérez le lien vers la vidéo de l'enregistrement de l'écran].
+
+Je vous remercie de votre attention à cette question.
+
+Cordialement,
+[Votre nom]
+
+
+
+
+
 Parfait, voici la phrase mise à jour pour inclure le lien dans votre e-mail :
 
 ---
