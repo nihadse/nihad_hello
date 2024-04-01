@@ -1,3 +1,16 @@
+D'accord, si d'après les données du tiers aucune des conditions n'est remplie, alors le résultat final sera déterminé par l'appel de la fonction Contrôle_Complétude avec l'argument [Indicateur de capacité juridique]. Donc, la déclaration resterait la même :
+
+```
+if ([Nature juridique du compte]!=2 or [Membre de collectivité]!=0 or [Code forme juridique locale]=95 or [Tiers_chapeau_collectif_PP]!= or Age_PP >18 or [Client]!=1) then Null() else Contrôle_Complétude ([Indicateur de capacité juridique]) endif
+```
+
+Cela signifie que si aucune des conditions spécifiées n'est remplie, le résultat final sera déterminé par la fonction Contrôle_Complétude avec l'argument [Indicateur de capacité juridique].
+
+
+
+
+
+
 Sujet : Demande d'installation du logiciel Alteryx
 
 Cher [Département informatique],
