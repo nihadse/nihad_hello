@@ -1,3 +1,36 @@
+Objet : Résumé des résultats du projet FLAG ABC
+
+Chers départements Retail et Corporate,
+
+Je vous adresse un résumé des résultats de notre projet FLAG ABC, où nous avons mis en œuvre la modélisation de la similarité sémantique entre les mots-clés et les secteurs d'activité clients.
+
+Méthodologie :
+
+1. **Entrée de données :**
+   - Utilisation de deux fichiers sources : le fichier de classe de mots-clés extrait du "Fichier de Paramétrages Sonar" et le fichier des secteurs issus de "Sunion GESKYC Intier PP PM 09-03-2023-v4-v" sous la colonne "LIBELLE CODE SECTORIELI".
+
+2. **Incorporation de mots :**
+   - Application de techniques d'incorporation de mots pour représenter les mots sous forme de vecteurs dans un espace multidimensionnel, à l'aide de vecteurs pré-entraînés sur les données fournies.
+
+3. **Calcul de la similarité sémantique :**
+   - Mesure de la similarité sémantique entre les mots-clés et les secteurs, en utilisant la similarité cosinus. Établissement d'un seuil de classification basé sur les scores de similarité.
+
+Résultats :
+- Identification des relations sémantiques entre les mots-clés et les secteurs.
+- Classification des secteurs en fonction du seuil de similarité établi.
+
+Il est à noter que certains secteurs d'activité Atlas n'ont pas été classifiés.
+
+Notre objectif était de classer les secteurs d'activité selon leurs niveaux de sensibilité (Faible, Moyenne, Élevée, Très élevée). Nous disposons d'un fichier de référence comprenant des secteurs d'activité Sonar avec leurs sensibilités associées. Par exemple, le secteur Sonar "Transport aérien", classifié en "Faible", englobe des secteurs tels que le transport aérien, la construction aérospatiale et le transport spatial. Notre approche visait à classer les secteurs d'activité en fonction de la similarité lexicale entre les secteurs à classer et les mots-clés extraits des secteurs Sonar.
+
+N'hésitez pas à me contacter pour plus de détails ou si vous avez des questions concernant les résultats.
+
+Cordialement,
+[Votre Nom]
+
+
+
+
 Bonjour,
 
 L'emplacement du répertoire partagé pour le dépôt automatique des fichiers avec date de réception est désormais x. Merci pour votre collaboration.
