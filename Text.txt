@@ -1,3 +1,12 @@
+Bonjour,
+
+L'emplacement du répertoire partagé pour le dépôt automatique des fichiers avec date de réception est désormais x. Merci pour votre collaboration.
+
+Cordialement, [Votre nom]
+
+
+
+
 Bien sûr, voici l'email réécrit :
 
 ---
