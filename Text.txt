@@ -1,3 +1,19 @@
+Bien sûr, voici l'email réécrit :
+
+---
+
+Objet: Rappel : Clients dont la Date de Résiliation Remonte à 15 Ans
+
+Bonjour [Nom du collègue],
+
+Je te confirme que nous avons identifié les deux clients dont la date de résiliation remonte à 15 ans. Voici les exemples des clients identifiés : [Insérer les exemples ici]. Nous pouvons maintenant les contacter pour voir s'ils sont intéressés par une réactivation de nos services.
+
+Cordialement, [Ton Nom]
+
+---
+
+
+
 D'accord, si d'après les données du tiers aucune des conditions n'est remplie, alors le résultat final sera déterminé par l'appel de la fonction Contrôle_Complétude avec l'argument [Indicateur de capacité juridique]. Donc, la déclaration resterait la même :
 
 ```
