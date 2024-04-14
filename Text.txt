@@ -1,3 +1,38 @@
+Remarque : J'ai remplacé "De manière complémentaire" par "En outre" pour une transition plus fluide.
+
+---
+
+Bonjour à tous,
+
+Je vous informe que les indicateurs de qualité des données (KPI) ainsi que tous les livrables du programme IMR sont prêts.
+
+1. KPI par Tiers: Le taux global de qualité des tiers est de 90 %.
+2. KPI QAC: Les KPI QAC par donnée et par contrôle sont disponibles.
+3. KPI BCPQ: Le taux de qualité des tiers est actuellement de 85% pour les personnes morales et de 93% pour les personnes physiques.
+
+En outre, les indicateurs de protection des données (DPO) ont été mis à jour, incluant le nombre de relations établies et le nombre total d'identifiants tiers.
+
+Les fichiers détaillés des anomalies par ligne de métier (BUCC, Corporate, Recouvrement, Retail, Risque) sont prêts, tout comme les fichiers de variations entre Février et Mars.
+
+Nous avons également finalisé la codification des contrôles des données pour les tiers locaux, les comptes arrêtés et les transferts de crédits pour nos produits. Ceci inclut la modification du périmètre des deux contrôles:
+
+- Pays d'immatriculation "ED0000083.Cy.1"
+- Pays de business "ED0000082.CY.1"
+
+Comme convenu, tous les fichiers ont été déposés dans le répertoire de partage :
+
+Lien: I:\DATA_EO\DEPARTEMENT_DATA\13-DATA_ANALYTICS_SCIENCE\14-Programme IMR
+
+Cordialement,
+Nihad
+
+--- 
+
+Cela offre une transition plus naturelle entre les différentes parties du message.
+
+
+
+
 Objet : Codification des contrôles de données locaux tiers
 
 Bonjour,
