@@ -1,3 +1,12 @@
+Objet : Codification des contrôles de données locaux tiers
+
+Bonjour,
+
+Nous avons finalisé la codification des contrôles des données locaux tiers, des comptes arrêtés, et des transferts de crédits pour nos produits.
+
+
+
+
 Objet : Utilisation de l'intelligence artificielle pour l'identification des clients sensibles à partir des données Sonar
 
 Cher/chère [Destinataire],
