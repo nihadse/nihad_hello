@@ -1,3 +1,9 @@
+Voici la phrase corrigée :
+"Les données locales (issues d'usines fiables) sont déjà intégrées dans le résultat final du KPI QAC pour les deux domaines : Tiers et Crédits."
+
+
+
+
 Objet : Correction : Contrôles en double dans la section Crédit
 
 Salut [Destinataire],
