@@ -1,3 +1,16 @@
+Objet : Correction : Contrôles en double dans la section Crédit
+
+Salut [Destinataire],
+
+Merci d'avoir signalé cela. Il semble qu'il y ait eu une erreur dans la version précédente du document. Tu peux maintenant trouver la version correcte en suivant le lien suivant : [Insérer le lien ici].
+
+Désolé pour le désagrément que cela a pu causer.
+
+Amicalement,
+[Votre nom]
+
+
+
 Remarque : J'ai remplacé "De manière complémentaire" par "En outre" pour une transition plus fluide.
 
 ---
