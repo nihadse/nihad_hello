@@ -1,3 +1,13 @@
+Objet : Confirmation du test de l'email MFA - Erreur d'activation
+
+Bonjour [équipe],  
+Oui, j'ai testé l'email MFA, mais j'ai rencontré un problème lors de l'activation de l'authentification multifacteur (MFA), ce qui a conduit à un message d'erreur. Je joins la capture d'écran de l'erreur. Pourriez-vous m'aider à résoudre ce problème et poursuivre la configuration du MFA?  
+
+Merci pour votre aide,  
+[Votre Nom]
+
+
+
 Si un client possède le double ou plus de nos produits figurant sur cette liste, il y a une anomalie ; sinon, il n'y en a pas."
 
 
