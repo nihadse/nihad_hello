@@ -1,3 +1,20 @@
+Objet : Demande de validation de deux jours de congés
+
+Bonjour [Nom du Manager],
+
+Merci de bien vouloir approuver mes deux jours de congés pour les [dates]. Je m'assurerai que mes tâches soient couvertes avant mon départ.
+
+Je vous remercie d'avance pour votre validation.
+
+Cordialement,
+
+[Votre nom]
+
+
+
+
+
+
 Objet : Accès refusé lors de la configuration MFA par email - Assistance requise
 
 Bonjour [équipe],  
