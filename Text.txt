@@ -1,3 +1,21 @@
+Objet : Accès refusé lors de la configuration MFA par email - Assistance requise
+
+Bonjour [équipe],  
+Oui, j'ai testé le MFA par email, mais je n'ai pas pu accéder au système. Le message d'erreur indiquait que ma connexion ne répondait pas aux critères nécessaires pour l'accès. J'ai joint deux captures d'écran montrant l'erreur. Pouvez-vous m'aider à résoudre ce problème?  
+
+Merci pour votre aide,  
+[Votre Nom]
+
+
+
+
+
+
+
+
+
+
+
 Objet : Confirmation du test de l'email MFA - Erreur d'activation
 
 Bonjour [équipe],  
