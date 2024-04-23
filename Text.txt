@@ -1,3 +1,36 @@
+Voici une mise à jour détaillée sur le projet Azure/OpenAI, mettant en évidence les problèmes de connexion que nous avons rencontrés.
+
+Les points suivants incluent les événements avec les détails de qui les a gérés et quand ils se sont produits:
+
+- **Lancement du Projet**: Le projet Azure/OpenAI a été lancé le 14 janvier 2024 par Guillaume Martin. La date de démarrage de l'onboarding workshop UC GenAl wave 3 Microsoft Azure était le 15 janvier 2024.
+
+- **Premier Incident de Connexion**: Le 17 janvier 2024, on a rencontré des problèmes lors de la vérification par téléphone pour créer nos comptes Azure/OpenAI. Aucun appel ou SMS de vérification n'était reçu.
+
+- **Intervention de ITG avec une Solution de Contournement Proposée**: Le 22 janvier 2024, Estelle Zheng a demandé de l'aide pour résoudre le problème de vérification. L'absence de numéro de téléphone renseigné dans la méthode d'authentification était citée comme la cause possible des problèmes.
+
+- **Tentatives de Solution**: Le 23 janvier 2024, Guillaume Martin a suggéré d'utiliser Microsoft Authenticator au lieu de la vérification par appel téléphonique, mais cela n'a pas fonctionné. Le 6 février 2024, Guillaume Martin a réinitialisé les comptes en utilisant de nouveaux numéros de téléphone, mais le problème persistait.
+
+- **Assistance de Microsoft**: Le 5 avril 2024, Estelle Zheng a reçu la confirmation de Microsoft que le problème de vérification était probablement dû au blocage des appels sur les réseaux téléphoniques algériens. Le 10 avril 2024, Guillaume Martin a suggéré d'essayer l'authentification multifacteur (MFA) par e-mail. On a testé cette méthode, mais le problème persistait.
+
+- **Captures d'Écran et Documentation**: Le 29 février 2024, on a envoyé des captures d'écran et des vidéos illustrant le problème au support Microsoft. Cependant, la solution n'était toujours pas claire.
+
+- **Planification de Sessions de Test**: Le 22 mars 2024, Estelle Zheng a proposé une session de test avec l'équipe OpenAI pour montrer l'environnement de travail, mais ce créneau n'était pas adapté. La session a été reprogrammée pour le 25 mars 2024. La confirmation de la reprogrammation a été envoyée par Paul-Louis Moreau le 25 mars 2024.
+
+- **Problème de Connexion Persistant**: Le 18 mars 2024, on a signalé que même après avoir supprimé et recréé le compte Azure, le problème de vérification persistait. Le support Microsoft a été informé, avec une capture vidéo pour illustrer le problème.
+
+Cordialement,
+
+Nihad Senhadji
+
+
+
+
+
+
+
+
+
+
 Objet : Mise à jour sur le Projet Azure/OpenAI - Problèmes de Connexion
 
 Bonjour [Nom du Destinataire],
