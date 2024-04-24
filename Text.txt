@@ -1,3 +1,18 @@
+Subject: Suivi du projet Azure OpenAI
+
+Bonjour Antoine,
+
+Suite au directif de [Nom du Boss], je vous transfère les mails détaillés du projet Azure OpenAI du 21 avril.
+
+N'hésitez pas à me faire savoir si vous avez des questions ou besoin de renseignements supplémentaires.
+
+Bien à vous,
+
+[Votre Nom]
+
+
+
+
 Le 21 avril 2024, on a activé l'authentificateur multifacteur (MFA) via e-mail, mais on n'a pas pu accéder au compte. Le message d'erreur indiquait que la connexion ne répondait pas aux critères nécessaires. On a joint deux captures d'écran montrant l'erreur. Dans cet e-mail, il y a également un fichier joint contenant tous les échanges d'e-mails historiques.
 
 Cordialement,
