@@ -1,3 +1,15 @@
+Objet : Extraction de Données
+
+Bonjour [Nom du Destinataire],
+
+Voici l'extraction demandée, contenant les colonnes suivantes : [Colonne 1], [Colonne 2], [Colonne 3]. Si vous avez des questions ou avez besoin d'aide supplémentaire, n'hésitez pas à me le faire savoir.
+
+Cordialement,
+
+[Votre Nom]
+
+
+
 Objet: Mise à jour sur le dossier de remboursement de février
 
 Bonjour [Nom du destinataire],
