@@ -1,3 +1,8 @@
+Numéro d'identification avec un seul ID tiers
+
+
+
+
 Deuxième cas où la plupart des cas correspondent à un numéro d'identification national unique : '0307970106286'. Ce numéro a un seul ID tiers, '07000 200412', qui a été créé en 2021. Les données associées à cet ID tiers sont présentes dans le fichier P310 de décembre 2022, et les détails suivants y sont enregistrés :
 
 - **Adresse personnelle (code commune)** : "1"
