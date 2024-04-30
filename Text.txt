@@ -1,3 +1,10 @@
+Le numéro d'identification 0307000000370 a plusieurs tiers. Le dernier tiers, 07530 000254, a été créé le 9 avril 2023, tandis que le tiers 07000 000370 date du 15 mai 2003. Les données relatives à ces tiers sont présentes dans le fichier P310 de 2022, mais elles sont absentes dans le fichier P310 de 2024. Cela suggère que des informations ont été perdues ou omises entre les deux fichiers. Une enquête approfondie serait nécessaire pour identifier la cause de cette divergence et éviter des omissions similaires à l'avenir.
+
+
+
+
+
+
 Numéro d'identification avec un seul ID tiers
 
 
