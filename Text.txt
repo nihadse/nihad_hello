@@ -1,3 +1,17 @@
+Bonjour Omar,
+
+Voici une analyse des écarts relevés entre deux sources de données : DOMUS décembre 2022 et DATA LAKE février 2024.
+
+Nous avons effectué une analyse comparative pour identifier les incohérences entre ces deux sources.
+
+J'ai identifié deux cas : des numéros d'identification nationaux associés à plusieurs tiers, et d'autres associés à un seul tiers.
+
+Pour détailler ces écarts, tu trouveras le fichier joint, qui contient les données présentes dans P310 décembre 2022 mais absentes du fichier P310 de février 2024.
+
+D'après notre analyse, voici quelques exemples.
+
+
+
 J'ai identifié deux cas : les numéros d'identification nationaux avec plusieurs tiers et ceux avec un seul tiers. Pour détailler ces écarts, tu trouveras le fichier joint qui contient 14 736 numéros d'identification nationaux uniques qui étaient présents dans le fichier P310 de décembre 2022 mais qui ne figurent pas dans le fichier P310 de février 2024.
 
 Je te remercie de valider ces résultats et de ta collaboration pour déterminer les causes de ces divergences. Si tu as des questions ou des remarques, n'hésite pas à me contacter.
