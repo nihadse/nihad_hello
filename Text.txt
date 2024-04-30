@@ -1,3 +1,27 @@
+Numéro d'identification ayant plusieurs ID tiers :
+
+Le numéro d'identification '0307120103294' a deux ID tiers : '07120 103294' créé en 2012 et '07070 120315' créé en 2023.
+
+Dans le fichier P310 de décembre 2022, ces informations sont enregistrées, et elles sont également présentes dans Atlas, y compris les champs suivants :
+
+- Code Wilaya de naissance
+- Code commune de naissance
+- Entité émettrice du Document
+- Nom de jeune fille de la mère
+- Numéro de Document
+- Pays d'émission du Document
+- Prénom de la mère
+- Prénom du père
+- Type de Document d'identification
+- Revenus mensuels
+
+Cependant, ces informations sont absentes dans le fichier de février 2024.
+
+
+
+
+
+
 Sujet : Analyse comparative des sources de données - Écarts et incohérences
 
 Bonjour [Nom du destinataire],
