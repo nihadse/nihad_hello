@@ -1,3 +1,30 @@
+Deuxième cas où la plupart des cas correspondent à un numéro d'identification national unique : '0307970106286'. Ce numéro a un seul ID tiers, '07000 200412', qui a été créé en 2021. Les données associées à cet ID tiers sont présentes dans le fichier P310 de décembre 2022, et les détails suivants y sont enregistrés :
+
+- **Adresse personnelle (code commune)** : "1"
+- **Adresse personnelle (code wilaya)** : "19"
+- **Adresse professionnelle (code commune)** : "1"
+- **Adresse professionnelle (code wilaya)** : "19"
+- **Code Wilaya de naissance** : "35"
+- **Code commune de naissance** : "31"
+- **Date d'expiration du Document** : "20240419"
+- **Entité émettrice du Document** : "À définir"
+- **Nom de jeune fille de la mère** : "SEBAOU"
+- **Numéro de Document** : "A01177341"
+- **Pays d'émission du Document** : "DZ"
+- **Prénom de la mère** : "HOURIA"
+- **Prénom du père** : "MOHAMED"
+- **Type de Document d'identification** : "3"
+- **Revenus mensuels** : "130000"
+
+Cependant, ces informations ne sont pas présentes dans le fichier P310 de février 2024, et elles n'existent pas non plus dans le système Atlas. Cela pourrait indiquer des problèmes de transfert ou de conservation des données, entraînant une perte d'informations cruciales. La disparition de ces enregistrements pourrait avoir des implications sérieuses pour l'identification et les documents légaux associés.
+
+Pour corriger ce problème, une enquête sur la perte des données est nécessaire, ainsi qu'une réévaluation des processus de gestion des données. Des mesures supplémentaires, comme des audits réguliers et des procédures de sauvegarde améliorées, pourraient être mises en place pour éviter de telles incohérences à l'avenir.
+
+
+
+
+
+
 Numéro d'identification ayant plusieurs ID tiers :
 
 Le numéro d'identification '0307120103294' a deux ID tiers : '07120 103294' créé en 2012 et '07070 120315' créé en 2023.
