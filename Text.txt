@@ -1,3 +1,38 @@
+Objet : Analyse Comparative des Sources de Données - Écarts Entre Décembre 2022 et Février 2024
+
+Bonjour [Nom du destinataire],
+
+Je vous écris pour partager les résultats d'une analyse comparative que nous avons effectuée entre deux sources de données : l'une datée de décembre 2022 provenant de Dominus et l'autre provenant d'un lac de données de février 2024. L'objectif était d'identifier les incohérences et les changements entre ces deux sources, et notre analyse a révélé des écarts significatifs.
+
+### Points clés de l'analyse
+
+**Numéro d'identification national :** Cet identifiant clé permet de suivre les enregistrements entre différentes sources. Les différences observées dans ce champ peuvent indiquer des incohérences.
+
+D'après notre analyse, voici quelques différences importantes entre les données de décembre 2022 et celles de février 2024 :
+
+### Exemple 01 : Numéro d'identification avec plusieurs tiers
+Le numéro d'identification '0107120103294' a deux tiers : '07120 101294' créé en 2012 et '07070 120315' créé en 2023. Dans le fichier P310 de décembre 2022, ces informations sont enregistrées, et elles sont également présentes dans Atlas, y compris les champs suivants : Code Wilaya de naissance, Code commune de naissance, Entité émettrice du Document, Nom de jeune fille de la mère, Numéro de Document, Pays d'émission du Document, Prénom de la mère, Prénom du père, Type de Document d'identification, et Revenus mensuels. Cependant, ces informations sont absentes dans le fichier de février 2024.
+
+### Exemple 02 : Numéro d'identification avec plusieurs tiers
+Le numéro d'identification "0307000000370" a plusieurs tiers. Le dernier tiers, '07530 000254', a été créé en 2023, tandis que le tiers '07000 000370' date du 15 mai 2003. Les données relatives à ces tiers sont présentes dans le fichier P310 de 2022 et dans Atlas pour le tiers '07000 000378', mais elles sont absentes dans le fichier P310 de février 2024. Cela inclut des informations financières telles que le Capital émis, les Capitaux Propres, les Emprunts et Dettes Financières, l'Excédent Brut d'Exploitation, et le Total des Actifs Non Courants.
+
+### Exemple 03 : Numéro d'identification avec un seul ID tiers
+Le numéro d'identification '0307970106286' a un seul tiers, '07000 200412', créé en 2021. Les données associées à cet ID tiers sont présentes dans le fichier P310 de décembre 2022. Voici quelques détails : Adresse personnelle (code commune), Code Wilaya de naissance, Date d'expiration du document, Prénom de la mère et du père, Revenus mensuels, entre autres. Cependant, ces informations sont absentes dans le fichier P310 de février 2024 et n'existent pas non plus dans Atlas.
+
+### Fichier des cas manquants
+De plus, nous avons compilé un fichier contenant 14 736 numéros d'identification nationaux uniques qui étaient présents dans le fichier P310 de décembre 2022 mais qui ne figurent pas dans le fichier P310 de février 2024.
+
+Ces écarts suggèrent des problèmes potentiels de transfert ou de gestion des données. Nous recommandons une enquête approfondie pour comprendre les causes de ces divergences et éviter des omissions similaires à l'avenir.
+
+Si vous avez des questions ou avez besoin de plus d'informations, je suis à votre disposition.
+
+Cordialement,
+
+[Votre Nom]
+
+
+
+
 Numéro d'identification avec plusieurs tiers
 
 
