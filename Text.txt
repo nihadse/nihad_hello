@@ -1,3 +1,32 @@
+Certainly, here's the updated email with your additional information:
+
+Bonjour à tous,
+
+Je tiens à vous informer que les KPI's Data Qualité sont prêts, ainsi que tous les livrables liés au programme IMR.
+
+1. KPI par Tiers: Le taux global de qualité des tiers est à 91%.
+
+2. KPI BCPQ: Le taux de qualité des tiers sont actuellement de 85% pour les personnes morales et de 93% pour les personnes physiques.
+
+3. KPI QAC: Les KPI QAC par donnée et Par contrôle sont prêts. Nous avons ajouté deux nouveaux domaines aux KPI QAC : "Arrêtés" et "Transferts".
+
+4. Indicateurs de Protection des Données (DPO): Mise à jour des indicateurs de protection des données: Nombre entre en relation et Nombre total id tiers.
+
+5. Les fichiers détails des anomalies par Ligne de métier: BUCC, Corporate, Recouvrement, Retail, Risque sont prêts.
+
+6. Les fichiers Variations entre Mars et Avril sont prêts.
+
+7. Les nouveaux ajouts: Nous avons également implémenté deux nouveaux indicateurs de données.
+
+Comme convenu, tous les fichiers ont été déposés dans le répertoire de partage: Lien: I:\DATA_EO\DEPARTEMENT_DATA\13-DATA_ANALYTICS_SCIENCE\14-Programme IMR
+
+Cordialement,
+
+Nihad
+
+
+
+
 Objet : Demande de restauration du flux de travail à la version antérieure au 8 avril 2024
 
 Bonjour [Nom du contact ou de l'équipe de support],
