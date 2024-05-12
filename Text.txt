@@ -1,3 +1,9 @@
+Dans les KPI, le nombre total de contrôles est de 100 et le nombre total de données est de 200, sans inclure le domaine "Produit".
+
+
+
+
+
 Certainly, here's the updated email with your additional information:
 
 Bonjour à tous,
