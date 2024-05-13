@@ -1,3 +1,15 @@
+- Nombre de flux de travail :
+  - 5
+- Nombre de sources de données :
+  - 10
+- Nombre de contrôles de données :
+  - 8
+- Résultat du flux de travail :
+  - Rapports analysés
+  - Informations générées
+  - Recommandations exploitables
+
+
 Dans les KPI, le nombre total de contrôles est de 100 et le nombre total de données est de 200, sans inclure le domaine "Produit".
 
 
