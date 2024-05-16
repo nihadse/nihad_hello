@@ -1,3 +1,11 @@
+Certainly:
+
+"The detection of clients' sensitivity levels (high, low, and medium) according to their sectors of activity."
+
+
+
+
+
 - Nombre de flux de travail :
   - 5
 - Nombre de sources de données :
