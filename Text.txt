@@ -1,3 +1,17 @@
+Bonjour,
+
+Nous avons effectué l'analyse des prises générées le 29/02. Vous trouverez ci-joint le fichier des écarts.
+
+Cordialement,
+
+[Votre Nom]  
+[Votre Position]  
+[Votre Société]  
+[Votre Contact]
+
+
+
+
 Certainly:
 
 "The detection of clients' sensitivity levels (high, low, and medium) according to their sectors of activity."
