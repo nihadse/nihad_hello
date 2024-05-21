@@ -1,3 +1,16 @@
+Subject: Vérification du contrôle et périmètre de la donnée
+
+Bonjour Nihad,
+
+J'ai vérifié les contrôles et le périmètre de la donnée contrôle, et tout semble correct. Veuillez trouver ci-joint la capture d'écran du DCc que nous utilisons. De plus, nous avons joint les deux fichiers Excel contenant les résultats de notre DCc.
+
+Cordialement,
+
+[Votre Nom]
+
+
+
+
 Bonjour,
 
 Nous avons effectué l'analyse des prises générées le 29/02. Vous trouverez ci-joint le fichier des écarts.
