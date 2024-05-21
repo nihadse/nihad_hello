@@ -1,3 +1,17 @@
+Bien sûr, voici la réponse mise à jour :
+
+---
+
+Bonjour [Nom du Destinataire],
+
+Les nouveaux contrôles pour Subdivision pays immatriculation et Subdivision pays sont les mêmes que ceux pour 82 et 83. De plus, nous avons effectué la mise à jour des contrôles pour les champs pays de naissance, code pays nationalité et adresse fiscale. Pourriez-vous valider ces contrôles, s'il vous plaît ?
+
+Cordialement,  
+[Votre Nom]
+
+
+
+
 Subject: Vérification du contrôle et périmètre de la donnée
 
 Bonjour Nihad,
