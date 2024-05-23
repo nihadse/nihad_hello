@@ -1,1 +1,22 @@
+Bien sûr, voici la version révisée :
 
+---
+
+Objet : Identification nationale en double et absence d'informations dans Atlas
+
+Bonjour Imène,
+
+Je tenais à t'informer que, suite à notre récente vérification des fichiers P310 Domus (généré le 2024/02/29) et P310 Atlas (généré le 2024/03/03), nous avons constaté que certains identifiants nationaux apparaissent en double. En effet, ces identifiants sont présents à la fois avec un espace et sans espace.
+
+Exemples d'identifiants nationaux concernés :
+
+1. Identifiant National : 0307040105356
+2. Identifiant National : 0307370108617
+
+De plus, les informations correspondantes à ces identifiants ne sont pas présentes dans Atlas. Ci-joint, tu trouveras des captures d'écran illustrant ce constat. Peux-tu nous expliquer pourquoi ces informations ne figurent-elles pas dans Atlas et pourquoi nous avons des identifiants nationaux en double dans les deux fichiers (avec et sans espace) ?
+
+Merci d'avance pour ta coopération et ton retour rapide sur ce sujet.
+
+Cordialement,
+
+[Votre Nom]
