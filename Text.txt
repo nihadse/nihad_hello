@@ -1,17 +1,455 @@
 
 
-Objet : Résumé des tâches réalisées au cours des six derniers mois
+1. **abundant** (غزير): adj. present in large quantities  
+   *Water is abundant in the rainy season.*  
+   الماء غزير في موسم الأمطار.
 
-Bonjour [Nom du destinataire],
+2. **accumulate** (يتراكم): v. to gradually collect  
+   *He likes to accumulate books.*  
+   يحب أن يتراكم الكتب.
 
-Depuis février 2024, je gère les fichiers de livraison mensuels (IMR) après une passation en janvier, ajoutant chaque mois de nouveaux contrôles de données. J'ai assisté à toutes les réunions liées au programme IMR.
+3. **accurate** (دقيق): adj. correct; free from errors  
+   *Her calculations were accurate.*  
+   كانت حساباتها دقيقة.
 
-En décembre 2024, j'ai contribué à la présentation du projet Sentinilia pour la détection de fraude sur les cartes Visa, analysant les données et préparant les supports.
+4. **accustomed** (معتاد): adj. used to something  
+   *He is accustomed to waking up early.*  
+   هو معتاد على الاستيقاظ مبكرًا.
 
-Le projet Flag ABC, mis en production en avril 2024, vise à identifier les clients sensibles. J'ai participé à l'analyse des données et au développement du système de marquage.
+5. **acquire** (يكتسب): v. to come into possession of  
+   *She acquired a new skill.*  
+   اكتسبت مهارة جديدة.
 
-Le projet Azure Open AI pour un bot de connaissances a été lancé en janvier 2024, mais nous n'avons eu accès qu'en mai 2024. J'ai travaillé sur l'infrastructure et la formation du bot, et assisté à toutes les réunions sur l'IA générique.
+6. **adamant** (عنيد): adj. refusing to change an opinion  
+   *He was adamant about his decision.*  
+   كان عنيدًا بشأن قراره.
 
-N'hésitez pas à me contacter pour toute question ou information supplémentaire.
+7. **adequate** (كافٍ): adj. enough to suit your needs  
+   *She has adequate resources for the project.*  
+   لديها موارد كافية للمشروع.
 
-Cordialement,
+8. **adjacent** (مجاور): adj. close to or next to  
+   *The park is adjacent to the school.*  
+   الحديقة مجاورة للمدرسة.
+
+9. **adjust** (يضبط): v. to change something so it serves its purpose better  
+   *You need to adjust the settings.*  
+   تحتاج إلى ضبط الإعدادات.
+
+10. **advantage** (ميزة): n. something that makes it easier to achieve success  
+    *Experience gives you an advantage.*  
+    الخبرة تمنحك ميزة.
+
+11. **advocate** (يدافع عن): v. to publicly support  
+    *She advocates for animal rights.*  
+    تدافع عن حقوق الحيوانات.
+
+12. **adverse** (سلبي): adj. unfavorable; against one’s desires  
+    *They faced adverse weather conditions.*  
+    واجهوا ظروفًا جوية سلبية.
+
+13. **aggregate** (يُجمِّع): v. to combine  
+    *We need to aggregate the data.*  
+    نحتاج إلى تجميع البيانات.
+
+14. **aggressive** (عدواني): adj. assertive and pushy  
+    *His behavior was aggressive.*  
+    كان سلوكه عدوانيًا.
+
+15. **allocate** (يخصص): v. to put aside for a specific purpose  
+    *Funds were allocated for the project.*  
+    تم تخصيص الأموال للمشروع.
+
+16. **alternative** (بديل): n. another option or choice  
+    *We need an alternative plan.*  
+    نحتاج إلى خطة بديلة.
+
+17. **amateur** (هاوٍ): n. someone who is inexperienced or not highly skilled in a particular area  
+    *He is an amateur photographer.*  
+    هو مصور هاوٍ.
+
+18. **ambiguous** (غامض): adj. having several potential meanings; unclear and difficult to understand  
+    *The instructions were ambiguous.*  
+    كانت التعليمات غامضة.
+
+19. **ambitious** (طموح): adj. having large goals  
+    *She is an ambitious student.*  
+    هي طالبة طموحة.
+
+20. **amend** (يُعدِّل): v. to change for the better; to improve  
+    *The law was amended.*  
+    تم تعديل القانون.
+
+21. **ample** (وافر): adj. plentiful  
+    *There is ample space in the room.*  
+    هناك مساحة وافرة في الغرفة.
+
+22. **anomaly** (شذوذ): n. deviation from the norm  
+    *There was an anomaly in the results.*  
+    كان هناك شذوذ في النتائج.
+
+23. **annual** (سنوي): adj. occurring yearly  
+    *We have an annual meeting.*  
+    لدينا اجتماع سنوي.
+
+24. **antagonize** (يستفز): v. to tease or be hostile towards a person or group  
+    *Don't antagonize your classmates.*  
+    لا تستفز زملاءك.
+
+25. **attitude** (موقف): n. manner or feeling  
+    *She has a positive attitude.*  
+    لديها موقف إيجابي.
+
+26. **attribute** (يعزو): v. to give credit  
+    *She attributes her success to hard work.*  
+    تعزو نجاحها إلى العمل الجاد.
+
+27. **arbitrary** (اعتباطي): adj. based on a whim or random desire  
+    *The decision was arbitrary.*  
+    كان القرار اعتباطيًا.
+
+28. **arduous** (شاق): adj. requiring a lot of effort  
+    *The hike was arduous.*  
+    كانت الرحلة شاقة.
+
+29. **assuage** (يخفف): v. to lessen a negative feeling  
+    *He tried to assuage her fears.*  
+    حاول تخفيف مخاوفها.
+
+30. **assume** (يفترض): v. to suppose without solid proof  
+    *Don't assume things without evidence.*  
+    لا تفترض الأشياء بدون دليل.
+
+31. **augment** (يزيد): v. to increase or make larger  
+    *We need to augment our income.*  
+    نحتاج إلى زيادة دخلنا.
+
+32. **benefit** (فائدة): n. something positive or advantageous  
+    *There are many benefits to exercise.*  
+    هناك فوائد عديدة للتمرين.
+
+33. **berate** (يوبخ): v. to scold  
+    *She berated him for being late.*  
+    وبخته على التأخر.
+
+34. **bestow** (يمنح): v. to give as a gift  
+    *He was bestowed an award.*  
+    مُنِح جائزة.
+
+35. **boast** (يتباهى): v. to brag or talk with excessive pride  
+    *He likes to boast about his achievements.*  
+    يحب التباهي بإنجازاته.
+
+36. **boost** (يعزز): v. to help raise or increase something  
+    *We need to boost our sales.*  
+    نحتاج إلى تعزيز مبيعاتنا.
+Certainly! Here is the list with the Arabic translations and example sentences:
+
+1. **resolve** (يحسم): v. to come to a firm decision  
+   *He resolved to improve his health.*  
+   حسم قراره بتحسين صحته.
+
+2. **restrict** (يقيد): v. to confine or keep within limits  
+   *They restricted access to the building.*  
+   قيدوا الدخول إلى المبنى.
+
+3. **retain** (يحتفظ): v. to continue to do something or keep something  
+   *She retained her position as manager.*  
+   احتفظت بمنصبها كمديرة.
+
+4. **retract** (يسحب): v. to draw back in  
+   *He retracted his statement.*  
+   سحب تصريحه.
+
+5. **retrieve** (يستعيد): v. to bring back  
+   *She retrieved her lost keys.*  
+   استعاد مفاتيحها المفقودة.
+
+6. **rhetorical** (بلاغي): adj. used just for style or impact  
+   *He asked a rhetorical question.*  
+   طرح سؤالًا بلاغيًا.
+
+7. **rigid** (صارم): adj. stiff, unyielding  
+   *The rules are rigid.*  
+   القواعد صارمة.
+
+8. **rotate** (يدور): v. to turn  
+   *The earth rotates on its axis.*  
+   تدور الأرض حول محورها.
+
+9. **safeguard** (يحمي): n. something that serves as protection or ensures safety  
+   *The law acts as a safeguard for citizens.*  
+   يعمل القانون كحماية للمواطنين.
+
+10. **scrutinize** (يفحص بدقة): v. to very carefully examine  
+    *They scrutinized the documents.*  
+    فحصوا الوثائق بدقة.
+
+11. **section** (قسم): n. a part of the whole  
+    *This section of the book is interesting.*  
+    هذا القسم من الكتاب مثير للاهتمام.
+
+12. **select** (يختار): v. to choose  
+    *Please select a seat.*  
+    يرجى اختيار مقعد.
+
+13. **sequence** (تسلسل): n. things that follow each other in a certain order  
+    *The sequence of events is important.*  
+    تسلسل الأحداث مهم.
+
+14. **severe** (حاد): adj. harsh or strict  
+    *The storm caused severe damage.*  
+    تسبب العاصفة في أضرار شديدة.
+
+15. **shallow** (سطحي): adj. not deep  
+    *The water here is shallow.*  
+    الماء هنا سطحي.
+
+16. **shelter** (يأوي): v. to protect from something harmful  
+    *They sheltered from the rain.*  
+    احتموا من المطر.
+
+17. **shrink** (ينكمش): v. to become smaller  
+    *The clothes shrank after washing.*  
+    انكمشت الملابس بعد الغسيل.
+
+18. **significant** (مهم): adj. important, noteworthy  
+    *This is a significant discovery.*  
+    هذا اكتشاف مهم.
+
+19. **source** (مصدر): n. a person, place or thing where something was obtained  
+    *We need to find the source of the problem.*  
+    نحتاج إلى العثور على مصدر المشكلة.
+
+20. **sparse** (متناثر): adj. thinly scattered  
+    *The population is sparse in this area.*  
+    السكان متناثرون في هذه المنطقة.
+
+21. **specify** (يحدد): v. to clearly specify which one  
+    *Please specify your requirements.*  
+    يرجى تحديد متطلباتك.
+
+22. **speculate** (يتكهن): v. to form a theory without strong evidence  
+    *They speculated about the future.*  
+    تكهنوا بشأن المستقبل.
+
+23. **solitary** (وحيد): adj. alone; without others  
+    *He leads a solitary life.*  
+    يعيش حياة وحيدة.
+
+24. **somber** (كئيب): adj. gloomy; depressing  
+    *The mood was somber at the funeral.*  
+    كان الجو كئيبًا في الجنازة.
+
+25. **soothe** (يهدئ): v. to calm or comfort  
+    *She tried to soothe the crying baby.*  
+    حاولت تهدئة الطفل الباكي.
+
+26. **squalid** (قذر): adj. filthy and unpleasant  
+    *They lived in squalid conditions.*  
+    عاشوا في ظروف قذرة.
+
+27. **stable** (مستقر): adj. unlikely to change or fail  
+    *The table is stable.*  
+    الطاولة مستقرة.
+
+28. **stagnant** (راكد): adj. sluggish; showing little movement  
+    *The water in the pond is stagnant.*  
+    الماء في البركة راكد.
+
+29. **strategy** (استراتيجية): n. a plan to reach a desired outcome  
+    *We need a new business strategy.*  
+    نحتاج إلى استراتيجية عمل جديدة.
+
+30. **subsequent** (لاحق): adj. coming after something in time  
+    *Subsequent events proved him right.*  
+    أثبتت الأحداث اللاحقة أنه كان على حق.
+
+31. **substitute** (بديل): n. a person or thing acting in place of another  
+    *Use honey as a substitute for sugar.*  
+    استخدم العسل كبديل للسكر.
+
+32. **subtle** (دقيق): adj. difficult to notice right away  
+    *There was a subtle change in his tone.*  
+    كان هناك تغيير دقيق في نبرته.
+
+33. **sufficient** (كافٍ): adj. enough to serve a particular purpose  
+    *We have sufficient evidence.*  
+    لدينا دليل كافٍ.
+
+34. **summarize** (يلخص): v. to briefly give the main points  
+    *Can you summarize the article?*  
+    هل يمكنك تلخيص المقال؟
+
+35. **supervise** (يشرف): v. to oversee work or a process  
+    *She supervises the project.*  
+    تشرف على المشروع.
+
+36. **supplant** (يحل محل): v. to take the place of something else  
+    *New technologies may supplant old ones.*  
+    قد تحل التقنيات الجديدة محل القديمة.
+
+37. **suspend** (يعلق): v. to temporarily stop  
+    *The service was suspended.*  
+    تم تعليق الخدمة.
+
+
+Certainly! Here are the words from the image translated into Arabic, along with an example sentence for each:
+
+1. **degrade - يُخَفِّض**
+   - Example: Pollutants can degrade the quality of water.
+   - الملوثات يمكن أن تخفض جودة المياه.
+
+2. **demonstrate - يُبَيِّن**
+   - Example: The teacher will demonstrate the experiment.
+   - سَيُبَيِّن المُعَلِّم التَّجرِبة.
+
+3. **deny - يُنْكِر**
+   - Example: He will deny the accusations.
+   - سيُنْكِر الاتهامات.
+
+4. **deplete - يَسْتَنْفِد**
+   - Example: The resources will deplete over time.
+   - ستستنفد الموارد مع مرور الوقت.
+
+5. **deposit - يُودِع**
+   - Example: He will deposit money into his account.
+   - سيودع المال في حسابه.
+
+6. **desirable - مَرْغوب فيه**
+   - Example: The job is highly desirable.
+   - الوظيفة مرغوبة جدًا.
+
+7. **despise - يَحْتَقِر**
+   - Example: She despises dishonesty.
+   - تَحْتَقِر عدم الأمانة.
+
+8. **detect - يَكْتَشِف**
+   - Example: The device can detect smoke.
+   - يمكن للجهاز اكتشاف الدخان.
+
+9. **deter - يَرْدَع**
+   - Example: Security cameras deter theft.
+   - الكاميرات الأمنية تردع السرقة.
+
+10. **deviate - يَنْحَرِف**
+    - Example: Do not deviate from the path.
+    - لا تَنْحَرِف عن المسار.
+
+11. **devise - يُبْتَكِر**
+    - Example: Scientists devise new methods.
+    - العلماء يبتكرون طرق جديدة.
+
+12. **diatribe - خُطْبَة غاضِبة**
+    - Example: He delivered a diatribe against corruption.
+    - ألقى خُطْبة غاضبة ضد الفساد.
+
+13. **digress - يَسْتَطْرِد**
+    - Example: Please do not digress during the meeting.
+    - من فضلك لا تستطرد أثناء الاجتماع.
+
+14. **dilemma - مَأْزِق**
+    - Example: She faces a moral dilemma.
+    - تواجه مأزقًا أخلاقيًا.
+
+15. **diminish - يُقَلِّل**
+    - Example: The medicine will diminish the pain.
+    - الدواء سيقلل الألم.
+
+16. **dispose - يَتَخَلَّص مِن**
+    - Example: Dispose of the waste properly.
+    - تخلص من النفايات بشكل صحيح.
+
+17. **disproportionate - غَيْر مُتَناسِب**
+    - Example: The response was disproportionate to the offense.
+    - كان الرد غير متناسب مع المخالفة.
+
+18. **disrupt - يُعَطِّل**
+    - Example: The storm will disrupt travel plans.
+    - العاصفة ستعطل خطط السفر.
+
+19. **distort - يُشَوِّه**
+    - Example: The mirror will distort your reflection.
+    - المرآة ستشوه انعكاسك.
+
+20. **distribute - يُوَزِّع**
+    - Example: They distribute food to the needy.
+    - يوزعون الطعام على المحتاجين.
+
+21. **diverse - مُتَنوِّع**
+    - Example: The city has a diverse population.
+    - المدينة لديها سكان متنوعون.
+
+22. **divert - يُحَوِّل**
+    - Example: They will divert the river.
+    - سيحولون النهر.
+
+23. **dynamic - ديناميكي**
+    - Example: The leader is dynamic and inspiring.
+    - القائد ديناميكي وملهم.
+
+24. **ease - يُخَفِّف**
+    - Example: The medication will ease your pain.
+    - الدواء سيخفف ألمك.
+
+25. **efficient - فعَّال**
+    - Example: The new system is more efficient.
+    - النظام الجديد أكثر فعالية.
+
+26. **eliminate - يُزِيل**
+    - Example: The goal is to eliminate waste.
+    - الهدف هو إزالة النفايات.
+
+27. **elite - نُخْبَة**
+    - Example: The elite class has more privileges.
+    - الطبقة النخبة لديها امتيازات أكثر.
+
+28. **eloquent - فَصِيح**
+    - Example: The speaker was eloquent.
+    - كان المتحدث فصيحًا.
+
+29. **emphasize - يُؤَكِّد**
+    - Example: She will emphasize the importance of education.
+    - ستؤكد على أهمية التعليم.
+
+30. **endure - يَتَحَمَّل**
+    - Example: He will endure the hardships.
+    - سيتحمل الصعوبات.
+
+31. **enhance - يُحَسِّن**
+    - Example: This feature will enhance the performance.
+    - هذه الميزة ستحسن الأداء.
+
+32. **epitome - نَمُوذَج مُثالي**
+    - Example: She is the epitome of kindness.
+    - هي النموذج المثالي للطيبة.
+
+33. **equivalent - مُعادِل**
+    - Example: This amount is equivalent to one dollar.
+    - هذا المبلغ يعادل دولار واحد.
+
+34. **erroneous - خَطَأ**
+    - Example: The report contained erroneous information.
+    - التقرير يحتوي على معلومات خاطئة.
+
+35. **estimate - يُقَدِّر**
+    - Example: They estimate the cost to be high.
+    - يقدرون أن التكلفة ستكون عالية.
+
+36. **evade - يُفَلِّت**
+    - Example: He tried to evade the question.
+    - حاول التهرب من السؤال.
+
+37. **evaluate - يُقَيِّم**
+    - Example: We need to evaluate the results.
+    - نحتاج إلى تقييم النتائج.
+
+38. **evidence - أَدِلّة**
+    - Example: The evidence was clear.
+    - كانت الأدلة واضحة.
+
+39. **evolve - يَتَطَوَّر**
+    - Example: Species evolve over time.
+    - الأنواع تتطور مع مرور الوقت.
+
+I hope this meets your requirements! Let me know if there is anything else you need.
