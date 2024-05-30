@@ -1,10 +1,15 @@
-Certainly, here is a three-line version:
+Got it. Here's the email with both links:
 
 ---
 
 Objet : Tutoriel Domino Data Lab
 
-Bonjour à tous,  
-Voici le tutoriel pour la plateforme Domino Data Lab : [Insérer le lien].
+Bonjour à tous,
+
+Voici les liens pour la plateforme Domino Data Lab :
+- Pour obtenir l'accès : [Insérer le lien pour obtenir l'accès]
+- Pour accéder au tutoriel : [Insérer le lien pour accéder au tutoriel]
 
 ---
+
+Replace the placeholders with the actual links.
