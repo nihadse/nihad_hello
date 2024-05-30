@@ -1,9 +1,10 @@
-Objet : Fichiers envoyés et e-mail joint inclus
+Certainly, here is a three-line version:
 
-Bonjour [Nom du destinataire],
+---
 
-Les fichiers ont été envoyés et je les joins à cet e-mail.
+Objet : Tutoriel Domino Data Lab
 
-Cordialement,
+Bonjour à tous,  
+Voici le tutoriel pour la plateforme Domino Data Lab : [Insérer le lien].
 
-[Votre nom]
+---
