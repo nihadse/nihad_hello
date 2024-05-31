@@ -1,15 +1,1 @@
-Got it. Here's the email with both links:
-
----
-
-Objet : Tutoriel Domino Data Lab
-
-Bonjour à tous,
-
-Voici les liens pour la plateforme Domino Data Lab :
-- Pour obtenir l'accès : [Insérer le lien pour obtenir l'accès]
-- Pour accéder au tutoriel : [Insérer le lien pour accéder au tutoriel]
-
----
-
-Replace the placeholders with the actual links.
+LEFT([DateField], 2) + "-" + MID([DateField], 3, 2) + "-" + RIGHT([DateField], 4)
