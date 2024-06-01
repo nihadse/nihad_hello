@@ -10,6 +10,77 @@ model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 interdicted_checks = pd.read_csv('interdicted_checks.csv')
 client_database = pd.read_csv('client_database.csv')
 
+# Data preprocessing function with handling for 'srl', 'eurl', and correction for 'sar'
+def preprocess_name(name):
+    name = name.lower()  # Convert to lowercase
+    name = re.sub(r'[^a-z\s]', '', name)  # Remove special characters
+    name = re.sub(r'\s+', ' ', name).strip()  # Remove extra whitespace
+    # Correct 'sar' to 'sarl'
+    if name.endswith(' sar'):
+        name = name[:-3] + ' sarl'
+    # Move known suffixes to the beginning
+    for suffix in [' srl', ' eurl', ' sarl']:
+        if name.endswith(suffix):
+            name = suffix.strip() + ' ' + name[:-len(suffix)].strip()
+    return name
+
+def normalize_names(row):
+    # If both columns are non-empty and identical, keep one
+    if pd.notna(row['name']) and pd.notna(row['family_name']):
+        if row['name'].strip().lower() == row['family_name'].strip().lower():
+            return row['name'].strip()
+    # If family_name is empty, combine columns
+    if pd.isna(row['family_name']) or row['family_name'].strip() == '':
+        return row['name'].strip()
+    # Combine both fields if they are distinct
+    return f"{row['name'].strip()} {row['family_name'].strip()}"
+
+# Apply normalization
+interdicted_checks['combined_name'] = interdicted_checks.apply(normalize_names, axis=1)
+client_database['combined_name'] = client_database.apply(normalize_names, axis=1)
+
+# Apply preprocessing
+interdicted_checks['clean_name'] = interdicted_checks['combined_name'].apply(preprocess_name)
+client_database['clean_name'] = client_database['combined_name'].apply(preprocess_name)
+
+# Generate embeddings for names
+interdicted_embeddings = model.encode(interdicted_checks['clean_name'].tolist(), convert_to_tensor=True)
+client_embeddings = model.encode(client_database['clean_name'].tolist(), convert_to_tensor=True)
+
+# Compute cosine similarity
+cosine_scores = util.pytorch_cos_sim(interdicted_embeddings, client_embeddings)
+
+# Identify the most similar names
+threshold = 0.8  # Similarity threshold for considering a match
+matches = []
+for i in range(len(interdicted_checks)):
+    for j in range(len(client_database)):
+        if cosine_scores[i][j] >= threshold:
+            matches.append((interdicted_checks['combined_name'][i], client_database['combined_name'][j], cosine_scores[i][j].item()))
+
+# Create a DataFrame of matches
+matches_df = pd.DataFrame(matches, columns=['Interdicted Name', 'Client Name', 'Similarity'])
+print(matches_df)
+
+# Save the matches to a CSV file
+matches_df.to_csv('matches.csv', index=False)
+
+
+
+
+
+import pandas as pd
+import numpy as np
+import re
+from sentence_transformers import SentenceTransformer, util
+
+# Load the transformer model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Load the datasets
+interdicted_checks = pd.read_csv('interdicted_checks.csv')
+client_database = pd.read_csv('client_database.csv')
+
 # Data preprocessing function with handling for 'srl', 'eurl', and other suffixes
 def preprocess_name(name):
     name = name.lower()  # Convert to lowercase
