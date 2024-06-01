@@ -1,3 +1,30 @@
+def normalize_names(row):
+    name = row['name'] if pd.notna(row['name']) else ''
+    family_name = row['family_name'] if pd.notna(row['family_name']) else ''
+
+    # Strip whitespace
+    name = name.strip()
+    family_name = family_name.strip()
+
+    # If both columns are empty, return a placeholder
+    if name == '' and family_name == '':
+        return 'unknown'
+    
+    # If both columns are non-empty and identical, keep one
+    if name.lower() == family_name.lower():
+        return name
+    
+    # If one of the columns is empty, use the non-empty column
+    if name == '':
+        return family_name
+    if family_name == '':
+        return name
+    
+    # Combine both fields if they are distinct
+    return f"{name} {family_name}"
+
+
+
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
