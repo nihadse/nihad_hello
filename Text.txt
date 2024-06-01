@@ -1,5 +1,72 @@
 import pandas as pd
 import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import re
+
+# Load the datasets
+interdicted_checks = pd.read_csv('interdicted_checks.csv')
+client_database = pd.read_csv('client_database.csv')
+
+# Data preprocessing function with handling for 'srl' and misaligned columns
+def preprocess_name(name):
+    name = name.lower()  # Convert to lowercase
+    name = re.sub(r'[^a-z\s]', '', name)  # Remove special characters
+    name = re.sub(r'\s+', ' ', name).strip()  # Remove extra whitespace
+    if name.endswith(' srl'):
+        name = 'srl ' + name[:-4].strip()  # Move 'srl' to the beginning
+    return name
+
+def normalize_names(row):
+    # If both columns are non-empty and identical, keep one
+    if pd.notna(row['name']) and pd.notna(row['family_name']):
+        if row['name'].strip().lower() == row['family_name'].strip().lower():
+            return row['name'].strip()
+    # If family_name is empty, combine columns
+    if pd.isna(row['family_name']) or row['family_name'].strip() == '':
+        return row['name'].strip()
+    # Combine both fields if they are distinct
+    return f"{row['name'].strip()} {row['family_name'].strip()}"
+
+# Apply normalization
+interdicted_checks['combined_name'] = interdicted_checks.apply(normalize_names, axis=1)
+client_database['combined_name'] = client_database.apply(normalize_names, axis=1)
+
+# Apply preprocessing
+interdicted_checks['clean_name'] = interdicted_checks['combined_name'].apply(preprocess_name)
+client_database['clean_name'] = client_database['combined_name'].apply(preprocess_name)
+
+# Vectorize names using TF-IDF
+vectorizer = TfidfVectorizer().fit(pd.concat([interdicted_checks['clean_name'], client_database['clean_name']]))
+interdicted_vectors = vectorizer.transform(interdicted_checks['clean_name'])
+client_vectors = vectorizer.transform(client_database['clean_name'])
+
+# Compute cosine similarity
+similarity_matrix = cosine_similarity(interdicted_vectors, client_vectors)
+
+# Identify the most similar names
+threshold = 0.8  # Similarity threshold for considering a match
+matches = []
+for i, row in enumerate(similarity_matrix):
+    max_sim = np.max(row)
+    if max_sim >= threshold:
+        client_index = np.argmax(row)
+        matches.append((interdicted_checks['name'][i], client_database['name'][client_index], max_sim))
+
+# Create a DataFrame of matches
+matches_df = pd.DataFrame(matches, columns=['Interdicted Name', 'Client Name', 'Similarity'])
+print(matches_df)
+
+# Save the matches to a CSV file
+matches_df.to_csv('matches.csv', index=False)
+
+
+
+
+
+
+import pandas as pd
+import numpy as np
 import re
 from sentence_transformers import SentenceTransformer, util
 
