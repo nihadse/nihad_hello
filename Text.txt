@@ -1,4 +1,65 @@
 import pandas as pd
+import numpy as np
+import torch
+from sentence_transformers import SentenceTransformer, util
+
+# Load the model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# Example data (replace these with your actual data)
+client_database = ["Client Name 1", "Client Name 2", "Client Name 3"]  # Replace with your actual client data
+interdicted_checks = ["Client Name A", "Client Name B", "Client Name 1"]  # Replace with your actual interdicted check data
+
+# Get embeddings for client database and interdicted checks
+client_database_embeddings = model.encode(client_database, convert_to_tensor=True)
+interdicted_checks_embeddings = model.encode(interdicted_checks, convert_to_tensor=True)
+
+# Calculate cosine similarity between client database and interdicted checks embeddings
+similarity_matrix = util.pytorch_cos_sim(interdicted_checks_embeddings, client_database_embeddings).numpy()
+
+# Create DataFrame to store the max similarity results
+max_similarity_data = {
+    "Interdicted_Name": [],
+    "Matched_Client_Name": [],
+    "Max_Similarity_Score": []
+}
+
+# Set the similarity threshold
+threshold = 0.8
+considered_pairs = set()  # Keep track of considered pairs to avoid duplicates
+
+# Extract max similarity for each interdicted check name
+for i in range(len(interdicted_checks)):
+    similarity_row = similarity_matrix[i]
+    max_similarity_index = np.argmax(similarity_row)
+    max_similarity_score = similarity_row[max_similarity_index]
+    
+    if max_similarity_score >= threshold:
+        current_pair = (interdicted_checks[i], client_database[max_similarity_index])
+        reversed_pair = (client_database[max_similarity_index], interdicted_checks[i])
+        
+        if current_pair not in considered_pairs and reversed_pair not in considered_pairs:
+            considered_pairs.add(current_pair)
+            
+            max_similarity_data["Interdicted_Name"].append(interdicted_checks[i])
+            max_similarity_data["Matched_Client_Name"].append(client_database[max_similarity_index])
+            max_similarity_data["Max_Similarity_Score"].append(max_similarity_score)
+
+# Create DataFrame from the collected data
+similarity_df = pd.DataFrame(max_similarity_data)
+
+# Drop duplicate rows
+similarity_df.drop_duplicates(inplace=True)
+
+# Remove rows where 'Interdicted_Name' appears in 'Matched_Client_Name' to avoid redundancy
+final_df = similarity_df[~similarity_df['Matched_Client_Name'].isin(similarity_df['Interdicted_Name'])]
+
+print(final_df)
+
+
+
+
+import pandas as pd
 
 # Sample DataFrame with similar and different values
 data = {
