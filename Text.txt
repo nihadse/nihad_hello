@@ -1,3 +1,48 @@
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Example lists (replace these with your actual data)
+interdicted_clients = [
+    "John Doe",
+    "Jane Smith",
+    "Alice Johnson",
+    "Robert Brown",
+    "Michael Clark"
+]
+
+client_database = [
+    "Jon Doe",
+    "Jane Smith",
+    "Alice Johnson",
+    "Robert Brown",
+    "Michelle Clark"
+]
+
+# Initialize SentenceTransformer model
+model = SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
+
+# Encode names into embeddings
+interdicted_embeddings = model.encode(interdicted_clients)
+client_embeddings = model.encode(client_database)
+
+# Function to find the best match using cosine similarity
+def find_best_match(embedding, embeddings_list, names_list):
+    similarities = cosine_similarity([embedding], embeddings_list)[0]
+    best_match_index = np.argmax(similarities)
+    best_match_name = names_list[best_match_index]
+    best_similarity_score = similarities[best_match_index]
+    return best_match_name, best_similarity_score
+
+# Find matches and print results
+print("Matches found:")
+for i, interdicted_name in enumerate(interdicted_clients):
+    best_match, similarity_score = find_best_match(interdicted_embeddings[i], client_embeddings, client_database)
+    print(f"{interdicted_name} -> {best_match} (Similarity Score: {similarity_score:.4f})")
+
+
+
+
 from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 
