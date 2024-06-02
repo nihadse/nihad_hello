@@ -1,6 +1,52 @@
 from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 
+# Function to calculate embeddings
+def calculate_embeddings(list1, model):
+    return model.encode(list1, convert_to_tensor=True)
+
+# Load the model (adjust modelPath as needed)
+model = SentenceTransformer('modelPath')
+
+# Sample Data (replace with actual data)
+clients = ['client_name1', 'client_name2', 'client_name3', 'client_name4']
+interdicted_cheques = ['cheque_name1', 'cheque_name2', 'cheque_name3', 'cheque_name4']
+
+# Calculate embeddings for both lists
+clients_embeddings = calculate_embeddings(clients, model)
+interdicted_cheques_embeddings = calculate_embeddings(interdicted_cheques, model)
+
+# Calculate cosine similarity between embeddings
+similarity_matrix = util.pytorch_cos_sim(clients_embeddings, interdicted_cheques_embeddings).numpy()
+
+# Display the similarity matrix
+print(similarity_matrix)
+
+# Create DataFrame to store the max similarity results
+max_similarity_data = {'Client_Name': [], 'Cheque_Name': [], 'Similarity_Score': []}
+
+# Extract max similarity for each interdicted cheque name
+threshold = 0.80
+
+for i in range(len(interdicted_cheques)):
+    for j in range(len(clients)):
+        similarity_score = similarity_matrix[j][i]
+
+        if similarity_score >= threshold:
+            max_similarity_data['Client_Name'].append(clients[j])
+            max_similarity_data['Cheque_Name'].append(interdicted_cheques[i])
+            max_similarity_data['Similarity_Score'].append(similarity_score)
+
+# Create DataFrame from the collected data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+
+print(max_similarity_df)
+
+
+
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
 # Function to calculate pairwise similarity
 def calculate_similarity(list1, list2, model):
     embeddings1 = model.encode(list1, convert_to_tensor=True)
