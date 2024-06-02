@@ -1,3 +1,23 @@
+import pandas as pd
+
+# Sample DataFrame with similar and different values
+data = {
+    'Column1': ['A', 'B', 'C', 'D'],
+    'Column2': ['A', 'Y', 'C', 'X']
+}
+
+df = pd.DataFrame(data)
+
+# Concatenating with condition to keep only one value if they are similar, with a space when concatenating
+df['Concatenated'] = df.apply(
+    lambda row: row['Column1'] if row['Column1'] == row['Column2'] else row['Column1'] + ' ' + row['Column2'], axis=1
+)
+
+print(df)
+
+
+
+
 def normalize_names(row):
     name = row['name'] if pd.notna(row['name']) else ''
     family_name = row['family_name'] if pd.notna(row['family_name']) else ''
