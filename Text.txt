@@ -1,3 +1,46 @@
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
+# Function to calculate pairwise similarity
+def calculate_similarity(list1, list2, model):
+    embeddings1 = model.encode(list1, convert_to_tensor=True)
+    embeddings2 = model.encode(list2, convert_to_tensor=True)
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2)
+    return similarity_matrix
+
+# Load the model (adjust modelPath as needed)
+model = SentenceTransformer('modelPath')
+
+# Sample Data
+clients = ['client_name1', 'client_name2', 'client_name3', 'client_name4']
+interdicted_cheques = ['cheque_name1', 'cheque_name2', 'cheque_name3', 'cheque_name4']
+
+# Calculate similarity matrix
+similarity_matrix = calculate_similarity(clients, interdicted_cheques, model)
+
+# Create DataFrame to store the max similarity results
+max_similarity_data = {'Client_Name': [], 'Cheque_Name': [], 'Similarity_Score': []}
+
+# Extract max similarity for each interdicted cheque name
+threshold = 0.80
+
+for i in range(len(interdicted_cheques)):
+    for j in range(len(clients)):
+        similarity_score = similarity_matrix[j][i].item()
+
+        if similarity_score >= threshold:
+            max_similarity_data['Client_Name'].append(clients[j])
+            max_similarity_data['Cheque_Name'].append(interdicted_cheques[i])
+            max_similarity_data['Similarity_Score'].append(similarity_score)
+
+# Create DataFrame from the collected data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+
+print(max_similarity_df)
+
+
+
+
 import pandas as pd
 import numpy as np
 import torch
