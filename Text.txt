@@ -2,6 +2,51 @@ from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 
 # Function to calculate embeddings
+def calculate_embeddings(names_list, model):
+    return model.encode(names_list, convert_to_tensor=True)
+
+# Load the model (adjust modelPath as needed)
+model = SentenceTransformer('modelPath')
+
+# Sample Data (replace with actual data)
+client_database = ['client_name1', 'client_name2', ...]  # 218,000 entries
+interdicted_checks_clients = ['cheque_name1', 'cheque_name2', ...]  # 1,104 entries
+
+# Calculate embeddings for both lists
+client_database_embeddings = calculate_embeddings(client_database, model)
+interdicted_checks_clients_embeddings = calculate_embeddings(interdicted_checks_clients, model)
+
+# Calculate cosine similarity between embeddings (returns a tensor)
+similarity_matrix_tensor = util.pytorch_cos_sim(client_database_embeddings, interdicted_checks_clients_embeddings)
+
+# Initialize lists to store max similarity results
+max_similarity_data = {'Client_Name': [], 'Cheque_Name': [], 'Max_Similarity_Score': []}
+
+# Iterate over interdicted cheque list to find max similarity for each
+for j in range(len(interdicted_checks_clients)):
+    max_similarity_index = similarity_matrix_tensor[:, j].argmax().item()
+    max_similarity_score = similarity_matrix_tensor[max_similarity_index, j].item()
+    max_client_name = client_database[max_similarity_index]
+
+    # Store the results
+    max_similarity_data['Client_Name'].append(max_client_name)
+    max_similarity_data['Cheque_Name'].append(interdicted_checks_clients[j])
+    max_similarity_data['Max_Similarity_Score'].append(max_similarity_score)
+
+# Create DataFrame from the collected data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+
+print("Max Similarity DataFrame:\n", max_similarity_df)
+
+
+
+
+
+
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
+# Function to calculate embeddings
 def calculate_embeddings(list1, model):
     return model.encode(list1, convert_to_tensor=True)
 
