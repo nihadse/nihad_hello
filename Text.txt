@@ -1,4 +1,48 @@
 from sentence_transformers import SentenceTransformer, util
+import torch
+
+def batch_process_similarity(list1, list2, batch_size=100, model_name_or_path='paraphrase-MiniLM-L6-v2'):
+    # Load sentence transformer model
+    model = SentenceTransformer(model_name_or_path)
+    
+    similarities = []
+
+    # Process list1 in batches
+    for i in range(0, len(list1), batch_size):
+        batch1 = list1[i:i+batch_size]
+        embeddings1 = model.encode(batch1, convert_to_tensor=True)
+        
+        for j in range(0, len(list2), batch_size):
+            batch2 = list2[j:j+batch_size]
+            embeddings2 = model.encode(batch2, convert_to_tensor=True)
+            
+            # Calculate cosine similarity matrix
+            similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+            
+            # Loop through each pair and store similarity scores
+            for row_idx in range(len(batch1)):
+                for col_idx in range(len(batch2)):
+                    similarities.append((batch1[row_idx], batch2[col_idx], similarity_matrix[row_idx, col_idx]))
+
+    return similarities
+
+# Example lists (replace with your actual data)
+Liste1 = ["nihad", "senhadji", "samia", "bnp tahraoui makhlouf", "pharma", "omar", "naciri", "ahlam", 
+          "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji ninaf", "clientXYZ", "clientABC", ...]  # Add more clients
+Liste2 = ["nihrde", "spa pbn", "eurl tahraoui makhlou", "pharma sarl", "translates", "interdit1", "interdit2", ...]  # Replace with your 1,014 interdicted clients
+
+# Calculate similarities in batches
+similarities = batch_process_similarity(Liste1, Liste2)
+
+# Print a sample of results (optional)
+print("Sample Similarity Scores:")
+for similarity in similarities[:10]:  # Print the first 10 similarities as an example
+    print(f"{similarity[0]} <-> {similarity[1]} : {similarity[2]:.4f}")
+
+
+
+
+from sentence_transformers import SentenceTransformer, util
 from scipy.spatial.distance import cosine
 
 def calculate_similarity(list1, list2, model_name_or_path='paraphrase-MiniLM-L6-v2'):
