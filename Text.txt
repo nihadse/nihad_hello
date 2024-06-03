@@ -15,6 +15,46 @@ interdicted_embeddings = model.encode(interdicted_cheques_list, convert_to_tenso
 # Calculate similarity matrix
 similarity_matrix = util.pytorch_cos_sim(client_embeddings, interdicted_embeddings)
 
+# Find the most similar pair
+max_similarity_data = {'Client_Name': [], 'Interdicted_Name': [], 'Similarity_Score': []}
+
+for i in range(len(clients_list)):
+    # Find the index of the interdicted name with max similarity
+    max_sim_index = similarity_matrix[i].argmax().item()
+    max_sim_score = similarity_matrix[i][max_sim_index].item()
+    
+    # Add the pair to max_similarity_data if similarity score is above threshold
+    if max_sim_score > 0.50:  # Adjust threshold as needed
+        max_similarity_data['Client_Name'].append(clients_list[i])
+        max_similarity_data['Interdicted_Name'].append(interdicted_cheques_list[max_sim_index])
+        max_similarity_data['Similarity_Score'].append(max_sim_score)
+
+# Create DataFrame from max similarity data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+print(max_similarity_df)
+
+
+
+
+
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+# Prepare the data
+clients_list = ["nihad", "pharma", "naciri", "ahlam", "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji nihaf"]
+interdicted_cheques_list = ["nihrde", "spa", "pharma sarl", "translates"]
+
+# Load the model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Encode the names
+client_embeddings = model.encode(clients_list, convert_to_tensor=True)
+interdicted_embeddings = model.encode(interdicted_cheques_list, convert_to_tensor=True)
+
+# Calculate similarity matrix
+similarity_matrix = util.pytorch_cos_sim(client_embeddings, interdicted_embeddings)
+
 # Define threshold and find matches
 threshold = 0.50
 matched_data = {'Client_Name': [], 'Interdicted_Name': [], 'Similarity_Score': []}
