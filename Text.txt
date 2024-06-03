@@ -1,6 +1,54 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
+# Sample data sizes
+num_clients = 218000
+num_interdicted_cheques = 1014
+
+# Example lists (replace with your actual data loading process)
+clients_list = [...]  # Load your 218000 client names
+interdicted_cheques_list = [...]  # Load your 1014 interdicted cheques
+
+# Load the pre-trained Sentence Transformer model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Encode client names and interdicted cheques
+client_embeddings = model.encode(clients_list, convert_to_tensor=True)
+interdicted_embeddings = model.encode(interdicted_cheques_list, convert_to_tensor=True)
+
+# Calculate cosine similarity matrix
+similarity_matrix = util.pytorch_cos_sim(client_embeddings, interdicted_embeddings)
+
+# Prepare to collect the most similar pairs
+max_similarity_data = {'Client_Name': [], 'Interdicted_Name': [], 'Similarity_Score': []}
+
+# Find the most similar interdicted cheque for each client
+for i in range(num_clients):
+    # Find index of the interdicted cheque with max similarity score
+    max_sim_index = similarity_matrix[i].argmax().item()
+    max_sim_score = similarity_matrix[i][max_sim_index].item()
+    
+    # Append the most similar pair to the data dictionary
+    max_similarity_data['Client_Name'].append(clients_list[i])
+    max_similarity_data['Interdicted_Name'].append(interdicted_cheques_list[max_sim_index])
+    max_similarity_data['Similarity_Score'].append(max_sim_score)
+
+    # Print progress
+    if (i + 1) % 1000 == 0:
+        print(f"Processed {i + 1} clients...")
+
+# Create DataFrame from collected data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+
+# Print the resulting DataFrame
+print(max_similarity_df)
+
+
+
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
 # Prepare the data
 clients_list = ["nihad", "pharma", "naciri", "ahlam", "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji nihaf"]
 interdicted_cheques_list = ["nihrde", "spa", "pharma sarl", "translates"]
