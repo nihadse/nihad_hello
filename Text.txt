@@ -1,3 +1,22 @@
+from collections import Counter
+
+# Example list of names
+names_list = ["nihad senhadji", "bessai Fatiha", "Fatiha"]
+
+# Tokenize the names
+tokens = []
+for name in names_list:
+    tokens.extend(name.lower().split())
+
+# Count the occurrences of each token
+token_counts = Counter(tokens)
+
+# Print the token counts
+for token, count in token_counts.items():
+    print(f"{token}: {count}")
+
+
+
 "Clients Interdits Chéquier"
 
 
