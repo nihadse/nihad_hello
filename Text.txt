@@ -1,3 +1,39 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+# Prepare the data
+clients_list = ["nihad", "pharma", "naciri", "ahlam", "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji nihaf"]
+interdicted_cheques_list = ["nihrde", "spa", "pharma sarl", "translates"]
+
+# Load the model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Encode the names
+client_embeddings = model.encode(clients_list, convert_to_tensor=True)
+interdicted_embeddings = model.encode(interdicted_cheques_list, convert_to_tensor=True)
+
+# Calculate similarity matrix
+similarity_matrix = util.pytorch_cos_sim(client_embeddings, interdicted_embeddings)
+
+# Define threshold and find matches
+threshold = 0.50
+matched_data = {'Client_Name': [], 'Interdicted_Name': [], 'Similarity_Score': []}
+
+for i in range(len(clients_list)):
+    for j in range(len(interdicted_cheques_list)):
+        similarity_score = similarity_matrix[i][j].item()
+        if similarity_score > threshold:
+            matched_data['Client_Name'].append(clients_list[i])
+            matched_data['Interdicted_Name'].append(interdicted_cheques_list[j])
+            matched_data['Similarity_Score'].append(similarity_score)
+
+# Create DataFrame from matches
+matches_df = pd.DataFrame(matched_data)
+print(matches_df)
+
+
+
+
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
