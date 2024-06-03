@@ -1,6 +1,75 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
+# Sample data (replace with your actual data loading process)
+clients_list = [
+    "John Doe",
+    "Alice Smith",
+    "Michael Johnson",
+    "Emily Brown",
+    "Robert Lee",
+    "Jennifer Davis",
+    "David Wilson",
+    "Sarah Martin",
+    "Daniel Thompson",
+    "Lisa Garcia"
+]
+
+# Sample monthly file data (replace with your actual data loading process)
+monthly_file_df = pd.DataFrame({
+    'Client_Name': [
+        "John D.",
+        "Alice S.",
+        "Michael J.",
+        "Emely B.",
+        "Robert L.",
+        "Jane Davis",
+        "David Williams",
+        "Daniel Thomson"
+    ]
+})
+
+# Load the pre-trained Sentence Transformer model
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Encode client names
+client_embeddings = model.encode(clients_list, convert_to_tensor=True)
+monthly_embeddings = model.encode(monthly_file_df['Client_Name'].tolist(), convert_to_tensor=True)
+
+# Calculate cosine similarity matrix
+similarity_matrix = util.pytorch_cos_sim(monthly_embeddings, client_embeddings)
+
+# Prepare to collect the most similar pairs
+max_similarity_data = {'Monthly_Client_Name': [], 'Our_Client_Name': [], 'Similarity_Score': []}
+
+# Set a threshold for similarity score
+threshold = 0.85  # Adjust as per your requirement
+
+# Find the most similar client name for each monthly file client
+for i in range(len(monthly_file_df)):
+    # Find index of the our client name with max similarity score
+    max_sim_index = similarity_matrix[i].argmax().item()
+    max_sim_score = similarity_matrix[i][max_sim_index].item()
+    
+    # Append the most similar pair if similarity score meets threshold
+    if max_sim_score >= threshold:
+        max_similarity_data['Monthly_Client_Name'].append(monthly_file_df['Client_Name'].iloc[i])
+        max_similarity_data['Our_Client_Name'].append(clients_list[max_sim_index])
+        max_similarity_data['Similarity_Score'].append(max_sim_score)
+
+# Create DataFrame from collected data
+max_similarity_df = pd.DataFrame(max_similarity_data)
+
+# Print the resulting DataFrame
+print(max_similarity_df)
+
+
+
+
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
 # Sample data sizes
 num_clients = 218000
 num_interdicted_cheques = 1014
