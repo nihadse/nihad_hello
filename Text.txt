@@ -1,3 +1,31 @@
+from fuzzywuzzy import fuzz
+
+def find_matching_clients(clients_list, interdicted_cheques_list, threshold=70):
+    matches = []
+    for client in clients_list:
+        for interdicted_name in interdicted_cheques_list:
+            similarity_ratio = fuzz.ratio(client, interdicted_name)
+            if similarity_ratio >= threshold:
+                matches.append((client, interdicted_name, similarity_ratio))
+    return matches
+
+clients_list = ["nihad", "bnp tahraoui makhlouf", "pharma", "omar", "naciri", "ahlam", 
+                "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji ninaf"]
+
+interdicted_cheques_list = ["nihrde", "spa pbn ", "eurl tahraoui makhlou", "pharma sarl", "translates"]
+
+matches = find_matching_clients(clients_list, interdicted_cheques_list)
+
+if matches:
+    print("Matches found:")
+    for match in matches:
+        print(f"Client: '{match[0]}' matches with Interdicted Cheque Name: '{match[1]}' (Similarity: {match[2]}%)")
+else:
+    print("No matches found.")
+
+
+
+
 from collections import Counter
 
 # Example list of names
