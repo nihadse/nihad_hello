@@ -1,3 +1,54 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+import numpy as np
+
+def find_highest_similarity(list1, list2, model_name_or_path='paraphrase-MiniLM-L6-v2'):
+    # Load sentence transformer model
+    model = SentenceTransformer(model_name_or_path)
+    
+    # Encode list1 and list2
+    embeddings1 = model.encode(list1, convert_to_tensor=True)
+    embeddings2 = model.encode(list2, convert_to_tensor=True)
+    
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    # Initialize dictionaries to store highest similarity scores and corresponding interdicted clients
+    best_scores = {}
+    best_pairs = {}
+
+    # Find pairs with highest similarity score for each client in list1
+    for i in range(len(list1)):
+        client_name = list1[i]
+        for j in range(len(list2)):
+            similarity_score = similarity_matrix[i, j]
+            if similarity_score > best_scores.get(client_name, -1):
+                best_scores[client_name] = similarity_score
+                best_pairs[client_name] = (list2[j], similarity_score)
+    
+    # Create list of pairs with highest similarity score for each client in list1
+    similar_pairs = [(client, pair[0], pair[1]) for client, pair in best_pairs.items()]
+    
+    return similar_pairs
+
+# Example lists (replace with your actual data)
+Liste1 = ["nihad", "senhadji", "samia", "bnp tahraoui makhlouf", "pharma", "omar", "naciri", "ahlam", 
+          "salma", "hafida", "fouzia", "samia", "sifo", "atika", "senhadji ninaf", "clientXYZ", "clientABC"]
+Liste2 = ["nihrde", "spa pbn", "eurl tahraoui makhlou", "pharma sarl", "translates", "interdit1", "interdit2"]
+
+# Find pairs with highest similarity score for each client from Liste1
+similar_pairs = find_highest_similarity(Liste1, Liste2)
+
+# Create a DataFrame to display the result
+df = pd.DataFrame(similar_pairs, columns=["Client from Liste1", "Interdicted Client from Liste2", "Similarity Score"])
+
+# Display the DataFrame
+print("Pairs with highest similarity score for each client from Liste1:")
+print(df)
+
+
+
+
 from sentence_transformers import SentenceTransformer, util
 import torch
 
