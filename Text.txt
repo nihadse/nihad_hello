@@ -1,3 +1,15 @@
+def transform_date(date_str):
+    if pd.isna(date_str):
+        return date_str
+    try:
+        month, day, year = date_str.split('/')
+        return f"{day}-{month}-{year}"
+    except:
+        return date_str
+
+df['date_column'] = df['date_column'].apply(transform_date)
+
+
 import pandas as pd
 
 # Create a sample DataFrame with a 'date' column
