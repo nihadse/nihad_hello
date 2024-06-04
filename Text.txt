@@ -1,5 +1,27 @@
 import pandas as pd
 
+# Create a sample DataFrame with a 'date' column
+data = {'date': ['12/12/2024', None, '01/01/2025']}
+df = pd.DataFrame(data)
+
+# Function to convert date format (handles None values)
+def convert_date_format(date_str):
+  if pd.isna(date_str):
+    return None
+  else:
+    return pd.to_datetime(date_str).strftime('%d-%m-%Y')
+
+# Apply the function to the 'date' column
+df['date'] = df['date'].apply(convert_date_format)
+
+# Print the DataFrame
+print(df)
+
+
+
+
+import pandas as pd
+
 # Create a sample DataFrame
 raw_data = pd.DataFrame({'Mycol': ['/12/2023', '10/05/2022', '/01/2021', '']})
 
