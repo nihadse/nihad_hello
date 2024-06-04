@@ -1,4 +1,24 @@
 import pandas as pd
+
+# Create a sample DataFrame
+raw_data = pd.DataFrame({'Mycol': ['/12/2023', '10/05/2022', '/01/2021', '']})
+
+# Convert the 'Mycol' column to datetime format
+raw_data['Mycol'] = pd.to_datetime(raw_data['Mycol'], format='%d/%m/%Y')
+
+# Replace empty strings with a default date (e.g., January 1, 2000)
+raw_data['Mycol'] = raw_data['Mycol'].fillna(pd.to_datetime('2000-01-01'))
+
+print(raw_data)
+
+
+
+
+
+
+
+
+import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 
