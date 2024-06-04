@@ -2,6 +2,93 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
 
+def df_to_list(df):
+    """Convert a DataFrame to a list of tuples (Name, DOB, Address)."""
+    return list(df.itertuples(index=False, name=None))
+
+def find_highest_similarity(list1, list2, threshold=0.50, model_name_or_path='paraphrase-MiniLM-L6-v2'):
+    # Load sentence transformer model
+    model = SentenceTransformer(model_name_or_path)
+    
+    # Extract names from list1 and list2
+    names1 = [item[0] for item in list1]
+    names2 = [item[0] for item in list2]
+    
+    # Encode names1 and names2
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    # Initialize dictionaries to store highest similarity scores and corresponding interdicted clients
+    best_scores = {}
+    best_pairs = {}
+
+    # Find pairs with highest similarity score for each client in list1 above the threshold
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i, j]
+            if similarity_score >= threshold and similarity_score > best_scores.get(client_name, -1):
+                best_scores[client_name] = similarity_score
+                best_pairs[client_name] = (list2[j], similarity_score)
+    
+    # Create list of pairs with highest similarity score for each client in list1
+    similar_pairs = [(list1[i][0], list1[i][1], list1[i][2], best_pairs[list1[i][0]][0][0], best_pairs[list1[i][0]][0][1], best_pairs[list1[i][0]][0][2], best_pairs[list1[i][0]][1]) for i in range(len(list1)) if list1[i][0] in best_pairs]
+    
+    return similar_pairs
+
+# Example DataFrame for Liste1 (replace with your actual data)
+data1 = {
+    "Name": ["nihad", "senhadji", "samia", "bnp tahraoui makhlouf", "pharma", "omar", "naciri", "ahlam"],
+    "DOB": ["1990-01-01", "1985-05-12", "1992-07-19", "1988-11-23", "1983-03-03", "1990-04-14", "1995-09-27", "1982-12-30"],
+    "Address": ["address1", "address2", "address3", "address4", "address5", "address6", "address7", "address8"]
+}
+
+df1 = pd.DataFrame(data1)
+
+# Example list for Liste2 (replace with your actual data)
+Liste2 = [
+    ("nihrde", "1991-01-01", "address9"),
+    ("spa pbn", "1984-06-12", "address10"),
+    ("eurl tahraoui makhlou", "1989-12-23", "address11"),
+    ("pharma sarl", "1983-03-04", "address12"),
+    ("translates", "1990-02-15", "address13"),
+    ("interdit1", "1986-08-20", "address14"),
+    ("interdit2", "1991-07-25", "address15")
+]
+
+# Convert DataFrame to list
+Liste1 = df_to_list(df1)
+
+# Set the threshold
+threshold = 0.50
+
+# Find pairs with highest similarity score for each client from Liste1
+similar_pairs = find_highest_similarity(Liste1, Liste2, threshold)
+
+# Create a DataFrame to display the result
+df = pd.DataFrame(similar_pairs, columns=["Client from Liste1", "DOB from Liste1", "Address from Liste1", 
+                                          "Interdicted Client from Liste2", "DOB from Liste2", "Address from Liste2", 
+                                          "Similarity Score"])
+
+# Add columns to check if DOBs and addresses are similar
+df["DOB Match"] = df.apply(lambda row: "Yes" if row["DOB from Liste1"] == row["DOB from Liste2"] else "No", axis=1)
+df["Address Match"] = df.apply(lambda row: "Yes" if row["Address from Liste1"] == row["Address from Liste2"] else "No", axis=1)
+
+# Display the DataFrame
+print(f"Pairs with similarity score above {threshold}:")
+print(df)
+
+
+
+
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+import numpy as np
+
 def find_highest_similarity(list1, list2, threshold=0.50, model_name_or_path='paraphrase-MiniLM-L6-v2'):
     # Load sentence transformer model
     model = SentenceTransformer(model_name_or_path)
