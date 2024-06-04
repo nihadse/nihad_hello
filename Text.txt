@@ -1,3 +1,8 @@
+Bonjour,Nous avons constaté l'absence des dates d'expiration pour de nombreuses cartes numérotées 373352 dans le fichier select system. Merci de vérifier et mettre à jour ces informations dès que possible.Cordialement,
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 import numpy as np
