@@ -1,3 +1,78 @@
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
+# Example data (replace these with your actual data)
+clients_database = {
+    "id": [1, 2, 3],
+    "name": ["client A", "client B", "client C"],
+    "birthday": ["1990-01-01", "1985-05-15", "1992-11-30"],
+    "birthday_location": ["City A", "City B", "City C"]
+}
+interdicted_checks = {
+    "id": [101, 102, 103],
+    "name": ["interdicted client X", "interdicted client Y", "interdicted client Z"],
+    "birthday": ["1988-07-20", "1987-03-10", "1990-09-05"],
+    "birthday_location": ["City X", "City Y", "City Z"]
+}
+
+# Extract names and IDs from the dictionaries
+Liste1_ids = clients_database["id"]
+Liste1_names = clients_database["name"]
+Liste1_birthdays = clients_database["birthday"]
+Liste1_birthday_locations = clients_database["birthday_location"]
+
+Liste2_ids = interdicted_checks["id"]
+Liste2_names = interdicted_checks["name"]
+Liste2_birthdays = interdicted_checks["birthday"]
+Liste2_birthday_locations = interdicted_checks["birthday_location"]
+
+# Load sentence transformer model
+model = SentenceTransformer('modelPath')  # Replace 'modelPath' with the actual model path
+
+# Encode lists
+embeddings1 = model.encode(Liste1_names, convert_to_tensor=True)
+embeddings2 = model.encode(Liste2_names, convert_to_tensor=True)
+
+# Calculate cosine similarity matrix using util.pytorch_cos_sim
+similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+# Initialize dictionaries to store highest similarity scores and corresponding interdicted clients
+best_scores = {}
+best_pairs = {}
+
+# Find pairs with highest similarity score for each client in Liste1
+for i in range(len(Liste1_ids)):
+    client_id = Liste1_ids[i]
+    client_name = Liste1_names[i]
+    client_birthday = Liste1_birthdays[i]
+    client_birthday_location = Liste1_birthday_locations[i]
+    for j in range(len(Liste2_ids)):
+        interdicted_id = Liste2_ids[j]
+        interdicted_name = Liste2_names[j]
+        interdicted_birthday = Liste2_birthdays[j]
+        interdicted_birthday_location = Liste2_birthday_locations[j]
+        similarity_score = similarity_matrix[i, j]
+        if similarity_score > best_scores.get(client_id, -1):
+            best_scores[client_id] = similarity_score
+            best_pairs[client_id] = (interdicted_id, interdicted_name, interdicted_birthday, interdicted_birthday_location, similarity_score)
+
+# Create list of pairs with highest similarity score for each client in Liste1
+similar_pairs = [(client_id, client_name, client_birthday, client_birthday_location,
+                  interdicted_id, interdicted_name, interdicted_birthday, interdicted_birthday_location,
+                  similarity_score) for client_id, (interdicted_id, interdicted_name, interdicted_birthday, interdicted_birthday_location, similarity_score) in best_pairs.items()]
+
+# Create a DataFrame to display the result
+df = pd.DataFrame(similar_pairs, columns=["Client ID", "Client Database Name", "Client Birthday", "Client Birthday Location",
+                                          "Interdicted Checks ID", "Interdicted Checks Name", "Interdicted Checks Birthday", "Interdicted Checks Birthday Location",
+                                          "Similarity Score"])
+
+# Display the DataFrame
+print(df)
+
+
+
+
+
 Bonjour Sara, je n'ai pas pu ouvrir le fichier que tu as envoyé. Peux-tu le vérifier et me le renvoyer ? Merci.
 
 
