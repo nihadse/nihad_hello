@@ -1,3 +1,15 @@
+Bonjour,
+
+Nous avons constaté l'absence de la donnée 'PM_TIERS' pour 1541 lignes ainsi que la donnée 'PM_COMPTE' pour 1899 lignes et 'PM_NOM' pour 1541 lignes dans l'extraction UAV_PHAYD101 arrêtée au 02-06-2024.
+
+Merci de vérifier,
+
+Cordialement,  
+Nihad
+
+
+
+
 from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 
