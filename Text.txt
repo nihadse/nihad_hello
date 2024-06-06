@@ -1,6 +1,83 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
+def find_highest_similarity(interdicted_checks, clients_data_base, threshold=0.50):
+    # Load sentence transformer model
+    model_path = "/mnt/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+    
+    # Extract names from interdicted_checks and clients_data_base
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = clients_data_base['Name'].tolist()
+    
+    # Encode names1 and names2
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    # Initialize dictionaries to store highest similarity scores and corresponding interdicted clients
+    best_scores = {}
+    best_pairs = {}
+    
+    # Find the pairs with the highest similarity score for each client in interdicted_checks above the threshold
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold and similarity_score > best_scores.get(client_name, -1):
+                best_scores[client_name] = similarity_score
+                best_pairs[client_name] = (clients_data_base.iloc[j], similarity_score)
+    
+    # Create list of pairs with highest similarity score for each client in interdicted_checks
+    similar_pairs = []
+    for i in range(len(interdicted_checks)):
+        client_name = interdicted_checks.iloc[i]['Name']
+        if client_name in best_pairs:
+            interdicted_client, similarity_score = best_pairs[client_name]
+            similar_pairs.append({
+                "Client from interdicted_checks": client_name,
+                "DOB from interdicted_checks": interdicted_checks.iloc[i]['DOB'],
+                "Address from interdicted_checks": interdicted_checks.iloc[i]['Address'],
+                "Interdicted Client from clients_data_base": interdicted_client['Name'],
+                "DOB from clients_data_base": interdicted_client['DOB'],
+                "Address from clients_data_base": interdicted_client['Address'],
+                "Similarity Score": similarity_score
+            })
+    
+    # Create DataFrame from similar pairs
+    result_df = pd.DataFrame(similar_pairs)
+    
+    # Add columns to check if DOBs and addresses are similar
+    result_df["DOB Match"] = result_df.apply(lambda row: "Yes" if pd.isna(row["DOB from interdicted_checks"]) == pd.isna(row["DOB from clients_data_base"]) and row["DOB from interdicted_checks"] == row["DOB from clients_data_base"] else "No", axis=1)
+    result_df["Address Match"] = result_df.apply(lambda row: "Yes" if pd.isna(row["Address from interdicted_checks"]) == pd.isna(row["Address from clients_data_base"]) and row["Address from interdicted_checks"] == row["Address from clients_data_base"] else "No", axis=1)
+    
+    return result_df
+
+# Example data
+interdicted_checks = pd.DataFrame({
+    'Name': ['Alice Smith', 'Bob Johnson', 'Charlie Brown'],
+    'DOB': ['1990-01-01', '1985-05-12', '1978-07-23'],
+    'Address': ['123 Main St', '456 Oak St', '789 Pine St']
+})
+
+clients_data_base = pd.DataFrame({
+    'Name': ['Alicia Smythe', 'Robert Johnson', 'Charles Browne', 'David Wilson'],
+    'DOB': ['1990-01-01', '1985-05-12', '1978-07-23', '1992-11-02'],
+    'Address': ['123 Main St', '456 Oak St', '789 Pine St', '101 Maple St']
+})
+
+result_df = find_highest_similarity(interdicted_checks, clients_data_base, threshold=0.50)
+print(result_df)
+
+
+
+
+
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
 def find_highest_similarity(df1, df2, threshold=0.50):
     # Load sentence transformer model
     model_path = "/mnt/Sentence_model_transformer"
