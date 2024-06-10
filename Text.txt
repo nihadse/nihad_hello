@@ -1,3 +1,21 @@
+Certainly:
+
+---
+
+**Objet : Organisation d'une réunion sur notre projet avec Wuhan de l'équipe de support Microsoft**
+
+Bonjour Martin,
+
+Suite à notre récente réunion, Wuhan de l'équipe de support Microsoft a suggéré que nous discutions plus en détail de notre projet. Pourriez-vous me faire savoir quand vous seriez disponible cette semaine pour cette réunion avec Wuhan de l'équipe Microsoft ?
+
+Cordialement,  
+[Votre Nom]
+
+---
+
+
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
