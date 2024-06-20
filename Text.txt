@@ -1,3 +1,21 @@
+Objet : Ta requête demandée
+
+Bonjour [Nom du Destinataire],
+
+J'espère que ce message te trouve en bonne santé.
+
+Comme convenu, tu trouveras ci-joint/en dessous la requête que tu avais demandée.
+
+Si tu as d'autres questions ou besoin d'informations supplémentaires, n'hésite pas à me le faire savoir.
+
+Cordialement,
+
+[Ton Nom]  
+[Ton Poste]  
+[Tes Coordonnées]
+
+
+
 Bonjour Estelle, nous explorons actuellement la plateforme et ses capacités pour voir ce que nous pouvons accomplir.
 
 
