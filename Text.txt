@@ -1,10 +1,15 @@
-Bien sûr! Voici le message en français:
+import pandas as pd
 
----
+# Sample DataFrame
+data = {
+    'name': ['Mr. John spa', 'Dr. Jane Doe', 'Ms. Smith spa', 'me Anderson', 'mm Thompson', 'spa Mr. Brown'],
+    'age': [30, 45, 23, 34, 28, 50]
+}
+df = pd.DataFrame(data)
 
-Bonjour [Nom du Destinataire],
+# Apply conditions directly using a lambda function
+df['new_column'] = df['name'].apply(
+    lambda name: 'PP' if name.startswith('spa') or name.endswith('spa') or any(name.startswith(prefix) for prefix in ['Mr', 'mm', 'me']) else ''
+)
 
-Serait-il possible de programmer une réunion de 15 minutes après que vous aurez envoyé le mot de passe à Lamia ?
-
-Merci,
-[Votre Nom]
+print(df)
