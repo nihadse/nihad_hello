@@ -3,6 +3,27 @@ import numpy as np
 
 # Example DataFrame
 data = {
+    'Company': ['Company SARL', 'Mr. John', 'One More EURL', 'SPA Company', 'XYZ Inc', 'Dr. Smith', 'Another M Company']
+}
+df = pd.DataFrame(data)
+
+# Define your keywords
+entity_keywords = ['SARL', 'EURL', 'SPA']
+person_keywords = ['Mr', 'Mme', 'Dr', 'M']
+
+# Create a new column based on keyword presence
+df['Type'] = np.where(df['Company'].str.contains('|'.join(entity_keywords), case=False, na=False), 'PM',
+                      np.where(df['Company'].str.contains('|'.join(person_keywords), case=False, na=False), 'PM', 'INC'))
+
+# Display the updated DataFrame
+print(df)
+
+
+import pandas as pd
+import numpy as np
+
+# Example DataFrame
+data = {
     'Company': ['Company SARL', 'Another Company', 'One More EURL', 'SPA Company', 'XYZ Inc']
 }
 df = pd.DataFrame(data)
