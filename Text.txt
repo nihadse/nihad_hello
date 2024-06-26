@@ -1,3 +1,10 @@
+Bonjour Martin,Comme nous en avons discuté hier lors de la réunion au bureau Gen AI, je voulais vous informer que la nouvelle machine virtuelle que vous m'avez ajoutée ne fonctionne toujours pas. Je rencontre le même problème qu'avant – les notebooks ne s'exécutent pas.Pourrions-nous organiser une réunion avec John de l'équipe de support Microsoft, comme elle l'a suggéré hier, afin de résoudre ce problème ?Merci pour votre aide.Cordialement,
+Nihad Senhadji
+
+
+
+
+
 Objet : Assistance pour la configuration de l'API
 
 Bonjour Baptiste,
