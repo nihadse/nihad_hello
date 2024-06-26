@@ -1,26 +1,17 @@
 import pandas as pd
+import numpy as np
 
-# Sample data
+# Example DataFrame
 data = {
-    'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
-    'Date of Birth': ['1990-05-01', '1985-01-01', '1992-07-15', '2000-01-01', '1995-01-01']
+    'Company': ['Company SARL', 'Another Company', 'One More EURL', 'SPA Company', 'XYZ Inc']
 }
-
-# Create DataFrame
 df = pd.DataFrame(data)
 
-# Convert 'Date of Birth' column to datetime
-df['Date of Birth'] = pd.to_datetime(df['Date of Birth'], errors='coerce')
+# Define your keywords
+keywords = ['SARL', 'EURL', 'SPA']
 
-# Extract rows with '01-01' or '00-00' in the date of birth
-# For datetime type, we need to check if month is 1 and day is 1 (ignoring '00-00' since it is not a valid datetime)
-special_dates = df[(df['Date of Birth'].dt.month == 1) & (df['Date of Birth'].dt.day == 1)]
+# Create a new column based on keyword presence
+df['Type'] = np.where(df['Company'].str.contains('|'.join(keywords), case=False, na=False), 'PM', 'INC')
 
-print("Rows with date of birth in 'yyyy-01-01' format:")
-print(special_dates)
-
-# Remove the extracted rows from the original DataFrame
-df_cleaned = df[~((df['Date of Birth'].dt.month == 1) & (df['Date of Birth'].dt.day == 1))]
-
-print("DataFrame after removing rows with date of birth in 'yyyy-01-01' format:")
-print(df_cleaned)
+# Display the updated DataFrame
+print(df)
