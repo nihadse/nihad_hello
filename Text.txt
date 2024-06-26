@@ -1,1 +1,10 @@
-Bonjour Lamia,J'espère que tu vas bien. Xavier attend ton email de validation pour confirmer que tu as bien compris et que tu es d'accord avec tout ce qui a été mentionné dans l'email, afin qu'il puisse nous envoyer les emails contenant les mots de passe.
+Objet : Assistance pour la configuration de l'API
+
+Bonjour Baptiste,
+
+J'espère que vous allez bien.J'ai obtenu vos coordonnées auprès de Xavier. 
+J'ai récupéré l'ID client OIDC et le secret client OIDC, et j'espérais que vous pourriez m'aider à configurer l'API.
+Dans l'attente de votre retour.
+
+Cordialement,
+Nihad Senhadji
