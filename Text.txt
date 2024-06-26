@@ -1,17 +1,20 @@
-Bonjour Martin,Comme nous en avons discuté hier lors de la réunion au bureau Gen AI, je voulais vous informer que la nouvelle machine virtuelle que vous m'avez ajoutée ne fonctionne toujours pas. Je rencontre le même problème qu'avant – les notebooks ne s'exécutent pas.Pourrions-nous organiser une réunion avec John de l'équipe de support Microsoft, comme elle l'a suggéré hier, afin de résoudre ce problème ?Merci pour votre aide.Cordialement,
+Voici la version en français de votre email :
+
+---
+
+Objet : Suivi de la réunion au bureau Gen AI et problème de machine virtuelle
+
+Bonjour Martin,
+
+Comme nous en avons discuté hier lors de la réunion au bureau Gen AI, je voulais vous informer que la nouvelle machine virtuelle que vous m'avez ajoutée ne fonctionne toujours pas. Je rencontre le même problème qu'avant – les notebooks ne s'exécutent pas.
+
+Pourrions-nous organiser une réunion avec John de l'équipe de support Microsoft, comme elle l'a suggéré hier, afin de résoudre ce problème ?
+
+Merci pour votre aide.
+
+Cordialement,  
 Nihad Senhadji
 
+---
 
-
-
-
-Objet : Assistance pour la configuration de l'API
-
-Bonjour Baptiste,
-
-J'espère que vous allez bien.J'ai obtenu vos coordonnées auprès de Xavier. 
-J'ai récupéré l'ID client OIDC et le secret client OIDC, et j'espérais que vous pourriez m'aider à configurer l'API.
-Dans l'attente de votre retour.
-
-Cordialement,
-Nihad Senhadji
+N'hésitez pas à ajuster ce brouillon selon vos besoins !
