@@ -1,1 +1,25 @@
-Bonjour [Nom du destinataire], notre DCC fonctionne correctement, mais notre base de données n'a pas été mise à jour depuis le 5 juin, ce qui cause des écarts ; les valeurs nulles sont également signalées comme anomalies.
+import pandas as pd
+
+# Example DataFrame with DOB columns
+data = {
+    'name1': ['Alice', 'Bob', 'Charlie', 'David', 'Eve'],
+    'name2': ['Alicia', 'Bobby', 'Charles', 'Dave', 'Evelyn'],
+    'similarity_score': [0.94, 0.96, 0.92, 0.97, 0.93],
+    'dob_name1': ['1990-01-01', '1985-02-15', '1992-03-20', '1988-07-22', '1991-05-05'],
+    'dob_name2': ['1990-01-01', '1985-02-15', '1993-04-21', '1988-07-22', '1990-06-06']
+}
+
+df = pd.DataFrame(data)
+
+# Filter the DataFrame
+below_threshold = df[df['similarity_score'] < 0.95]
+above_threshold = df[df['similarity_score'] >= 0.95]
+dob_equal = df[df['dob_name1'] == df['dob_name2']]
+
+# Write to Excel
+with pd.ExcelWriter('similarity_scores.xlsx') as writer:
+    below_threshold.to_excel(writer, sheet_name='Below_0.95', index=False)
+    above_threshold.to_excel(writer, sheet_name='Above_0.95', index=False)
+    dob_equal.to_excel(writer, sheet_name='DOB_Equal', index=False)
+
+print("Excel file has been created successfully.")
