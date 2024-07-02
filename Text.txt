@@ -2,6 +2,19 @@
 
 Mise en place d'un système basé sur le NLP utilisant Sentence Transformers pour identifier les noms similaires entre notre base de données clients et la 'Liste des interdits de chéquiers.' Le système calcule les similarités des noms et vérifie les dates de naissance pour confirmer les identités. Cette approche a réduit le temps de traitement manuel d'une semaine à 10 minutes, améliorant ainsi l'efficacité opérationnelle et réduisant l'utilisation des ressources de 6 collaborateurs à 1.
 
+### Comment ça marche
+
+1. Extraction des données des fichiers des interdits de chèquiers et de la base de données clients.
+2. Utilisation de Sentence Transformers pour calculer la similarité entre les noms et prénoms.
+3. Vérification des dates de naissance pour confirmer l'identité des individus similaires.
+4. Génération d'une liste finale des noms identifiés pour un traitement ultérieur.
+
+
+
+### Description de la Solution
+
+Mise en place d'un système basé sur le NLP utilisant Sentence Transformers pour identifier les noms similaires entre notre base de données clients et la 'Liste des interdits de chéquiers.' Le système calcule les similarités des noms et vérifie les dates de naissance pour confirmer les identités. Cette approche a réduit le temps de traitement manuel d'une semaine à 10 minutes, améliorant ainsi l'efficacité opérationnelle et réduisant l'utilisation des ressources de 6 collaborateurs à 1.
+
 
 
 
