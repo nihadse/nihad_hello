@@ -1,4 +1,6 @@
-Bonjour [Nom du destinataire],J'espère que vous allez bien.Je voulais vous informer que je serai disponible aujourd'hui à 10h30, heure algérienne. De plus, je vous remercie car Martin a déjà créé une nouvelle machine virtuelle pour moi. Cependant, je rencontre des problèmes avec les notebooks, car ils ne fonctionnent pas.Pourriez-vous m'aider à résoudre ce problème dès que possible ?Merci pour votre soutien.Cordialement,Nihad Senhadji
+### Description de la Solution
+
+Mise en place d'un système basé sur le NLP utilisant Sentence Transformers pour identifier les noms similaires entre notre base de données clients et la 'Liste des interdits de chéquiers.' Le système calcule les similarités des noms et vérifie les dates de naissance pour confirmer les identités. Cette approche a réduit le temps de traitement manuel d'une semaine à 10 minutes, améliorant ainsi l'efficacité opérationnelle et réduisant l'utilisation des ressources de 6 collaborateurs à 1.
 
 
 
