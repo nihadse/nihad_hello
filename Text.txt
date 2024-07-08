@@ -1,1 +1,109 @@
-https://aadl3inscription2024.dz/AR/Inscription-desktop.php
+import streamlit as st
+import pandas as pd
+import numpy as np
+import re
+import zipfile
+from sentence_transformers import SentenceTransformer, util
+
+# Function to preprocess names
+def preprocess_name(name):
+    name = name.lower()  # Convert to lowercase
+    name = re.sub(r"[^a-z\s]", "", name)  # Remove special characters
+    name = re.sub(r"\s+", "", name).strip()  # Remove extra whitespace
+    for suffix in ['sarl', 'eurl', 'spa']:
+        if name.endswith(suffix):
+            name = suffix.strip() + name[:-len(suffix)].strip()
+    return name
+
+# Data cleaning function
+def clean_data(interdicted_checks, client_database):
+    # Cleaning interdicted_checks
+    interdicted_checks['date_naissance'] = pd.to_datetime(interdicted_checks['date_naissance'], errors='coerce')
+    interdicted_checks['nom'] = interdicted_checks['nom'].str.upper().fillna("")
+    interdicted_checks['prenom'] = interdicted_checks['prenom'].str.upper().fillna("")
+    interdicted_checks['Nom_abrege'] = interdicted_checks.apply(lambda row: f"{row['nom']} {row['prenom']}".strip(), axis=1)
+    interdicted_checks['Nom_abrege'] = interdicted_checks['Nom_abrege'].str.replace(r'[^A-Z\s]', '', regex=True)
+    interdicted_checks['Nom_abrege'] = interdicted_checks['Nom_abrege'].str.replace(r'\s+', ' ', regex=True).str.strip()
+    
+    interdicted_checks['Nom_abrege'] = interdicted_checks['Nom_abrege'].str.replace(r'\b(SARL|EURL|SPA|SAR)\b', '', regex=True).str.strip()
+    
+    # Cleaning client_database
+    client_database['Code willaya de naissance'] = client_database['Code willaya de naissance'].fillna('8').astype('Int64')
+    client_database['raison sociale clean'] = client_database['raison sociale clean'].apply(preprocess_name)
+    client_database['raison sociale clean'] = client_database['raison sociale clean'].str.replace(r'[^a-z\s]', '', regex=True)
+    client_database['raison sociale clean'] = client_database['raison sociale clean'].str.replace(r'\s+', ' ', regex=True).str.strip()
+    client_database['raison sociale clean'] = client_database['raison sociale clean'].str.replace(r'\b(sarl|eurl|spa|sar)\b', '', regex=True).str.strip()
+
+    return interdicted_checks, client_database
+
+# Function to find highest similarity
+def find_highest_similarity(df1, df2, threshold=0.8):
+    model_path = "/mnt/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+    
+    names1 = df1['Nom_abrege'].tolist()
+    names2 = df2['raison sociale clean'].tolist()
+    
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    best_scores = {}
+    best_pairs = {}
+    
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold and similarity_score > best_scores.get(client_name, 0):
+                best_scores[client_name] = similarity_score
+                best_pairs[client_name] = (df2.iloc[j], similarity_score)
+    
+    similar_pairs = []
+    for i in range(len(df1)):
+        client_name = df1.iloc[i]['Nom_abrege']
+        if client_name in best_pairs:
+            client_match, similarity_score = best_pairs[client_name]
+            similar_pairs.append({
+                "Name interdicted_checks": client_name,
+                "Date de naissance interdicted_checks": df1.iloc[i]['date_naissance'],
+                "Lieu de naissance interdicted_checks": df1.iloc[i]['lieu de naissance'],
+                "Name client database": client_match["raison sociale clean"],
+                "Id": client_match["Id"],
+                "Date de naissance client_database": client_match["date_naissance"],
+                "Lieu de naissance client_database": client_match["lieu de naissance"],
+                "Similarity Score": similarity_score
+            })
+    
+    result_df = pd.DataFrame(similar_pairs)
+    result_df["Date de naissance Match"] = result_df["Date de naissance interdicted_checks"] == result_df["Date de naissance client_database"]
+    result_df["Lieu de naissance Match"] = result_df["Lieu de naissance interdicted_checks"] == result_df["Lieu de naissance client_database"]
+    
+    return result_df
+
+# Streamlit app
+st.title("Similarity Check Application")
+
+# Upload files
+uploaded_interdicted_checks = st.file_uploader("Upload Interdicted Checks CSV", type=["csv"])
+uploaded_client_database = st.file_uploader("Upload Client Database CSV", type=["csv"])
+
+if uploaded_interdicted_checks and uploaded_client_database:
+    # Load data
+    interdicted_checks = pd.read_csv(uploaded_interdicted_checks)
+    client_database = pd.read_csv(uploaded_client_database)
+    
+    # Clean data
+    interdicted_checks, client_database = clean_data(interdicted_checks, client_database)
+    
+    # Find similarities
+    result_df = find_highest_similarity(interdicted_checks, client_database, threshold=0.8)
+    
+    # Display results
+    st.write("Similarity Results")
+    st.dataframe(result_df)
+    
+    # Option to download results
+    csv = result_df.to_csv(index=False)
+    st.download_button(label="Download results as CSV", data=csv, mime="text/csv", file_name="similarity_results.csv")
