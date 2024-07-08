@@ -82,6 +82,20 @@ def find_highest_similarity(df1, df2, threshold=0.8):
     
     return result_df
 
+# Function to save results to Excel and CSV
+def save_results_to_files(result_df):
+    below_threshold = result_df[result_df["Similarity Score"] < 0.95]
+    above_threshold = result_df[result_df["Similarity Score"] > 0.95]
+    dob_equal = result_df[result_df['Date de naissance client_database'] == result_df['Date de naissance interdicted_checks']]
+    
+    with pd.ExcelWriter('similarity_scores_VF_alldata.xlsx') as writer:
+        below_threshold.to_excel(writer, sheet_name='Below_0.95', index=False)
+        above_threshold.to_excel(writer, sheet_name='Above_0.95', index=False)
+        dob_equal.to_excel(writer, sheet_name='DOB_Equal', index=False)
+    
+    result_df.to_csv('result_df_similarity_namevf_alldata.csv', index=False)
+    return 'similarity_scores_VF_alldata.xlsx', 'result_df_similarity_namevf_alldata.csv'
+
 # Streamlit app
 st.title("Similarity Check Application")
 
@@ -104,6 +118,12 @@ if uploaded_interdicted_checks and uploaded_client_database:
     st.write("Similarity Results")
     st.dataframe(result_df)
     
+    # Save results to files
+    excel_file, csv_file = save_results_to_files(result_df)
+    
     # Option to download results
-    csv = result_df.to_csv(index=False)
-    st.download_button(label="Download results as CSV", data=csv, mime="text/csv", file_name="similarity_results.csv")
+    with open(excel_file, "rb") as file:
+        st.download_button(label="Download results as Excel", data=file, file_name=excel_file, mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    
+    with open(csv_file, "rb") as file:
+        st.download_button(label="Download results as CSV", data=file, file_name=csv_file, mime="text/csv")
