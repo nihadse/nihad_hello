@@ -1,3 +1,27 @@
+import pandas as pd
+
+# Sample dataframe
+data = {
+    'Similarity score': [90, 96, 85, 100, 94, 97]
+}
+df = pd.DataFrame(data)
+
+# Function to apply the conditions
+def categorize_score(score):
+    if 0 <= score <= 95:
+        return "not found"
+    elif score > 95:
+        return ">95"
+
+# Create the new column based on the conditions
+df['Category'] = df['Similarity score'].apply(categorize_score)
+
+print(df)
+
+
+
+
+
 import streamlit as st
 import pandas as pd
 import io
