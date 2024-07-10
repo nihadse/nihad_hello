@@ -1,3 +1,72 @@
+import streamlit as st
+import pandas as pd
+import io
+
+# Streamlit app
+st.title("Interdits de Chéquiers")
+
+# Upload files
+uploaded_interdicted_checks = st.file_uploader("Upload Interdicted Checks CSV", type="csv")
+uploaded_client_database = st.file_uploader("Upload Client Database CSV", type="csv")
+
+# Placeholder function for finding highest similarity
+def find_highest_similarity(interdicted_checks, client_database, threshold=0.8):
+    # Implement your similarity logic here
+    # For the example, let's just return a sample DataFrame
+    data = {'Interdicted': [1, 2, 3], 'Client': [4, 5, 6], 'Similarity': [0.9, 0.85, 0.95]}
+    return pd.DataFrame(data)
+
+# Function to save results to files
+def save_results_to_files(df):
+    # Save to CSV
+    csv_buffer = io.StringIO()
+    df.to_csv(csv_buffer, index=False)
+    csv_data = csv_buffer.getvalue()
+    
+    # Save to Excel
+    excel_buffer = io.BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+    excel_data = excel_buffer.getvalue()
+    
+    return excel_data, csv_data
+
+# Load data and process on button click
+if uploaded_interdicted_checks is not None and uploaded_client_database is not None:
+    interdicted_checks = pd.read_csv(uploaded_interdicted_checks)
+    client_database = pd.read_csv(uploaded_client_database)
+    
+    if st.button("Results"):
+        result_df = find_highest_similarity(interdicted_checks, client_database, threshold=0.8)
+        
+        # Display results
+        st.write("Similarity Results")
+        st.dataframe(result_df)
+        
+        # Save results to files
+        excel_data, csv_data = save_results_to_files(result_df)
+        
+        # Download buttons
+        st.download_button(
+            label="Download Results as CSV",
+            data=csv_data,
+            file_name='results.csv',
+            mime='text/csv'
+        )
+        
+        st.download_button(
+            label="Download Results as Excel",
+            data=excel_data,
+            file_name='results.xlsx',
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+else:
+    st.write("Please upload both CSV files.")
+
+
+
+
+
 Bonjour Hind,Racine m'a donné vos coordonnées car Salim est en congé. Nous avons une réunion avec SG samedi, donc serait-il possible de faire une réunion demain pour obtenir votre retour sur la solution IA proposée pour le problème des contrôles interdits ?Merci et bonne journée,
 [Votre Nom]
 
