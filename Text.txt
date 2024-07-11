@@ -1,5 +1,31 @@
 import pandas as pd
 
+# Example DataFrame
+data = {
+    'name': ['John', 'Jane', 'Nihad', 'Michael', 'Nihad'],
+    'family_name': ['Doe', 'Smith', 'Nihad', 'Johnson', 'Nihad']
+}
+
+df = pd.DataFrame(data)
+
+# Create a new column 'full_name' to store concatenated values
+df['full_name'] = ''
+
+# Iterate through each row
+for index, row in df.iterrows():
+    if row['name'] == row['family_name']:
+        df.at[index, 'full_name'] = row['name']
+    else:
+        df.at[index, 'full_name'] = row['name'] + ' ' + row['family_name']
+
+# Drop the original 'name' and 'family_name' columns if needed
+df = df.drop(columns=['name', 'family_name'])
+
+print(df)
+
+
+import pandas as pd
+
 # Sample DataFrame
 data = {
     'Name': ['John Doe', 'Jane Smith', 'Alice Wonderland', 'Bob Bob'],
