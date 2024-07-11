@@ -1,5 +1,53 @@
 import pandas as pd
 
+# Sample DataFrame
+data = {
+    'Name': ['John Doe', 'Jane Smith', 'Alice Wonderland', 'Bob Bob'],
+    'rename': ['Doe', 'Smith', 'Wonderland', 'Bob']
+}
+
+df = pd.DataFrame(data)
+
+# Function to concatenate names and identify equal cases
+def concatenate_names_and_find_equal(row):
+    nom = row['Name'].split()[1]  # Extract last name from 'Name' column
+    prénom = row['rename']  # Get 'rename' value
+
+    if nom == prénom:
+        return nom, nom  # Return only the name if they are equal
+    else:
+        full_name = row['Name'] + " " + prénom
+        return full_name, None
+
+# Apply function row-wise
+df[['Full Name', 'Equal Name and Family Name']] = df.apply(concatenate_names_and_find_equal, axis=1, result_type='expand')
+
+# Print the DataFrame with results
+print(df)
+
+
+
+
+def concatenate_names(nom, prénom):
+    if nom == prénom:
+        return nom  # Keep only one if they are the same
+    else:
+        return nom + " " + prénom  # Concatenate nom and prénom with a space in between
+
+# Example usage:
+nom = "Doe"
+prénom = "John"
+result = concatenate_names(nom, prénom)
+print(result)  # Outputs: "Doe John"
+
+nom = "Jane"
+prénom = "Jane"
+result = concatenate_names(nom, prénom)
+print(result)  # Outputs: "Jane"
+
+
+import pandas as pd
+
 # Sample dataframe
 data = {
     'Similarity score': [90, 96, 85, 100, 94, 97]
