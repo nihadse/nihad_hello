@@ -1,3 +1,19 @@
+import pandas as pd
+
+# Sample DataFrame
+data = {
+    'ID': [1, 2, 3, 4, 5],
+    'cot': ['yes', 'no', 'yes', 'no', 'yes']
+}
+
+df = pd.DataFrame(data)
+
+# Set ID to None (or NaN) where 'cot' is 'no'
+df.loc[df['cot'] == 'no', 'ID'] = None
+
+print(df)
+
+
 Bonjour Karim,Le fichier KPI QAC contient les données et contrôles des domaines suivants : Crédits, Comptes, Transferts, Arrêtés, et Tiers. Il comprend un total de 165 données et 398 contrôles, incluant 7 nouvelles données et 9 nouveaux contrôles.À l'exception du domaine Produit, que nous n'avons pas encore ajouté au fichier GAC, où nous avons 5 données et 110 contrôles.Ainsi, le total est de 171 données et 508 contrôles. J'ai vérifié les colonnes et les lignes : le total est bien de 508 contrôles et 171 données, et non 509 et 172, car j'avais compté les en-têtes de l'Excel auparavant.Cordialement,
 [Nihad Senhadji]
 
