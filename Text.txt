@@ -1,5 +1,28 @@
 import pandas as pd
 
+# Sample DataFrame
+data = {
+    'name': ['John', 'Jane', 'Alice', 'John'],
+    'family_name': ['Doe', 'Doe', 'Smith', 'Doe']
+}
+
+df = pd.DataFrame(data)
+
+# Combine 'name' and 'family_name' into a single column
+df['full_name'] = df['name'] + ' ' + df['family_name']
+
+# Drop duplicates from the new column
+df.drop_duplicates(subset=['full_name'], keep='first', inplace=True)
+
+# Drop 'name' and 'family_name' columns if needed
+df.drop(columns=['name', 'family_name'], inplace=True)
+
+print(df
+
+
+
+import pandas as pd
+
 # Example DataFrame
 data = {
     'name': ['John', 'Jane', 'Nihad', 'Michael', 'Nihad'],
