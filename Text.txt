@@ -1,5 +1,33 @@
 import pandas as pd
 
+# Sample data including cases where name and family_name are identical
+data = {
+    'name': ['John', 'Jane', 'John', 'Alice', 'Bob', 'Bob'],
+    'family_name': ['Doe', 'Smith', 'Doe', 'Johnson', 'Doe', 'Bob']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Function to keep only one value if name and family_name are the same
+def combine_names(row):
+    if row['name'] == row['family_name']:
+        return row['name']
+    else:
+        return row['name'] + ' ' + row['family_name']
+
+# Apply the function to combine name and family_name where they are equal
+df['combined'] = df.apply(combine_names, axis=1)
+
+# Drop the original name and family_name columns
+df_final = df[['combined']]
+
+# Display the final DataFrame
+print(df_final)
+
+
+import pandas as pd
+
 # Sample DataFrame
 data = {
     'name': ['John', 'Jane', 'Alice', 'John'],
