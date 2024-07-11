@@ -8,6 +8,71 @@ data = {
 
 df = pd.DataFrame(data)
 
+# Initialize an empty list to store equal names
+equal_names_list = []
+
+# Function to concatenate names and identify equal cases
+def concatenate_names_and_find_equal(row):
+    nom = row['Name'].split()[1]  # Extract last name from 'Name' column
+    prénom = row['rename']  # Get 'rename' value
+
+    if nom == prénom:
+        equal_names_list.append(row['Name'])  # Append 'Name' to the list if equal
+        return row['Name'], row['Name']  # Return only the name if they are equal
+    else:
+        full_name = row['Name'] + " " + prénom
+        return full_name, None
+
+# Apply function row-wise
+df[['Full Name', 'Equal Name and Family Name']] = df.apply(concatenate_names_and_find_equal, axis=1, result_type='expand')
+
+# Print the DataFrame with results
+print("DataFrame with concatenated names:")
+print(df)
+
+# Print the list of equal names
+print("\nList of equal names:")
+print(equal_names_list)
+
+
+
+def concatenate_names_and_find_equal(nom, prénom):
+    if nom == prénom:
+        return nom, [nom]  # Return only the name if they are equal
+    else:
+        full_name = nom + " " + prénom
+        if nom == prénom:
+            return full_name, [nom]
+        else:
+            return full_name, []
+
+# Example usage:
+names = [
+    ("Doe", "John"),
+    ("Jane", "Jane"),
+    ("Smith", "Smith"),
+    ("Alice", "Wonderland")
+]
+
+for nom, prénom in names:
+    full_name, equal_names = concatenate_names_and_find_equal(nom, prénom)
+    print(f"Full Name: {full_name}")
+    if equal_names:
+        print(f"Equal Name and Family Name: {equal_names}")
+
+
+
+
+import pandas as pd
+
+# Sample DataFrame
+data = {
+    'Name': ['John Doe', 'Jane Smith', 'Alice Wonderland', 'Bob Bob'],
+    'rename': ['Doe', 'Smith', 'Wonderland', 'Bob']
+}
+
+df = pd.DataFrame(data)
+
 # Function to concatenate names and identify equal cases
 def concatenate_names_and_find_equal(row):
     nom = row['Name'].split()[1]  # Extract last name from 'Name' column
