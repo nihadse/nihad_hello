@@ -1,5 +1,27 @@
 import pandas as pd
 
+# Example dataframe
+data = {
+    'création date': ['2021-01-01', '2022-02-02', '2023-03-03'],
+    'birth': ['2021-01-01', '2022-03-03', '2023-03-03']
+}
+
+df = pd.DataFrame(data)
+
+# Check if the number of columns is 2
+if df.shape[1] == 2:
+    # Create a new column 'check' to store the result of the comparison
+    df['check'] = df['création date'] == df['birth']
+    # Replace boolean values with 'yes' or 'no'
+    df['check'] = df['check'].apply(lambda x: 'yes' if x else 'no')
+
+print(df)
+
+
+
+
+import pandas as pd
+
 # Create the DataFrame with additional columns
 data = {
     'name': ['nihad', 'nihad', 'nihad', 'alex', 'alex'],
