@@ -1,5 +1,29 @@
 import pandas as pd
 
+# Create the DataFrame
+data = {
+    'name': ['nihad', 'nihad', 'nihad', 'alex', 'alex'],
+    'ID': [234, 5, 8, 12, 13]
+}
+df = pd.DataFrame(data)
+
+# Convert ID to string to concatenate
+df['ID'] = df['ID'].astype(str)
+
+# Group by name and concatenate IDs
+result = df.groupby('name')['ID'].agg('|'.join).reset_index()
+
+# Rename columns if needed
+result.columns = ['name', 'concatenated_ID']
+
+# View the result
+print(result)
+
+
+
+
+import pandas as pd
+
 # Sample DataFrame
 data = {
     'ID': [1, 2, 3, 4, 5],
