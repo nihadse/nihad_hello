@@ -1,5 +1,32 @@
 import pandas as pd
 
+# Create the DataFrame with additional columns
+data = {
+    'name': ['nihad', 'nihad', 'nihad', 'alex', 'alex'],
+    'ID': [234, 5, 8, 12, 13],
+    'birthday': ['1990-01-01', '1990-01-01', '1990-01-01', '1985-05-05', '1985-05-05']
+}
+df = pd.DataFrame(data)
+
+# Convert ID to string to concatenate
+df['ID'] = df['ID'].astype(str)
+
+# Define the aggregation function
+agg_func = {
+    'ID': '|'.join,
+    'birthday': 'first'  # Modify this as needed for other columns
+}
+
+# Group by name and aggregate
+result = df.groupby('name').agg(agg_func).reset_index()
+
+# View the result
+print(result)
+
+
+
+import pandas as pd
+
 # Create the DataFrame
 data = {
     'name': ['nihad', 'nihad', 'nihad', 'alex', 'alex'],
