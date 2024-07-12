@@ -1,3 +1,11 @@
+# Characters to replace with white spaces
+chars_to_replace = ',:"*^_.'
+
+# Apply function to replace specified characters with white spaces in selected columns
+df[columns_to_process] = df[columns_to_process].applymap(lambda x: x if not isinstance(x, str) else ''.join([' ' if c in chars_to_replace else c for c in x]))
+
+
+
 import pandas as pd
 
 # Sample data
