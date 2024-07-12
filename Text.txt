@@ -1,5 +1,31 @@
 import pandas as pd
 
+# Sample data
+data = {
+    'column1': ['he,llo', 'wor:ld', 'tes"t', 'da*ta'],
+    'column2': ['rem^ove', 'the_', 'cha.ra', 'cte.rs']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Characters to replace with white spaces
+chars_to_replace = ',:"*^_.'
+
+# Function to replace specified characters with white spaces
+def replace_with_spaces(s):
+    for char in chars_to_replace:
+        s = s.replace(char, ' ')
+    return s
+
+# Apply function to each column
+df = df.applymap(replace_with_spaces)
+
+print(df)
+
+
+import pandas as pd
+
 # Sample DataFrame
 data = {
     'name': ['ABC sarl', 'XYZ sarl', 'Company Inc', 'Test sarl']
