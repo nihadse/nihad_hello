@@ -1,3 +1,42 @@
+def find_high_similarity(interdicted_checks, client_database, threshold=0.8, model_path="/wit/Sentence_model_transformer"):
+    from sentence_transformers import SentenceTransformer
+    import numpy as np
+    import pandas as pd
+
+    # Load the SentenceTransformer model
+    model = SentenceTransformer(model_path)
+    
+    # Get names from interdicted checks and client database
+    names1 = interdicted_checks["Name"].tolist()
+    names2 = client_database["Name"].tolist()
+    
+    # Encode embeddings for names
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Compute similarity matrix
+    similarity_matrix = np.dot(embeddings1, embeddings2.T)
+    
+    # Prepare list for similar pairs
+    similar_pairs = []
+    
+    # Iterate through each pair of names and their similarity score
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i, j]
+            if similarity_score > 0.95:  # Adjusted to filter scores greater than 0.95
+                similar_pairs.append({
+                    "Name interdicted checks": client_name,
+                    "Client match": client_database.iloc[j]["Name"],
+                    "Similarity Score": similarity_score
+                })
+    
+    # Convert to DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+    
+    return result_df
+
 # Characters to replace with white spaces
 chars_to_replace = ',:"*^_.'
 
