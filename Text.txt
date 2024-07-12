@@ -1,5 +1,22 @@
 import pandas as pd
 
+# Sample DataFrame
+data = {
+    'name': ['ABC sarl', 'XYZ sarl', 'Company Inc', 'Test sarl']
+}
+
+df = pd.DataFrame(data)
+
+# Remove 'sarl' from the end of the strings in the 'name' column
+df['name'] = df['name'].str.replace('sarl$', '', regex=True).str.strip()
+
+print(df)
+
+
+
+
+import pandas as pd
+
 # Example dataframe
 data = {
     'création date': ['2021-01-01', '2022-02-02', '2023-03-03'],
