@@ -1,4 +1,74 @@
 from sentence_transformers import SentenceTransformer, util
+
+def find_highest_similarity(interdicted_checks, client_database, threshold=0.95):
+    # Load sentence transformer model
+    model_path = "/mnt/Sentence_model_transformer"  # Assuming this is your model path
+    model = SentenceTransformer(model_path)
+
+    # Extract names from interdicted_checks and client_database
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    # Encode names
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+    # Initialize a list to store all pairs and their similarities
+    similar_pairs = []
+
+    # Find all pairs and their similarities
+    for i in range(len(names1)):
+        client_name = names1[i]
+        max_similarity = -1  # Initialize max similarity score found to -1
+        above_threshold_similarities = []   # List to store all similarities above the threshold
+
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+
+            # Track all similarities above the threshold
+            if similarity_score > threshold:
+                above_threshold_similarities.append({
+                    "Matched Name": client_database.iloc[j]['Name'],
+                    "Similarity Score": similarity_score
+                })
+            elif similarity_score > max_similarity:
+                max_similarity = similarity_score
+
+        # Prepare dictionary to append
+        entry_dict = {
+            "Name interdicted_checks": client_name,
+            'nom': interdicted_checks.iloc[i]['nom'],
+            'nom clean': interdicted_checks.iloc[i]['nom_clean'],
+            'prenom': interdicted_checks.iloc[i]['prenom'],
+            'prenom clean': interdicted_checks.iloc[i]['prenom_clean'],
+            "Date de naissance interdicted_checks": interdicted_checks.iloc[i]['Date de naissance'],
+            "Lieu de naissance interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+        }
+
+        # Append above threshold similarities or max similarity found
+        if above_threshold_similarities:
+            entry_dict.update(above_threshold_similarities[0])  # Append the first above threshold similarity
+        else:
+            entry_dict.update({"Matched Name": None, "Similarity Score": max_similarity})
+
+        # Append the dictionary to similar_pairs
+        similar_pairs.append(entry_dict)
+
+    return similar_pairs
+
+# Usage example:
+# similar_pairs = find_highest_similarity(interdicted_checks, client_database)
+
+# Print the results
+# for pair in similar_pairs:
+#     print(pair)
+
+
+
+from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 
 def find_highest_similarity(interdicted_checks, client_database, threshold=0.95):
