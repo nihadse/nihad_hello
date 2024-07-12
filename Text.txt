@@ -1,3 +1,53 @@
+best_pairs = {}
+
+# Find the pairs with the highest similarity score for each client in interdicted checks above the threshold
+for i in range(len(names1)):
+    client_name = names1[i]
+    for j in range(len(names2)):
+        similarity_score = similarity_matrix[i][j]
+        if similarity_score > 0.95:  # Adjusted to filter scores greater than 0.95
+            best_scores[client_name] = similarity_score
+            best_pairs[client_name] = (client_database.iloc[j], similarity_score)
+
+# Create List of pairs with highest similarity score for each client in interdicted checks
+similar_pairs = []
+for i in range(len(interdicted_checks)):
+    client_name = interdicted_checks.loc[i]['Name']
+    if client_name in best_pairs:
+        client_match, similarity_score = best_pairs[client_name]
+        similar_pairs.append({
+            "Name interdicted checks": client_name,
+            "Abrege": interdicted_checks.loc[i]['abrege'],
+            "Nom": interdicted_checks.iloc[i]['nom'],
+            "Nom clean": interdicted_checks.iloc[i]['nom clean'],
+            "Prenom": interdicted_checks.iloc[i]['prenom'],
+            "Prenom clean": interdicted_checks.iloc[i]['prenom clean'],
+            "Date de naissance interdicted checks": interdicted_checks.iloc[i]['Date de naissance'],
+            "Lieu de naissance interdicted checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+            "Type": interdicted_checks.iloc[i]['Type'],
+            "Raison sociale client database": client_match['Raison sociale'],
+            "Date de naissance client database": client_match['Date de naissance'],
+            "Lieu de naissance client database": client_match['Lieu de naissance'],
+            "Code catégorie client": client_match['Code catégorie client'],
+            "Date de création (entreprise)": client_match['Date de création (entreprise)'],
+            "Code nature juridique du compte": client_match['Code nature juridique du compte'],
+            "Id tiers": client_match['Id tiers'],
+            "Similarity Score": similarity_score
+        })
+
+# Create DataFrame from similar_pairs
+result_df = pd.DataFrame(similar_pairs)
+
+# Add columns to check if notis cond addresses are stellar
+result_df["Date de naissance Match"] = result_df.apply(lambda row: "Yes" if row["Date de naissance interdicted checks"] == row["Date de naissance client database"] else "No", axis=1)
+result_df["Lieu de naissance Match"] = result_df.apply(lambda row: "Yes" if row["Lieu de naissance interdicted checks"] == row["Lieu de naissance client database"] else "No", axis=1)
+
+
+
+
+
+
+
 def find_high_similarity(interdicted_checks, client_database, threshold=0.8, model_path="/wit/Sentence_model_transformer"):
     from sentence_transformers import SentenceTransformer
     import numpy as np
