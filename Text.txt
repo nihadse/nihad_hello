@@ -1,3 +1,67 @@
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+
+def find_highest_similarity(interdicted_checks, client_database, threshold=0.95):
+    # Load the pre-trained model
+    model_path = "/mnt/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+
+    # Extract names from both datasets
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    # Encode the names
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    # Compute similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+    similar_pairs = []
+
+    # Find all pairs with similarity score above the threshold
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold:
+                client_match = client_database.iloc[j]
+                similar_pairs.append({
+                    "Name_interdicted_checks": client_name,
+                    "nom": interdicted_checks.iloc[i]['nom'],
+                    "nom_clean": interdicted_checks.iloc[i]['nom_clean'],
+                    "prenom": interdicted_checks.iloc[i]['prenom'],
+                    "prenom_clean": interdicted_checks.iloc[i]['prenom_clean'],
+                    "Date_de_naissance_interdicted_checks": interdicted_checks.iloc[i]['Date de naissance'],
+                    "Lieu_de_naissance_interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+                    "Name_client_database": client_match["Name"],
+                    "Type_de_relation": client_match["Type_de_relation"],
+                    "Compte_client": client_match["Compte_client"],
+                    "Nom_abrégé_tiers": client_match["Nom abrégé tiers"],
+                    "raison_sociale": client_match['raison sociale'],
+                    "Date_de_naissance_client_database": client_match["Date de naissance"],
+                    "Lieu_de_naissance_client_database": client_match["Lieu de naissance"],
+                    "adresse_atlas": client_match['adresse_atlas'],
+                    "Code_catégorie_client": client_match["Code catégorie client"],
+                    "Date_de_création_entreprise": client_match["Date de création (entreprise)"],
+                    "Code_nature_juridique_du_compte": client_match["Code nature juridique du compte"],
+                    "Id_tiers": client_match['Id tiers'],
+                    "Similarity_Score": similarity_score
+                })
+
+    # Create a DataFrame from the similar pairs
+    result_df = pd.DataFrame(similar_pairs)
+    return result_df
+
+# Example usage
+# interdicted_checks = pd.read_csv("path_to_interdicted_checks.csv")
+# client_database = pd.read_csv("path_to_client_database.csv")
+# result = find_highest_similarity(interdicted_checks, client_database, threshold=0.95)
+# print(result)
+
+
+
+
 best_pairs = {}
 
 # Find the pairs with the highest similarity score for each client in interdicted checks above the threshold
