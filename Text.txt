@@ -1,3 +1,24 @@
+import streamlit as st
+import pandas as pd
+
+# Sidebar
+st.sidebar.title("Upload CSV")
+
+# File uploaders
+uploaded_interdicted_checks = st.sidebar.file_uploader('Upload Interdicted Checks CSV', type=["csv"])
+
+# Main content
+if uploaded_interdicted_checks is not None:
+    # Load data
+    interdicted_checks = pd.read_csv(uploaded_interdicted_checks)
+    st.write("Data loaded successfully.")
+else:
+    st.sidebar.write("Please upload a CSV file.")
+
+# Display other parts of your app
+# ...
+
+
 from sentence_transformers import SentenceTransformer, util
 
 def find_highest_similarity(interdicted_checks, client_database, threshold=0.95):
