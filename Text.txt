@@ -1,3 +1,11 @@
+On a trouvé le remède !
+
+Mise en place d'un système basé sur l'intelligence artificielle (NLP*) pour identifier les similarités entre notre base de données clientèle d'Atlas et la liste des interdits de chéquiers BA en termes de
+
+<<< Nom et prénom /raison social, date de naissance/création, lieu de naissance/création. >>>
+
+
+
 Ce problème a été remonté à l'atelier AG et EM, en collaboration avec l'équipe Data et la DSI. Voici la solution que nous proposons.
 
 
