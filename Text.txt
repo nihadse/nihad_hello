@@ -1,3 +1,58 @@
+import streamlit as st
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Define your functions and models here
+def clean_data(df):
+    # Example cleaning steps
+    df_cleaned = df.dropna()
+    df_cleaned.columns = df_cleaned.columns.str.lower()
+    return df_cleaned
+
+def calculate_similarity(df, column):
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(df[column])
+    similarity_matrix = cosine_similarity(tfidf_matrix)
+    return similarity_matrix
+
+# File uploader
+uploaded_file = st.file_uploader("Upload Interdicted Checks CSV", type="csv")
+
+if uploaded_file is not None:
+    try:
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(uploaded_file)
+        st.write("File successfully uploaded and read.")
+
+        # Display the original DataFrame
+        st.write("Original DataFrame:")
+        st.dataframe(df)
+
+        # Data cleaning
+        df_cleaned = clean_data(df)
+
+        # Display the cleaned DataFrame
+        st.write("Cleaned DataFrame:")
+        st.dataframe(df_cleaned)
+
+        # Calculate similarity (example using a specific column)
+        if 'your_column_name' in df_cleaned.columns:
+            similarity_matrix = calculate_similarity(df_cleaned, 'your_column_name')
+
+            # Display similarity matrix (or parts of it)
+            st.write("Similarity Matrix:")
+            st.write(similarity_matrix)
+        else:
+            st.warning("Specified column for similarity calculation not found in the cleaned DataFrame.")
+            
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+else:
+    st.warning("Please upload a CSV file.")
+
+
+
 from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 import numpy as np
