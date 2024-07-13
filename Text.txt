@@ -1,16 +1,5 @@
-On a trouvé le remède !
-
-Mise en place d'un système basé sur l'intelligence artificielle (NLP*) pour identifier les similarités entre notre base de données clientèle d'Atlas et la liste des interdits de chéquiers BA en termes de
-
-<<< Nom et prénom /raison social, date de naissance/création, lieu de naissance/création. >>>
+Nous proposons de mettre en place un système basé sur l'intelligence artificielle (NLP*) pour identifier les similarités entre notre base de données clientèle d'Atlas et la liste des interdits de chéquiers BA, en termes de nom et prénom/raison sociale, date de naissance/création, et lieu de naissance/création.
 
 
 
 Ce problème a été remonté à l'atelier AG et EM, en collaboration avec l'équipe Data et la DSI. Voici la solution que nous proposons.
-
-
-Le processus DECAD commence par la réception d'un fichier texte, que le collaborateur doit convertir manuellement en fichier Excel. Le fichier est ensuite formaté pour utilisation en créant des colonnes comme nom, prénom, adresse, entreprise, date de naissance et lieu de naissance. Les 2200 lignes sont réparties entre six ETP pour une recherche manuelle sur Atlas. Si un client est trouvé, le traitement administratif commence. En cas de KYC non mis à jour, des actions d'investigation sont nécessaires, prolongeant le processus de vérification. Cette activité, nécessitant 71 heures par mois, sollicite six ETP chaque mois. Ce travail est répétitif, manuel, et lourd, avec un risque d'erreur réglementaire élevé.
-
-
-
-Leur process inclut le traitement rigoureux des Flux Domestiques et des Activités de Marché. Par exemple, ils s'emploient à convertir manuellement des fichiers texte en fichiers Excel, une tâche méticuleuse essentielle à leur flux opérationnel. Chaque mois, ils scrutent avec soin la liste des clients interdits de chéquiers via INTIER, traitant en moyenne 2200 lignes de données. Les informations sont minutieusement structurées en colonnes détaillées telles que nom, adresse, l'identification des clients concernés, ils mettent en œuvre avec un délai de  7 jour de la Banque d'Algérie.
