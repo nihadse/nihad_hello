@@ -1,3 +1,28 @@
+from io import BytesIO
+import pandas as pd
+
+def save_results_to_files(result_df):
+    below_threshold = result_df[result_df["Similarity Score"] < 0.95]
+    above_threshold = result_df[result_df["Similarity Score"] > 0.95]
+
+    # Save to Excel with two sheets
+    excel_buffer = BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+        below_threshold.to_excel(writer, sheet_name='Below_0.95', index=False)
+        above_threshold.to_excel(writer, sheet_name='Above_0.95', index=False)
+        writer.book['Below_0.95'].sheet_state = 'visible'  # Ensure at least one sheet is visible
+
+    excel_buffer.seek(0)
+    excel_data = excel_buffer.getvalue()
+
+    # Save to CSV
+    csv_buffer = BytesIO()
+    result_df.to_csv(csv_buffer, index=False)
+    csv_buffer.seek(0)
+    csv_data = csv_buffer.getvalue()
+
+    return excel_data, csv_data
+
 Nous proposons de mettre en place un système basé sur l'intelligence artificielle (NLP*) pour identifier les similarités entre notre base de données clientèle d'Atlas et la liste des interdits de chéquiers BA, en termes de nom et prénom/raison sociale, date de naissance/création, et lieu de naissance/création.
 
 
