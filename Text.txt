@@ -1,3 +1,44 @@
+import pandas as pd
+import io
+import streamlit as st
+
+def save_results_to_files(result_df):
+    below_threshold = result_df[result_df["Similarity Score"] < 0.95]
+    above_threshold = result_df[result_df["Similarity Score"] > 0.95]
+    
+    # Create a buffer to use for Excel writer
+    buffer = io.BytesIO()
+
+    # Save DataFrame to CSV and encode it
+    csv_data = result_df.to_csv(index=False).encode('utf-8')
+
+    # Display the DataFrame on Streamlit app
+    st.write(result_df)
+
+    # Download button to download DataFrame as CSV
+    st.download_button(
+        label="Download data as CSV",
+        data=csv_data,
+        file_name='result_df_similarity_namevf_alldata.csv',
+        mime='text/csv'
+    )
+
+    # Write each DataFrame to a different worksheet
+    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+        below_threshold.to_excel(writer, sheet_name='Below_0.95', index=False)
+        above_threshold.to_excel(writer, sheet_name='Above_0.95', index=False)
+    
+    # Download button to download DataFrame as Excel
+    st.download_button(
+        label="Download data as Excel",
+        data=buffer,
+        file_name='similarity_scores_VF_alldata.xlsx',
+        mime='application/vnd.ms-excel'
+    )
+    
+    return 'similarity_scores_VF_alldata.xlsx', 'result_df_similarity_namevf_alldata.csv'
+
+
 from io import BytesIO
 import pandas as pd
 
