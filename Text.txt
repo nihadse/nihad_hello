@@ -1,3 +1,10 @@
+if st.button("Results"):
+    result_df = find_highest_similarity(interdicted_checks, client_database_, threshold=0)
+    excel_file, csv_file = save_results_to_files(result_df)
+    st.write("Similarity Results")
+    st.dataframe(result_df)
+
+
 import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
