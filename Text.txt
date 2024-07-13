@@ -1,3 +1,53 @@
+def find_highest_similarity(above_threshold, client_database, threshold=0.95):
+    # Load sentence transformer model
+    model_path = "/mnt/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+    
+    # Extract names from below threshold and client database
+    names1 = above_threshold['Name1'].tolist()
+    names2 = client_database['Name'].tolist()
+    
+    # Encode names1 and names2
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).numpy()
+    
+    # Initialize dictionary to store all similarity scores above the threshold
+    similarity_scores = {}
+    
+    # Find pairs with similarity scores above the threshold
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold:
+                if client_name not in similarity_scores:
+                    similarity_scores[client_name] = []
+                similarity_scores[client_name].append((client_database.iloc[j], similarity_score))
+    
+    # Create list of pairs with similarity scores above the threshold
+    similar_pairs = []
+    for client_name, matches in similarity_scores.items():
+        for match, similarity_score in matches:
+            similar_pairs.append({
+                'Name interdicted_checks': client_name,
+                'nom': match['nom'],
+                'nom_clean': above_threshold.loc[i]['nom_clean'],
+                'prenom': match['prenom'],
+                'prenom_clean': above_threshold.loc[i]['prenom_clean'],
+                'Date de naissance interdicted_checks': match['Date de naissance interdicted_checks'],
+                'Lieu de naissance interdicted_checks': match['Lieu de naissance interdicted_checks'],
+                'similarity_score': similarity_score
+            })
+    
+    return similar_pairs
+
+# Usage example
+similar_pairs = find_highest_similarity(above_threshold, client_database, threshold=0.95)
+
+
 if st.button("Results"):
     result_df = find_highest_similarity(interdicted_checks, client_database_, threshold=0)
     excel_file, csv_file = save_results_to_files(result_df)
