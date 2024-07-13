@@ -1,3 +1,75 @@
+import streamlit as st
+import pandas as pd
+
+# Function to find highest similarity and save results
+def find_highest_similarity(interdicted_checks, client_database, threshold=0):
+    # Your logic to compute result_df based on inputs
+    result_df = pd.DataFrame()  # Placeholder for example
+
+    return result_df
+
+# Function to save results to Excel and CSV
+def save_results_to_files(result_df):
+    below_threshold = result_df[result_df["Similarity Score"] < 0.95]
+    above_threshold = result_df[result_df["Similarity Score"] > 0.95]
+
+    # Check if either DataFrame is empty before proceeding
+    if below_threshold.empty and above_threshold.empty:
+        return None, None  # Return None for both files if no data to save
+
+    # Save to Excel
+    excel_file = 'similarity_scores_VF_alldata.xlsx'
+    with pd.ExcelWriter(excel_file, engine='openpyxl') as writer:
+        if not below_threshold.empty:
+            below_threshold.to_excel(writer, sheet_name='Below_0.95', index=False)
+        if not above_threshold.empty:
+            above_threshold.to_excel(writer, sheet_name='Above_0.95', index=False)
+
+    # Save to CSV
+    csv_file = 'result_df_similarity_namevf_alldata.csv'
+    result_df.to_csv(csv_file, index=False)
+
+    return excel_file, csv_file
+
+# Main Streamlit app
+def main():
+    # Assuming you have interdicted_checks and client_database dataframes
+    interdicted_checks = pd.DataFrame()  # Placeholder for example
+    client_database = pd.DataFrame()     # Placeholder for example
+    threshold = 0.95  # Example threshold
+
+    if st.button("Results"):
+        result_df = find_highest_similarity(interdicted_checks, client_database, threshold)
+        if result_df is not None:
+            excel_file, csv_file = save_results_to_files(result_df)
+            
+            st.write("Similarity Results")
+            st.dataframe(result_df)
+
+            # Download buttons
+            if csv_file:
+                st.download_button(
+                    label="Download Results as CSV",
+                    data=open(csv_file, 'rb').read(),
+                    file_name='results.csv',
+                    mime='text/csv'
+                )
+
+            if excel_file:
+                st.download_button(
+                    label="Download Results as Excel",
+                    data=open(excel_file, 'rb').read(),
+                    file_name='results.xlsx',
+                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                )
+        else:
+            st.warning("No results to display. Please upload files.")
+
+if __name__ == "__main__":
+    main()
+
+
+
 # Function to save results to Excel and CSV
 def save_results_to_files(result_df):
     below_threshold = result_df[result_df["Similarity Score"] < 0.95]
