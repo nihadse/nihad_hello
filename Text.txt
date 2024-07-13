@@ -1,3 +1,6 @@
+Ce problème a été remonté à l'atelier AG et EM, en collaboration avec l'équipe Data et la DSI. Voici la solution que nous proposons.
+
+
 Le processus DECAD commence par la réception d'un fichier texte, que le collaborateur doit convertir manuellement en fichier Excel. Le fichier est ensuite formaté pour utilisation en créant des colonnes comme nom, prénom, adresse, entreprise, date de naissance et lieu de naissance. Les 2200 lignes sont réparties entre six ETP pour une recherche manuelle sur Atlas. Si un client est trouvé, le traitement administratif commence. En cas de KYC non mis à jour, des actions d'investigation sont nécessaires, prolongeant le processus de vérification. Cette activité, nécessitant 71 heures par mois, sollicite six ETP chaque mois. Ce travail est répétitif, manuel, et lourd, avec un risque d'erreur réglementaire élevé.
 
 
