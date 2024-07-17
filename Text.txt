@@ -1,3 +1,8 @@
+La Piste d'audit contient tous les enregistrements du fichier de la décade où ils sont séparés en deux catégories : les scores de similarité supérieurs à 95 et les clients de la décade qui n'existent pas dans la base de données d'Atlas
+
+
+
+
 Madame, Monsieur,Suite à notre atelier SG, nous vous transmettons le fichier final des résultats du POC, testé sur une durée de 18 mois, de décembre 2022 à juin 2024, portant sur l'analyse de similarité entre 18 000 enregistrements de DECAD et la base de données clients Atlas.Cette analyse a été réalisée à l'aide de notre solution basée sur l'intelligence artificielle.Nous pouvons ajouter les données supplémentaires que vous souhaitez dans le fichier final.Le fichier Excel final "Résultats_DECAD_juin 2024" que nous vous avons envoyé contient trois feuilles distinctes :Enregistrements avec un score de similarité supérieur à 95%Enregistrements avec un score de similarité inférieur à 95%Piste d'auditLa colonne "nom_interdicted_chequiers" est la concaténation des deux premières colonnes du fichier DECAD.En plus du fichier final, vous trouverez également les résultats du fichier de juin.Nous vous invitons à examiner ces résultats et à nous communiquer vos observations ou les données complémentaires que vous souhaitez voir ajoutées.Vous trouverez ci-joint la vidéo de démonstration ainsi que la présentation.Cordialement,
 Nihad Senhadji
 
