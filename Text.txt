@@ -2,6 +2,10 @@ Bonjour [Nom du destinataire],Je vous écris suite au refus de ma demande avec l
 Nihad Senhadji
 
 
+Bonjour [Nom du destinataire],Je vous écris suite au refus de ma demande avec le motif "merci de créé une demande unitaire ir Groupe." Pourriez-vous m'expliquer ce que cela signifie exactement et quelles sont les étapes à suivre ?Merci d'avance pour votre aide.Cordialement,
+Nihad Senhadji
+
+
 
 
 Given that you have access to Azure OpenAI LLM APIs, we can leverage them to build your chatbot. Here’s how you can extend the implementation to use Azure OpenAI, handle text, tables, and flowcharts, and ensure the generated procedures include these elements.High-Level StepsExtract and Store Existing Content: Extract text, tables, and flowcharts from PDFs.Index the Content: Store and index the content for efficient retrieval.Retrieve Relevant Content: Fetch relevant documents, tables, and flowcharts based on a user query.Generate New Procedures: Use Azure OpenAI API to generate new procedures, ensuring that tables and flowcharts are integrated.Validate the Generated Procedure: Validate the generated procedure against the specified rules.
