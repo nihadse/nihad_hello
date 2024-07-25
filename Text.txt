@@ -1,3 +1,7 @@
+I hope this message finds you well. I noticed from your profile that you are a data scientist, and I am particularly interested in understanding how you measure the success of your data science projects.Could you share some insights into the KPIs you use for your data science use cases?
+
+
+
 I wanted to inquire if there is anyone currently working on building a chatbot as part of our Generation AI experimentations.
 
 
