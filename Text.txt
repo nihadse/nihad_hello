@@ -1,1 +1,1 @@
-
+Le contrôle 005 a été désactivé en raison du périmètre du DCX. Nous devons revoir ce périmètre, car nous avons constaté une baisse significative de notre taux de qualité des données.
