@@ -1,1 +1,4 @@
+Bonjour Lila,Je vous écris concernant mon dossier de remboursement. Le montant total des frais réels engagés était de 12 000, cependant, dans le relevé de remboursement, le montant indiqué est de 7 000.
+
+
 Le contrôle 005 a été désactivé en raison du périmètre du DCX. Nous devons revoir ce périmètre, car nous avons constaté une baisse significative de notre taux de qualité des données.
