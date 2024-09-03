@@ -1,3 +1,9 @@
+Merci pour votre message.Je tiens à préciser que le score de similarité est basé uniquement sur la comparaison des deux noms présents dans notre base de données Atlas et le fichier DECAD. La donnée "date de création" est simplement une colonne ajoutée pour vous aider à retrouver plus facilement les clients, mais elle n'a pas d'impact sur le score de similarité.Pour mieux comprendre votre point de vue, pourriez-vous nous envoyer quelques exemples ? Cela nous permettra d'examiner la situation de manière plus approfondie.N'hésitez pas à revenir vers moi si vous avez d'autres questions ou besoin de précisions supplémentaires.Cordialement,
+Nihad Senhadji
+
+
+
+
 La solution DECAD AI a fourni un fichier contenant toutes les données client, facilité une vérification rapide des informations, et réduit les recherches manuelles.De plus, elle a accéléré le processus et automatisé les tâches, ce qui a permis de minimiser les erreurs humaines et d’assurer des vérifications plus précises.
 
 
