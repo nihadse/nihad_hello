@@ -1,3 +1,7 @@
+La solution DECAD AI a fourni un fichier contenant toutes les données client, facilité une vérification rapide des informations, et réduit les recherches manuelles.De plus, elle a accéléré le processus et automatisé les tâches, ce qui a permis de minimiser les erreurs humaines et d’assurer des vérifications plus précises.
+
+
+
 La solution DECAD AI a été testée au cours des deux derniers mois, en juin et juillet, en utilisant le fichier DECAD envoyé par la Banque d'Algérie.
 
 
