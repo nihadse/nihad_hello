@@ -1,3 +1,6 @@
+La solution DECAD AI a été testée au cours des deux derniers mois, en juin et juillet, en utilisant le fichier DECAD envoyé par la Banque d'Algérie.
+
+
 États des lieux du projet :Les tests de la solution DECAD AI, fournie par la Banque d'Algérie, ont été réalisés en juin et juillet.Le fichier de sortie a contribué à une réduction significative du temps de traitement manuel.Nous sommes actuellement toujours en phase de test.
 
 
