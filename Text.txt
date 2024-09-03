@@ -1,1 +1,4 @@
+États des lieux du projet :Les tests de la solution DECAD AI, fournie par la Banque d'Algérie, ont été réalisés en juin et juillet.Le fichier de sortie a contribué à une réduction significative du temps de traitement manuel.Nous sommes actuellement toujours en phase de test.
+
+
 Bonjour [Nom du manager],L'équipe m'a informé qu'ils sont occupés et ne peuvent pas programmer la réunion avec moi aujourd'hui. Ils prévoient cependant de m'envoyer leurs retours au cours de la journée.
