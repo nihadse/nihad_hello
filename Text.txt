@@ -1,2 +1,3 @@
-"Après vérification, si des clients interdits de chéquier sont identifiés, le lancement du traitement administratif sera effectué."
+Bonjour [Nom du destinataire],
 
+Je travaille sur la finalisation des diapositives afin que nous puissions envoyer la présentation aujourd'hui. Pourrais-tu me dire quelles sont les étapes que tu suivras après avoir reçu le fichier ?
