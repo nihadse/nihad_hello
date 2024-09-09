@@ -1,1 +1,2 @@
-"Réception d'un fichier résultat qui contient trois feuilles : 'Piste audit total fichier DECAD,' 'Similarité >95%,' et 'Similarité <95%' selon des seuils de similarité (score < 95%, > 95%)."
+"Après vérification, si des clients interdits de chéquier sont identifiés, le lancement du traitement administratif sera effectué."
+
