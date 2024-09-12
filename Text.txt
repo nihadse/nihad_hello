@@ -1,13 +1,16 @@
 
-Objet : Dernière version de la présentation
 
-Bonjour [Nom du destinataire],
+[Scène 1 : Ouverture - Écran titre]
+Texte à l'écran : "Révolutionner les processus manuels avec l'IA chez BNP Paribas El Djazair"
 
-Veuillez trouver en pièce jointe la dernière version de la présentation. Merci de me faire savoir si vous avez des commentaires.
+[Scène 2 : Présentation du problème - Visuel du traitement manuel des données]
+Narrateur : "Chaque mois, nous traitons plus de 2 200 enregistrements, en vérifiant manuellement les clients interdits de chéquiers. Ce processus est long et comporte un risque élevé d'erreurs à cause des variations de noms et des homonymes."
 
-Cordialement,
-Nihad Senhadji
+[Scène 3 : Présentation de la solution IA - Visuel du traitement des données par l'IA]
+Narrateur : "Avec notre solution d'IA, DECAD, alimentée par le traitement avancé du langage naturel, nous avons automatisé ce processus complexe. L'IA identifie les similarités phonétiques, même avec des variations de noms."
 
+[Scène 4 : Les avantages - Visuel d'un tableau de bord montrant les gains d'efficacité]
+Narrateur : "Cette solution réduit le travail manuel de 93%, augmente la précision, et garantit la conformité avec les réglementations bancaires—le tout en seulement 42 jours/homme."
 
----
-
+[Scène 5 : Conclusion - Logo de la banque et slogan]
+Narrateur : "L'IA chez BNP Paribas El Djazair : transformer les tâches manuelles pour un avenir plus 
