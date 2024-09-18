@@ -1,3 +1,5 @@
+DECAD traite les interdits de chéquier par la vérification manuelle des clients signalés comme interdits de chéquier
+
 "Savez-vous combien de fois la Banque d'Algérie envoie les fichiers des interdits de chéquiers ?"
 
 
