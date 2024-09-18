@@ -1,3 +1,6 @@
+Avez-vous une idée du nombre de lignes traitées mensuellement pour le flux domestique, provenant du fichier DECAD envoyé par la BA ?
+
+
 DECAD traite les interdits de chéquier par la vérification manuelle des clients signalés comme interdits de chéquier
 
 "Savez-vous combien de fois la Banque d'Algérie envoie les fichiers des interdits de chéquiers ?"
