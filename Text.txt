@@ -1,3 +1,15 @@
+Objet : Version finale du quiz
+
+Bonjour [Nom du Manager],
+
+Voici la version finale du quiz. Vous pouvez également consulter la vidéo "DECAD AI" en suivant ce lien : [chemin/URL].
+
+Cordialement,
+Nihad
+
+
+
+
 Avez-vous une idée du nombre de lignes traitées mensuellement pour le flux domestique, provenant du fichier DECAD envoyé par la BA ?
 
 
