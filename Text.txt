@@ -1,3 +1,7 @@
+"Savez-vous combien de temps il faut pour traiter les fichiers des interdits de chéquiers par le flux Domestique ?"
+
+"Savez-vous combien de temps la Banque d'Algérie met pour envoyer les fichiers des interdits de chéquiers ?"
+
 
 
 [Scène 1 : Ouverture - Écran titre]
