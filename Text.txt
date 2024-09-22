@@ -1,3 +1,8 @@
+This use case involves implementing an AI-based system using NLP to compare the similarity between names and surnames from Atlas' customer database and the BA cheque defaulters blacklist. When a potential match is identified, the system will confirm if it is the same individual by verifying the date of birth (or date of creation for companies) and the place of birth. This approach ensures a thorough verification process, reducing false positives and accurately identifying defaulters.
+
+
+
+
 https://forms.office.com/Pages/ResponsePage.aspx?id=JZxPYfq_x0KG2JZBAfVfom6FMzcQ6YZGjty1QNO8NZtUQzJUWjdWUVZHNE42M00yR0FKUlVBMkJXOC4u&origin=QRCode&qrcodeorigin=presentation
 
 
