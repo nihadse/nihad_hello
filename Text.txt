@@ -1,3 +1,51 @@
+# Step 2: Set up the OAuth2 client with httpx
+oauth2_httpxclient = httpx.Client(verify=False)
+
+# Step 3: Function to fetch OAuth2 token
+def fetch_oauth2_token():
+    response = oauth2_httpxclient.post(
+        OIDC_ENDPOINT,
+        data={
+            "grant_type": "client_credentials",
+            "client_id": OIDC_CLIENT_ID,
+            "client_secret": OIDC_CLIENT_SECRET,
+            "scope": OIDC_SCOPE
+        }
+    )
+    response.raise_for_status()  # Raise an error for bad responses
+    return response.json()  # Return the token response as JSON
+
+# Step 5: Function to interact with Azure OpenAI GPT-4 via OAuth2 authentication
+def update_procedure_with_gpt4(old_procedure, new_tool_docs):
+    prompt = generate_prompt(old_procedure, new_tool_docs)
+
+    # Fetch OAuth2 token
+    token_response = fetch_oauth2_token()  # Fetch OAuth2 token using the new function
+    access_token = token_response["access_token"]  # Extract the access token
+
+    # Create the HTTP request to Azure OpenAI via Apigee with OAuth2
+    response = httpx.post(
+        f"{APIGEE_ENDPOINT}/openai/deployments/{AZURE_ADAI_MODEL_DEPLOYMENT_NAME}/chat/completions?api-version={AZURE_AOAI_API_VERSION}",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+        json={
+            "model": AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+            "messages": [
+                {"role": "system", "content": "You are an assistant helping to rewrite procedures."},
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": 1500,
+            "temperature": 0.7
+        }
+    )
+    
+    # Check for errors in response
+    if response.status_code != 200:
+        raise Exception(f"API request failed: {response.status_code} - {response.text}")
+
+    updated_procedure = response.json()['choices'][0]['message']['content'].strip()
+    return updated_procedure
+
+
 import os
 import httpx
 import json
