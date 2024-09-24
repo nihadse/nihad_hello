@@ -1,3 +1,86 @@
+import openai
+import PyPDF2
+from fpdf import FPDF
+
+# Step 1: Set up Azure OpenAI API credentials
+openai.api_type = "azure"
+openai.api_base = "https://YOUR_AZURE_OPENAI_ENDPOINT/"
+openai.api_version = "2023-03-15-preview"
+openai.api_key = "YOUR_AZURE_OPENAI_API_KEY"
+
+# Step 2: Function to extract text from a PDF
+def extract_pdf_text(pdf_path):
+    with open(pdf_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+
+# Step 3: GPT-4 prompt generation for procedure rewriting
+def generate_prompt(old_procedure, new_tool_docs):
+    prompt = f"""
+    You are tasked with migrating an old tool's procedure to a new tool's process.
+    Here is the procedure from the old tool:
+
+    {old_procedure}
+
+    Here is the documentation for the new tool:
+
+    {new_tool_docs}
+
+    Rewrite the procedure using the new tool's instructions and processes.
+    """
+    return prompt
+
+# Step 4: Function to interact with GPT-4 and get the updated procedures
+def update_procedure_with_gpt4(old_procedure, new_tool_docs):
+    prompt = generate_prompt(old_procedure, new_tool_docs)
+    
+    response = openai.Completion.create(
+        engine="gpt-4",  # Use "gpt-4" engine on Azure OpenAI
+        prompt=prompt,
+        max_tokens=1500,
+        n=1,
+        stop=None,
+        temperature=0.7
+    )
+    
+    updated_procedure = response['choices'][0]['text'].strip()
+    return updated_procedure
+
+# Step 5: Function to save updated text into a PDF
+def save_to_pdf(updated_text, output_pdf_path):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    # Add updated procedure line by line
+    for line in updated_text.split('\n'):
+        pdf.cell(200, 10, txt=line, ln=True, align='L')
+
+    pdf.output(output_pdf_path)
+
+# Example usage
+old_pdf_path = "old_procedures.pdf"
+new_tool_docs = "Insert new tool's documentation here or load dynamically"
+
+# Step 6: Extract text from old PDF
+old_procedures = extract_pdf_text(old_pdf_path)
+
+# Step 7: Use GPT-4 to update the procedures
+updated_procedures = update_procedure_with_gpt4(old_procedures, new_tool_docs)
+
+# Step 8: Save the updated procedures to a new PDF
+output_pdf_path = "updated_procedures.pdf"
+save_to_pdf(updated_procedures, output_pdf_path)
+
+print(f"Updated procedures saved to {output_pdf_path}")
+
+
+
+
 import pdfplumber
 import openai
 from PyPDF2 import PdfReader, PdfWriter
