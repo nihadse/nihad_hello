@@ -83,7 +83,144 @@ old_pdf_path = "old_procedures.pdf"
 new_tool_docs = "Insert new tool's documentation here or load dynamically"
 
 # Step 7: Extract text from old PDF
+old_procedures = import os
+import httpx
+from PyPDF2 import PdfReader
+from fpdf import FPDF
+from dotenv import load_dotenv
+from azure.ai.openai import OpenAIClient
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Set up OAuth2 and Azure API credentials
+OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET")
+OIDC_SCOPE = "genai-model"
+APIGEE_ENDPOINT = "https://aifactory.api.staging.echonet/genai-model/v1"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+AZURE_AOAI_API_VERSION = "2024-02-15-preview"
+AZURE_AOAI_API_KEY = os.getenv("AZURE_AOAI_API_KEY")
+
+# Function to fetch OAuth2 token
+def fetch_oauth2_token(client):
+    try:
+        response = client.post(
+            OIDC_ENDPOINT,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": OIDC_CLIENT_ID,
+                "client_secret": OIDC_CLIENT_SECRET,
+                "scope": OIDC_SCOPE
+            }
+        )
+        response.raise_for_status()
+        return response.json()  # Return the token response as JSON
+    except Exception as e:
+        print(f"Error fetching token: {e}")
+        return None
+
+# Step 5: Function to interact with Azure OpenAI GPT-4 via OAuth2 authentication
+def update_procedure_with_gpt4(old_procedure, new_tool_docs):
+    prompt = generate_prompt(old_procedure, new_tool_docs)
+
+    # Create an httpx client for OAuth2 token retrieval
+    http_client = httpx.Client(verify=False)
+    access_token = None
+
+    # Loop to check if the token is retrieved from cache
+    for i in range(1, 4):
+        # Attempt to fetch the OAuth2 token
+        token_response = fetch_oauth2_token(http_client)
+        if token_response:
+            access_token = token_response.get("access_token")
+            if access_token:
+                print(f"Access token retrieved on attempt {i}")
+                break  # Exit the loop if the token is retrieved
+        print(f"Attempt {i} to retrieve access token failed.")
+
+    if not access_token:
+        raise Exception("Failed to retrieve access token after multiple attempts.")
+
+    # Initialize the Azure OpenAI client with the retrieved token
+    azure_openai_client = OpenAIClient(
+        api_version=AZURE_AOAI_API_VERSION,
+        azure_endpoint=APIGEE_ENDPOINT,
+        api_key=AZURE_AOAI_API_KEY,
+        http_client=httpx.Client(auth=access_token, verify=False)  # Use access token for auth
+    )
+
+    # Create the chat completion request
+    completion = azure_openai_client.chat.completions.create(
+        model=AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    updated_procedure = completion.choices[0].message.content.strip()
+    print(updated_procedure)  # Print the updated procedure
+    return updated_procedure
+
+# Function to extract text from a PDF
+def extract_pdf_text(pdf_path):
+    with open(pdf_path, 'rb') as file:
+        reader = PdfReader(file)
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+
+# Generate the prompt for GPT-4
+def generate_prompt(old_procedure, new_tool_docs):
+    prompt = f"""
+    You are tasked with migrating an old tool's procedure to a new tool's process.
+    Here is the procedure from the old tool:
+
+    {old_procedure}
+
+    Here is the documentation for the new tool:
+
+    {new_tool_docs}
+
+    Rewrite the procedure using the new tool's instructions and processes.
+    """
+    return prompt
+
+# Function to save updated text into a PDF
+def save_to_pdf(updated_text, output_pdf_path):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    # Add updated procedure line by line
+    for line in updated_text.split('\n'):
+        pdf.cell(200, 10, txt=line, ln=True, align='L')
+
+    pdf.output(output_pdf_path)
+
+# Example usage
+old_pdf_path = "old_procedures.pdf"
+new_tool_docs = "Insert new tool's documentation here or load dynamically"
+
+# Step 7: Extract text from old PDF
 old_procedures = extract_pdf_text(old_pdf_path)
+
+# Step 8: Use GPT-4 to update the procedures
+updated_procedures = update_procedure_with_gpt4(old_procedures, new_tool_docs)
+
+# Step 9: Save the updated procedures to a new PDF
+output_pdf_path = "/mnt/LMMS/updated_procedures.pdf"
+save_to_pdf(updated_procedures, output_pdf_path)
+
+print(f"Updated procedures saved to {output_pdf_path}")
+
+
+
+
+extract_pdf_text(old_pdf_path)
 
 # Step 8: Use GPT-4 to update the procedures
 updated_procedures = update_procedure_with_gpt4(old_procedures, new_tool_docs)
