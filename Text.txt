@@ -1,3 +1,100 @@
+import os
+import httpx
+import json
+from PyPDF2 import PdfReader
+from fpdf import FPDF
+from dotenv import load_dotenv
+from azure.ai.openai import OpenAIClient
+from azure.identity import ClientSecretCredential
+
+# Load environment variables from .env file (if using dotenv)
+load_dotenv()
+
+# Set up OAuth2 and Azure API credentials
+OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET")
+OIDC_SCOPE = "genai-model"
+APIGEE_ENDPOINT = "https://aifactory.api.staging.echonet/genai-model/v1"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+AZURE_AOAI_API_VERSION = "2024-02-15-preview"
+AZURE_AOAI_API_KEY = os.getenv("AZURE_AOAI_API_KEY")
+
+# Function to fetch OAuth2 token
+def fetch_oauth2_token(client):
+    try:
+        response = client.post(
+            OIDC_ENDPOINT,
+            data={
+                "grant_type": "client_credentials",
+                "client_id": OIDC_CLIENT_ID,
+                "client_secret": OIDC_CLIENT_SECRET,
+                "scope": OIDC_SCOPE
+            }
+        )
+        response.raise_for_status()  # Raise an error for bad responses
+        return response.json()  # Return the token response as JSON
+    except Exception as e:
+        print(f"Error fetching token: {e}")
+        return None
+
+# Step 5: Function to interact with Azure OpenAI GPT-4 via OAuth2 authentication
+def update_procedure_with_gpt4(old_procedure, new_tool_docs):
+    prompt = generate_prompt(old_procedure, new_tool_docs)
+
+    # Create an httpx client for OAuth2 token retrieval
+    http_client = httpx.Client(verify=False)
+    access_token = None
+
+    # Loop to check if the token is retrieved from cache (simulated)
+    for i in range(3):  # Retry fetching token up to 3 times
+        if access_token is None:
+            token_response = fetch_oauth2_token(http_client)
+            if token_response:
+                access_token = token_response.get("access_token")
+                if access_token:
+                    break  # Exit the loop if token is retrieved
+
+    if not access_token:
+        raise Exception("Failed to retrieve access token after multiple attempts.")
+
+    # Create the Azure OpenAI client
+    openai_client = OpenAIClient(
+        api_version=AZURE_AOAI_API_VERSION,
+        azure_endpoint=APIGEE_ENDPOINT,
+        api_key=AZURE_AOAI_API_KEY,
+        http_client=http_client
+    )
+
+    # Create the chat completion request
+    completion = openai_client.chat.completions.create(
+        model=AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+        messages=[
+            {"role": "system", "content": "You are an assistant helping to rewrite procedures."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    updated_procedure = completion.choices[0].message.content.strip()
+    return updated_procedure
+
+# Example usage
+old_pdf_path = "old_procedures.pdf"
+new_tool_docs = "Insert new tool's documentation here or load dynamically"
+
+# Step 7: Extract text from old PDF
+old_procedures = extract_pdf_text(old_pdf_path)
+
+# Step 8: Use GPT-4 to update the procedures
+updated_procedures = update_procedure_with_gpt4(old_procedures, new_tool_docs)
+
+# Step 9: Save the updated procedures to a new PDF
+output_pdf_path = "/mnt/LMMS/updated_procedures.pdf"
+save_to_pdf(updated_procedures, output_pdf_path)
+
+print(f"Updated procedures saved to {output_pdf_path}")
+
+
 # Step 2: Set up the OAuth2 client with httpx
 oauth2_httpxclient = httpx.Client(verify=False)
 
