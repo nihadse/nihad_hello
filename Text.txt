@@ -4,6 +4,156 @@ import json
 from PyPDF2 import PdfReader
 from fpdf import FPDF
 from dotenv import load_dotenv
+from httpx import OAuth2ClientCredentials
+
+# Step 1: Load environment variables from .env file (if using dotenv)
+load_dotenv()
+
+# Set up OAuth2 and Azure API credentials
+OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET")
+OIDC_SCOPE = "genai-model"
+APIGEE_ENDPOINT = "https://aifactory.api.staging.echonet/genai-model/v1"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+AZURE_AOAI_API_VERSION = "2024-02-15-preview"
+AZURE_AOAI_API_KEY = os.getenv("AZURE_AOAI_API_KEY")
+
+# Step 2: Set up the OAuth2 client with httpx
+oauth2_httpxclient = httpx.Client(verify=False)
+
+auth = OAuth2ClientCredentials(
+    OIDC_ENDPOINT,
+    client_id=OIDC_CLIENT_ID,
+    client_secret=OIDC_CLIENT_SECRET,
+    scope=OIDC_SCOPE,
+    client=oauth2_httpxclient
+)
+
+# Step 3: Function to extract text from a PDF
+def extract_pdf_text(pdf_path):
+    with open(pdf_path, 'rb') as file:
+        reader = PdfReader(file)
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+
+# Step 4: Generate the prompt for GPT-4
+def generate_prompt(old_procedure, new_tool_docs):
+    prompt = f"""
+    You are tasked with migrating an old tool's procedure to a new tool's process.
+    Here is the procedure from the old tool:
+
+    {old_procedure}
+
+    Here is the documentation for the new tool:
+
+    {new_tool_docs}
+
+    Rewrite the procedure using the new tool's instructions and processes.
+    """
+    return prompt
+
+# Step 5: Function to interact with Azure OpenAI GPT-4 via OAuth2 authentication
+def update_procedure_with_gpt4(old_procedure, new_tool_docs):
+    prompt = generate_prompt(old_procedure, new_tool_docs)
+
+    # Create the HTTP request to Azure OpenAI via Apigee with OAuth2
+    response = httpx.post(
+        f"{APIGEE_ENDPOINT}/openai/deployments/{AZURE_ADAI_MODEL_DEPLOYMENT_NAME}/chat/completions?api-version={AZURE_AOAI_API_VERSION}",
+        headers={"Authorization": f"Bearer {auth}", "Content-Type": "application/json"},
+        json={
+            "model": AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+            "messages": [
+                {"role": "system", "content": "You are an assistant helping to rewrite procedures."},
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": 1500,
+            "temperature": 0.7
+        }
+    )
+    
+    # Check for errors in response
+    if response.status_code != 200:
+        raise Exception(f"API request failed: {response.status_code} - {response.text}")
+
+    updated_procedure = response.json()['choices'][0]['message']['content'].strip()
+    return updated_procedure
+
+# --- Character encoding fixes ---
+
+# 1. Clean unsupported characters by replacing them with simpler ones
+def clean_text(text):
+    return text.replace("\u2013", "-")  # Replace en-dash with a regular dash
+
+# 2. Strip non-ASCII characters as a fallback option
+def remove_non_ascii(text):
+    return ''.join([char if ord(char) < 128 else ' ' for char in text])
+
+# 3. Use a Unicode-friendly font (DejaVuSans) with FPDF
+def save_to_pdf(updated_text, output_pdf_path, font_path=None):
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    # If a Unicode-friendly font is provided, use it
+    if font_path:
+        pdf.add_font('DejaVu', '', font_path, uni=True)
+        pdf.set_font("DejaVu", size=12)
+    else:
+        pdf.set_font("Arial", size=12)
+
+    # Split text by lines and add each line separately
+    lines = updated_text.split('\n')
+
+    for line in lines:
+        # Handle empty lines
+        if line.strip() == "":
+            pdf.ln(10)
+        else:
+            pdf.multi_cell(0, 10, txt=line, align='L')
+
+    pdf.output(output_pdf_path)
+
+# --- Example usage ---
+
+# Old and new procedure files
+old_pdf_path = "old_procedures.pdf"
+new_tool_docs = "Insert new tool's documentation here or load dynamically"
+
+# Step 7: Extract text from old PDF
+old_procedures = extract_pdf_text(old_pdf_path)
+
+# Step 8: Use GPT-4 to update the procedures
+updated_procedures = update_procedure_with_gpt4(old_procedures, new_tool_docs)
+
+# Choose your encoding fix:
+# cleaned_procedures = clean_text(updated_procedures)  # Option 1: Clean special characters
+# ascii_procedures = remove_non_ascii(updated_procedures)  # Option 2: Strip non-ASCII characters
+
+# Step 9: Save the updated procedures to a new PDF
+output_pdf_path = "updated_procedures.pdf"
+font_path = "/path/to/DejaVuSans.ttf"  # Adjust path to your font file
+
+# Save using Unicode-supporting font or default Arial
+save_to_pdf(updated_procedures, output_pdf_path, font_path=font_path)  # With Unicode support
+# save_to_pdf(cleaned_procedures, output_pdf_path)  # With cleaned text
+# save_to_pdf(ascii_procedures, output_pdf_path)  # With ASCII-only text
+
+print(f"Updated procedures saved to {output_pdf_path}")
+
+
+
+
+
+
+import os
+import httpx
+import json
+from PyPDF2 import PdfReader
+from fpdf import FPDF
+from dotenv import load_dotenv
 from azure.ai.openai import OpenAIClient
 from azure.identity import ClientSecretCredential
 
