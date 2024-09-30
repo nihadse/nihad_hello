@@ -1,3 +1,10 @@
+"Chaque mois, la Banque d'Algérie (BA) envoie un fichier DECAD des interdits de chéquier, contenant en moyenne 2 200 lignes. Ce fichier est non structuré, ce qui complique son traitement. Les noms des clients dans notre base de données sont souvent écrits différemment par rapport à ceux du fichier DECAD, avec parfois des inversions entre le prénom et le nom de famille. L'équipe Flux Domestique - Activité de marché procède à une recherche manuelle pour identifier les clients interdits de chéquier dans ce fichier. Ces informations sont fournies par la Centrale des Impayés via la transaction INTIER sur le système Atlas."
+
+
+
+
+
+
 Chaque mois, la Banque d'Algérie (BA) transmet un fichier DECAD d'environ 2 200 lignes. L'équipe Flux Domestique effectue une vérification manuelle pour identifier les clients interdits de chéquier. Ces informations sont obtenues via la transaction INTIER sur le système Atlas, en consultation des données fournies par la Centrale des Impayés.
 
 
