@@ -1,6 +1,10 @@
 Chaque mois, la Banque d'Algérie (BA) envoie un fichier DECAD comportant en moyenne 2 200 lignes. L'équipe Flux Domestique - Activité de marché procède à une recherche manuelle afin d'identifier les clients interdits de chéquier dans ce fichier, ces informations étant fournies par la Centrale des Impayés à travers la transaction INTIER sur le système Atlas.
 
 
+
+Chaque mois, la Banque d'Algérie (BA) envoie un fichier DECAD comportant en moyenne 2 200 lignes. L'équipe Flux Domestique - Activité de marché procède à une recherche manuelle afin d'identifier les clients interdits de chéquier dans ce fichier, ces informations étant fournies par la Centrale des Impayés à travers la transaction INTIER sur le système Atlas.
+
+
 "Réécrivez la procédure existante en vous basant uniquement sur la documentation du nouvel outil, en vous assurant que le document final ait le même nombre de pages que l'original. Maintenez le même format et la même structure, et reproduisez le style d'écriture tout au long du document. Modifiez le contenu uniquement là où il y a des mises à jour ou des changements pertinents dans la documentation du nouvel outil. Par exemple, si le nom de l'outil change, remplacez simplement les noms, comme dans la phrase 'Nous utilisons l'outil Minsa pour les nouveaux clients', que vous devez modifier en 'Nous utilisons Nostra pour les nouveaux clients'. Si aucun changement n'est nécessaire, conservez l'écriture originale intacte. Assurez-vous que la procédure mise à jour soit claire, précise et cohérente avec les capacités du nouvel outil, tout en préservant la longueur et le style globaux du document original."
 
 
