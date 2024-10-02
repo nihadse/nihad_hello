@@ -1,3 +1,56 @@
+import pdfplumber
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+# Step 1: Extract text from PDF
+def extract_text_from_pdf(pdf_file_path):
+    text = ""
+    with pdfplumber.open(pdf_file_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+# Step 2: Split text into chunks
+def split_text_into_chunks(text, chunk_size=500):
+    words = text.split()
+    chunks = []
+    current_chunk = []
+    
+    for word in words:
+        current_chunk.append(word)
+        if len(current_chunk) >= chunk_size:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = []
+    
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+    
+    return chunks
+
+# Step 3: Generate embeddings
+def generate_embeddings(chunks):
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings = model.encode(chunks)
+    return embeddings
+
+# Step 4: Save embeddings to a file
+def save_embeddings(embeddings, file_name='document_embeddings.npy'):
+    np.save(file_name, embeddings)
+
+# Example usage
+pdf_file_path = 'your_document.pdf'
+extracted_text = extract_text_from_pdf(pdf_file_path)
+chunks = split_text_into_chunks(extracted_text, chunk_size=500)
+embeddings = generate_embeddings(chunks)
+save_embeddings(embeddings, 'document_embeddings.npy')
+
+
+
+
+
+
+
+
 "Chaque mois, la Banque d'Algérie (BA) envoie un fichier DECAD des interdits de chéquier, contenant en moyenne 2 200 lignes. Ce fichier est non structuré, ce qui complique son traitement. Les noms des clients dans notre base de données sont souvent écrits différemment par rapport à ceux du fichier DECAD, avec parfois des inversions entre le prénom et le nom de famille. L'équipe Flux Domestique - Activité de marché procède à une recherche manuelle pour identifier les clients interdits de chéquier dans ce fichier. Ces informations sont fournies par la Centrale des Impayés via la transaction INTIER sur le système Atlas."
 
 
