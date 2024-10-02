@@ -1,3 +1,40 @@
+import chromadb
+from langchain.embeddings import SentenceTransformerEmbeddings
+
+def insert_embeddings_in_chroma(embeddings, chunk_texts):
+    # Initialize Chroma client
+    client = chromadb.Client()
+
+    # Retrieve the existing collection
+    collection = client.get_collection(name="pdf_embeddings")
+
+    # Add embeddings and text data to the existing collection
+    collection.add(
+        embeddings=embeddings, 
+        metadatas=[{"text": chunk} for chunk in chunk_texts], 
+        ids=[f"chunk_{i}" for i in range(len(chunk_texts))]
+    )
+
+# Example usage
+def main():
+    # Load your PDF and extract text
+    pdf_file_path = '/path/to/your/pdf/file.pdf'
+    extracted_text = extract_text_from_pdf(pdf_file_path)  # Your function to extract text
+    chunks = split_text_into_chunks(extracted_text, chunk_size=500)  # Your function to split text
+    
+    # Use your SentenceTransformer to get embeddings
+    embeddings_model = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = embeddings_model.embed_documents(chunks)
+
+    # Insert embeddings into the existing Chroma collection
+    insert_embeddings_in_chroma(embeddings, chunks)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
 from langchain.embeddings import SentenceTransformerEmbeddings
 from langchain.vectorstores import Chroma
 
