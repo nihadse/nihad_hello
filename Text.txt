@@ -1,4 +1,85 @@
 import os
+import PyPDF2
+from langchain.embeddings.sentence_transformers import SentenceTransformerEmbeddings
+from langchain.vectorstores import Chroma
+from langchain_openai import AzureOpenAI
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Set your Azure OpenAI API configuration
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+AZURE_MODEL_DEPLOYMENT_NAME = "gpt-4-turbo"  # Change to your model deployment name
+
+# Function to read and extract text from a PDF
+def read_pdf(file_path):
+    raw_text = ''
+    with open(file_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                raw_text += text
+    return raw_text
+
+# Function to split text into chunks
+def split_text(text):
+    # Splitting text into manageable chunks
+    chunks = text.split('\n\n')  # Split based on paragraph breaks; you can customize this
+    return chunks
+
+# Create a Chroma vector store
+def create_vector_store(texts):
+    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")  # Use a suitable model
+    docsearch = Chroma(embedding_function=embeddings)
+    docsearch.add_texts(texts)
+    return docsearch
+
+# Function to get an answer from Azure OpenAI
+def ask_azure_openai(llm, query, context):
+    prompt = f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"
+    response = llm({"prompt": prompt, "max_tokens": 150})
+    return response['choices'][0]['text'].strip()
+
+# Main function to run the chatbot
+def main():
+    # Load your PDF
+    pdf_path = '/content/gdrive/My Drive/data/2023_GPT4All_Technical_Report.pdf'  # Change path as needed
+    raw_text = read_pdf(pdf_path)
+    texts = split_text(raw_text)
+    docsearch = create_vector_store(texts)
+    
+    # Set up the Azure OpenAI client
+    llm = AzureOpenAI(
+        deployment_name=AZURE_MODEL_DEPLOYMENT_NAME,
+        openai_api_key=AZURE_OPENAI_API_KEY,
+        openai_api_base=AZURE_OPENAI_ENDPOINT
+    )
+
+    # Example query
+    query = "Who are the authors of the article?"
+    
+    # Step 1: Retrieve relevant documents
+    docs = docsearch.similarity_search(query)  # Find relevant documents
+
+    # Step 2: Combine the texts of the retrieved documents
+    context = " ".join([doc.page_content for doc in docs])  # Adjust how you combine based on your needs
+    
+    # Step 3: Get answer using Azure OpenAI
+    answer = ask_azure_openai(llm, query, context)
+    print(answer)
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+import os
 import httpx
 import json
 import PyPDF2
