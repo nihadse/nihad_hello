@@ -1,3 +1,109 @@
+# 1. Install necessary packages
+!pip install langchain
+!pip install sentence_transformers
+!pip install PyPDF2
+!pip install chromadb
+!pip install httpx
+!pip install python-dotenv
+!pip install httpx-auth
+
+# 2. Import libraries
+import os
+import httpx
+import json
+from openai import AzureOpenAI  # Corrected import for Azure OpenAI
+import PyPDF2
+from dotenv import load_dotenv
+from langchain.embeddings.sentence_transformers import SentenceTransformerEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.chains.question_answering import load_qa_chain
+
+# Load environment variables from a .env file
+load_dotenv()
+
+# 3. Set up OAuth2 credentials and endpoints
+OIDC_CLIENT_ID = os.getenv("OIDC_CLIENT_ID", "YOUR_CLIENT_ID")
+OIDC_CLIENT_SECRET = os.getenv("OIDC_CLIENT_SECRET", "YOUR_CLIENT_SECRET")
+OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_SCOPE = "genai-model"
+APIGEE_ENDPOINT = "https://aifactory.api.staging.echonet/genai-model/v1"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+AZURE_ADAI_EMBEDDING_DEPLOYMENT_NAME = "text-embedding-ada"
+AZURE_ADAI_API_VERSION = "2024-02-15-preview"
+
+# 4. Authenticate using OAuth2
+async def authenticate():
+    async with httpx.AsyncClient() as client:
+        response = await client.post(OIDC_ENDPOINT, data={
+            'client_id': OIDC_CLIENT_ID,
+            'client_secret': OIDC_CLIENT_SECRET,
+            'scope': OIDC_SCOPE,
+            'grant_type': 'client_credentials'
+        })
+        response.raise_for_status()
+        token_info = response.json()
+        return token_info['access_token']
+
+# 5. Connect to Google Drive
+from google.colab import drive
+drive.mount('/content/gdrive', force_remount=True)
+root_dir = "/content/gdrive/My Drive/"
+
+# 6. Read PDF file
+reader = PyPDF2.PdfReader('/content/gdrive/My Drive/data/2023_GPT4All_Technical_Report.pdf')
+
+# 7. Extract text from PDF
+raw_text = ''
+for page in reader.pages:
+    text = page.extract_text()
+    if text:
+        raw_text += text
+
+# 8. Split text into chunks
+text_splitter = CharacterTextSplitter(
+    separator="\n",
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len,
+)
+texts = text_splitter.split_text(raw_text)
+
+# 9. Use Sentence Transformers for embeddings
+embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")  # Specify the model you want
+
+# 10. Create a Chroma vector store
+docsearch = Chroma(embedding_function=embeddings)  # Initialize Chroma with the embedding function
+docsearch.add_texts(texts)  # Add your texts
+
+# 11. Load the QA chain using Azure OpenAI
+async def load_qa_chain_with_auth():
+    access_token = await authenticate()
+    
+    # Set up the Azure OpenAI client
+    openai.api_type = "azure"
+    openai.api_base = APIGEE_ENDPOINT
+    openai.api_version = AZURE_ADAI_API_VERSION
+    openai.api_key = access_token
+
+    # Load the QA chain with Azure OpenAI
+    return load_qa_chain(AzureOpenAI(deployment_name=AZURE_ADAI_MODEL_DEPLOYMENT_NAME), chain_type="stuff")
+
+# 12. Perform a query
+async def perform_query(query):
+    chain = await load_qa_chain_with_auth()
+    docs = docsearch.similarity_search(query)
+    answer = chain.run(input_documents=docs, question=query)
+    return answer
+
+# 13. Example query
+import asyncio
+
+query = "Who are the authors of the article?"
+answer = asyncio.run(perform_query(query))
+print(answer)
+
+
 https://github.com/alejandro-ao/langchain-ask-pdf/blob/main/app.py
 
 
