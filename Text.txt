@@ -1,3 +1,106 @@
+import pdfplumber
+from sentence_transformers import SentenceTransformer
+import numpy as np
+import httpx
+
+# Define your Azure OpenAI parameters
+AZURE_AOAI_API_VERSION = "2023-05-15"  # Update to the current version if needed
+APIGEE_ENDPOINT = "https://<YOUR_AZURE_OPENAI_ENDPOINT>.openai.azure.com/"  # Replace with your endpoint
+AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "gpt-35-turbo"  # Replace with your model name
+
+# Create an Azure OpenAI client
+class AzureOpenAI:
+    def __init__(self, api_version, azure_endpoint, api_key):
+        self.api_version = api_version
+        self.azure_endpoint = azure_endpoint
+        self.api_key = api_key
+        self.client = httpx.Client(
+            headers={
+                "Content-Type": "application/json",
+                "api-key": self.api_key
+            }
+        )
+
+    def chat_completion(self, messages):
+        response = self.client.post(
+            f"{self.azure_endpoint}chat/completions?api-version={self.api_version}",
+            json={
+                "model": AZURE_AOAI_MODEL_DEPLOYMENT_NAME,
+                "messages": messages
+            }
+        )
+        response.raise_for_status()
+        return response.json()
+
+# Function to extract text from PDF
+def extract_text_from_pdf(pdf_file_path):
+    text = ""
+    with pdfplumber.open(pdf_file_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+# Function to split text into chunks
+def split_text_into_chunks(text, chunk_size=500):
+    words = text.split()
+    chunks = []
+    current_chunk = []
+    
+    for word in words:
+        current_chunk.append(word)
+        if len(current_chunk) >= chunk_size:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = []
+    
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+    
+    return chunks
+
+# Function to generate embeddings (not used directly for ChatGPT but kept for context)
+def generate_embeddings(chunks):
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings = model.encode(chunks)
+    return embeddings
+
+# Function to save embeddings to a file
+def save_embeddings(embeddings, file_name='document_embeddings.npy'):
+    np.save(file_name, embeddings)
+
+# Initialize the client with your API key
+client = AzureOpenAI(
+    api_version=AZURE_AOAI_API_VERSION,
+    azure_endpoint=APIGEE_ENDPOINT,
+    api_key="YOUR_API_KEY"  # Replace with your actual API key
+)
+
+# Function to query ChatGPT
+def query_chatgpt(question):
+    messages = [
+        {
+            "role": "user",
+            "content": question
+        }
+    ]
+    
+    completion = client.chat_completion(messages)
+    response_content = completion['choices'][0]['message']['content']
+    return response_content.strip()
+
+# Example usage
+pdf_file_path = 'your_document.pdf'  # Replace with your PDF file path
+extracted_text = extract_text_from_pdf(pdf_file_path)
+chunks = split_text_into_chunks(extracted_text, chunk_size=500)
+embeddings = generate_embeddings(chunks)  # This is optional depending on your use case
+save_embeddings(embeddings, 'document_embeddings.npy')  # This is optional
+
+# Ask a question about the PDF
+question = "What are the main themes discussed in the document?"
+response = query_chatgpt(question)
+print("Response from ChatGPT:", response)
+
+
+
 Let me explain each step in more detail. In the Query Transformation stage, we're taking the original question (or query) and transforming it in various ways to make the search process more effective and intelligent. This helps retrieve better answers from a large collection of documents (like a PDF repository or a database).
 
 Here’s a breakdown of the query transformation steps with detailed explanations:
