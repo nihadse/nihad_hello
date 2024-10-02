@@ -1,6 +1,76 @@
 import pdfplumber
 from sentence_transformers import SentenceTransformer
 import numpy as np
+import chromadb
+
+# Step 1: Extract text from PDF
+def extract_text_from_pdf(pdf_file_path):
+    text = ""
+    with pdfplumber.open(pdf_file_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
+
+# Step 2: Split text into chunks
+def split_text_into_chunks(text, chunk_size=500):
+    words = text.split()
+    chunks = []
+    current_chunk = []
+    
+    for word in words:
+        current_chunk.append(word)
+        if len(current_chunk) >= chunk_size:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = []
+    
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+    
+    return chunks
+
+# Step 3: Generate embeddings
+def generate_embeddings(chunks):
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings = model.encode(chunks)
+    return embeddings
+
+# Step 4: Save embeddings to a file (optional)
+def save_embeddings(embeddings, file_name='document_embeddings.npy'):
+    np.save(file_name, embeddings)
+
+# Step 5: Initialize Chroma DB and insert embeddings
+def insert_embeddings_in_chroma(embeddings, chunk_texts):
+    # Initialize Chroma client
+    client = chromadb.Client()
+    
+    # Create or get a collection to store embeddings
+    collection = client.create_collection(name="pdf_embeddings")
+    
+    # Add embeddings and text data to the collection
+    collection.add(
+        embeddings=embeddings,
+        metadatas=[{"text": chunk} for chunk in chunk_texts],
+        ids=[f"chunk_{i}" for i in range(len(chunk_texts))]
+    )
+
+# Example usage
+pdf_file_path = 'your_document.pdf'
+extracted_text = extract_text_from_pdf(pdf_file_path)
+chunks = split_text_into_chunks(extracted_text, chunk_size=500)
+embeddings = generate_embeddings(chunks)
+
+# Save embeddings locally (optional)
+save_embeddings(embeddings, 'document_embeddings.npy')
+
+# Insert embeddings into Chroma DB
+insert_embeddings_in_chroma(embeddings, chunks)
+
+
+
+
+import pdfplumber
+from sentence_transformers import SentenceTransformer
+import numpy as np
 import httpx
 
 # Define your Azure OpenAI parameters
