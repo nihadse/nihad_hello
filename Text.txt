@@ -1,6 +1,86 @@
 import os
 import httpx
 import json
+import PyPDF2
+from langchain.chains.question_answering import load_qa_chain
+from langchain_openai import AzureOpenAI  # Use AzureOpenAI for Azure deployment
+from langchain.embeddings.sentence_transformers import SentenceTransformerEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Set your Azure OpenAI API configuration
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")  # Ensure your key is set in .env
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")  # Set your Azure endpoint
+AZURE_MODEL_DEPLOYMENT_NAME = "gpt-4-turbo"  # Change to your model deployment name
+
+# Function to read and extract text from a PDF
+def read_pdf(file_path):
+    raw_text = ''
+    with open(file_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                raw_text += text
+    return raw_text
+
+# Function to split text into chunks
+def split_text(text):
+    text_splitter = CharacterTextSplitter(
+        separator="\n",
+        chunk_size=1000,
+        chunk_overlap=200,
+        length_function=len,
+    )
+    return text_splitter.split_text(text)
+
+# Create a Chroma vector store
+def create_vector_store(texts):
+    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")  # Use a suitable model
+    docsearch = Chroma(embedding_function=embeddings)
+    docsearch.add_texts(texts)
+    return docsearch
+
+# Load the QA chain with Azure OpenAI
+def load_qa_chain_with_azure():
+    llm = AzureOpenAI(deployment_name=AZURE_MODEL_DEPLOYMENT_NAME, openai_api_key=AZURE_OPENAI_API_KEY, openai_api_base=AZURE_OPENAI_ENDPOINT)
+    
+    # Load the QA chain
+    return load_qa_chain(llm, chain_type="stuff")
+
+# Perform a query
+def perform_query(docsearch, query):
+    chain = load_qa_chain_with_azure()
+    docs = docsearch.similarity_search(query)  # Find relevant documents
+    answer = chain.run(input_documents=docs, question=query)  # Get answer
+    return answer
+
+# Main function to run the chatbot
+def main():
+    pdf_path = '/content/gdrive/My Drive/data/2023_GPT4All_Technical_Report.pdf'  # Change path as needed
+    raw_text = read_pdf(pdf_path)
+    texts = split_text(raw_text)
+    docsearch = create_vector_store(texts)
+    
+    # Example query
+    query = "Who are the authors of the article?"
+    answer = perform_query(docsearch, query)
+    print(answer)
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+
+
+
+
+import os
+import httpx
+import json
 from langchain_openai import OpenAI  # Updated import for OpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.embeddings.sentence_transformers import SentenceTransformerEmbeddings
