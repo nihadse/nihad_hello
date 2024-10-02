@@ -1,3 +1,210 @@
+Let me explain each step in more detail. In the Query Transformation stage, we're taking the original question (or query) and transforming it in various ways to make the search process more effective and intelligent. This helps retrieve better answers from a large collection of documents (like a PDF repository or a database).
+
+Here’s a breakdown of the query transformation steps with detailed explanations:
+
+1. Step-Back Prompting
+
+This is the process of taking the original query and transforming it into a broader or more general question. The goal here is to "step back" from a specific query and ask something that is broader but still relevant. Why do this? Because sometimes, broader questions yield more comprehensive information.
+
+Example:
+
+Original Query: "How does deep learning help in image classification?"
+
+
+If you want to broaden this query, you can ask a more general question:
+
+Generalized Query: "How can machine learning techniques improve image analysis?"
+
+
+This broader query may help retrieve results not only related to deep learning but also other machine learning techniques relevant to image classification.
+
+How do you do this with Python?
+
+You can use a language model (like GPT) to automatically generate this broader query. Here's a code snippet that illustrates how to take an original query and generate a broader one:
+
+from transformers import pipeline
+
+# Initialize a language model (GPT) to generate a broader query
+rephrase_pipeline = pipeline('text-generation', model='gpt-2')
+
+# Define a function for Step-Back Prompting
+def step_back_prompting(query):
+    prompt = f"Create a more general question based on this specific query: {query}"
+    generalized_query = rephrase_pipeline(prompt, max_length=50, num_return_sequences=1)[0]['generated_text']
+    return generalized_query.strip()
+
+# Example usage
+original_query = "How does deep learning help in image classification?"
+generalized_query = step_back_prompting(original_query)
+print("Original query:", original_query)
+print("Generalized query:", generalized_query)
+
+Here, the model takes the specific query, broadens it, and gives back a more general query.
+
+2. Multi-Query Retrieval
+
+Sometimes a single question might not retrieve all the information you need. To deal with this, you can break the query into several sub-questions. This technique helps retrieve more diverse and related information by looking at the problem from multiple angles.
+
+Example:
+
+Original Query: "How does deep learning help in image classification?"
+
+Sub-Queries:
+
+"What are the benefits of deep learning in computer vision?"
+
+"How does deep learning improve accuracy in classifying images?"
+
+"What are the challenges of using deep learning for image classification?"
+
+
+
+Each sub-query focuses on a different aspect of the original question and might retrieve different types of useful information.
+
+How to implement this in Python:
+
+Again, we can use a language model to help generate sub-questions. The language model will take the original query and generate variations of the query that focus on different parts of the problem.
+
+# Function to generate multiple sub-queries based on the original query
+def generate_sub_questions(query):
+    prompt = f"Generate sub-questions or variations for this query: {query}"
+    sub_questions = rephrase_pipeline(prompt, max_length=100, num_return_sequences=3)
+    return [sq['generated_text'].strip() for sq in sub_questions]
+
+# Example usage
+sub_queries = generate_sub_questions(original_query)
+print("Sub-queries:")
+for sq in sub_queries:
+    print(sq)
+
+In this example:
+
+The language model generates a list of sub-questions that focus on different aspects of the original query.
+
+
+3. HyDE (Hypothetical Document Engine)
+
+In this step, we take the original query and generate a hypothetical document based on the query. This document is like a detailed answer that you could get from an expert. This technique is useful when you want to simulate how a document answering the query might look. You can then use this document to guide further retrieval.
+
+Example:
+
+For the query, "How does deep learning help in image classification?", the hypothetical document might look like this:
+
+> "Deep learning plays a key role in image classification by using convolutional neural networks (CNNs). CNNs allow deep learning models to identify key features in images automatically without manual feature extraction. This leads to improved accuracy and scalability compared to traditional machine learning models..."
+
+
+
+This "hypothetical" document can then be used as a template to retrieve similar real documents from your database.
+
+How to implement in Python:
+
+Here’s how to use a language model to generate this hypothetical document:
+
+# Function to generate a hypothetical document based on the query
+def generate_hypothetical_document(query):
+    prompt = f"Write a detailed document that answers the question: {query}"
+    hypothetical_document = rephrase_pipeline(prompt, max_length=200, num_return_sequences=1)[0]['generated_text']
+    return hypothetical_document.strip()
+
+# Example usage
+hypothetical_document = generate_hypothetical_document(original_query)
+print("Hypothetical document:\n", hypothetical_document)
+
+The language model generates a detailed explanation or document based on the original query. You can then use this generated document to help guide your retrieval system by searching for documents that resemble this hypothetical response.
+
+4. Combine All Queries for Multi-Retrieval
+
+Once you have the original query, the generalized query, sub-queries, and the hypothetical document, you can combine them to perform multi-query retrieval. This means you’re not relying on just one query to search for information; instead, you’re searching with multiple variations of the query to get more comprehensive results.
+
+How to implement in Python:
+
+Here’s how to combine all the queries into one list for retrieval:
+
+# Combine all generated queries for retrieval
+def combine_queries_for_retrieval(original_query, generalized_query, sub_queries):
+    all_queries = [original_query, generalized_query] + sub_queries
+    return all_queries
+
+# Example usage
+all_queries = combine_queries_for_retrieval(original_query, generalized_query, sub_queries)
+print("All queries for multi-query retrieval:")
+for q in all_queries:
+    print(q)
+
+Full Example Summary:
+
+from transformers import pipeline
+
+# Initialize a language model (GPT) to generate rephrased queries
+rephrase_pipeline = pipeline('text-generation', model='gpt-2')
+
+# Step 1: Step-Back Prompting
+def step_back_prompting(query):
+    prompt = f"Create a more general question based on this specific query: {query}"
+    generalized_query = rephrase_pipeline(prompt, max_length=50, num_return_sequences=1)[0]['generated_text']
+    return generalized_query.strip()
+
+# Step 2: Multi-Query Retrieval (Generate sub-questions)
+def generate_sub_questions(query):
+    sub_question_prompt = f"Generate sub-questions or variations for this query: {query}"
+    sub_questions = rephrase_pipeline(sub_question_prompt, max_length=100, num_return_sequences=3)
+    return [sq['generated_text'].strip() for sq in sub_questions]
+
+# Step 3: HyDE (Generate hypothetical document)
+def generate_hypothetical_document(query):
+    hypothetical_prompt = f"Write a detailed document that answers the question: {query}"
+    hypothetical_document = rephrase_pipeline(hypothetical_prompt, max_length=200, num_return_sequences=1)[0]['generated_text']
+    return hypothetical_document.strip()
+
+# Step 4: Combine all queries for retrieval
+def combine_queries_for_retrieval(original_query, generalized_query, sub_queries):
+    all_queries = [original_query, generalized_query] + sub_queries
+    return all_queries
+
+# Example usage
+original_query = "How does deep learning help in image classification?"
+generalized_query = step_back_prompting(original_query)
+sub_queries = generate_sub_questions(original_query)
+hypothetical_document = generate_hypothetical_document(original_query)
+
+all_queries = combine_queries_for_retrieval(original_query, generalized_query, sub_queries)
+
+# Output results
+print("Original query:", original_query)
+print("Generalized query:", generalized_query)
+print("Sub-queries:")
+for sq in sub_queries:
+    print(sq)
+
+print("\nHypothetical document:\n", hypothetical_document)
+
+Recap of Each Step:
+
+1. Step-Back Prompting: Broadens the query to a more general level.
+
+
+2. Multi-Query Retrieval: Generates sub-questions or variations of the original query to search more effectively.
+
+
+3. HyDE: Generates a hypothetical document that mimics what an expert response would look like.
+
+
+4. Combine Queries: Puts all these queries together for more comprehensive retrieval.
+
+
+
+By using all these transformations, you improve the chances of retrieving more accurate and relevant documents. Let me know if you'd like further clarification or additional steps!
+
+
+
+
+
+
+
+
+
+
+
 import pdfplumber
 from sentence_transformers import SentenceTransformer
 import numpy as np
