@@ -1,3 +1,64 @@
+import openai
+import PyPDF2
+import httpx
+from oauthlib.oauth2 import BackendApplicationClient
+from requests_oauthlib import OAuth2Session
+
+# OIDC Configuration
+OIDC_CLIENT_ID = "your_client_id"
+OIDC_CLIENT_SECRET = "your_client_secret"
+OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_SCOPE = "genai-model"
+AZURE_ADAI_API_VERSION = "2024-02-15-preview"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+APIGEE_ENDPOINT = "https://alfactory.api.staging.echonet/genai-model/v1"
+FAKE_KEY = "your_azure_api_key"  # Replace with your actual Azure OpenAI API key
+
+# OAuth2 Authentication
+client = BackendApplicationClient(client_id=OIDC_CLIENT_ID)
+oauth = OAuth2Session(client=client)
+token = oauth.fetch_token(token_url=OIDC_ENDPOINT, client_id=OIDC_CLIENT_ID, client_secret=OIDC_CLIENT_SECRET, scope=OIDC_SCOPE)
+
+# Function to extract text from PDF
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with open(pdf_path, "rb") as pdf_file:
+        reader = PyPDF2.PdfReader(pdf_file)
+        for page_num in range(len(reader.pages)):
+            page = reader.pages[page_num]
+            text += page.extract_text()
+    return text
+
+# Function to interact with Azure OpenAI's GPT-4 model
+def ask_pdf_question(pdf_text, question):
+    # Prepare the prompt with the PDF content and the user's question
+    prompt = f"{pdf_text}\n\nQuestion: {question}"
+    
+    # Make the API call to the model
+    with httpx.Client(verify=False) as http_client:
+        response = openai.ChatCompletion.create(
+            api_key=FAKE_KEY,
+            model=AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+            messages=[
+                {"role": "system", "content": "You are an AI assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            api_base=APIGEE_ENDPOINT,
+            api_version=AZURE_ADAI_API_VERSION,
+        )
+    
+    return response.choices[0].message['content']
+
+# Example usage
+pdf_text = extract_text_from_pdf("example.pdf")  # Replace with your actual PDF file
+question = "What is the main point of this document?"
+response = ask_pdf_question(pdf_text, question)
+
+print(response)
+
+
+
+
 import chromadb
 from langchain.embeddings import SentenceTransformerEmbeddings
 
