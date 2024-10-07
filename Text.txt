@@ -1,3 +1,64 @@
+def find_highest_similarity(interdicted_checks, client_database, threshold=0):
+    model_path = "/ant/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+    
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+    best_pairs = []  # Store all matches, not just the highest
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold:
+                # Append all matching pairs with similarity score above threshold
+                best_pairs.append({
+                    'interdicted_check_name': client_name,
+                    'client_name': client_database.iloc[j]['Name'],
+                    'similarity_score': similarity_score,
+                    'client_details': client_database.iloc[j]
+                })
+
+    # Format the results for all matches
+    similar_pairs = []
+    for pair in best_pairs:
+        interdicted_index = interdicted_checks[interdicted_checks['Name'] == pair['interdicted_check_name']].index[0]
+        client_match = pair['client_details']
+
+        similar_pairs.append({
+            "Name Interdicted checks": pair['interdicted_check_name'],
+            "nom": interdicted_checks.iloc[interdicted_index]['nom'],
+            "prenom": interdicted_checks.iloc[interdicted_index]['prenom'],
+            "Date de naissance interdicted checks": interdicted_checks.iloc[interdicted_index]['Date de naissance'],
+            "Lieu de naissance interdicted checks": interdicted_checks.iloc[interdicted_index]['Lieu de naissance'],
+            "Name client database": pair['client_name'],
+            "Date de naissance client_database": client_match['Date de naissance'],
+            "Lieu de naissance client_database": client_match['Lieu de naissance'],
+            "Similarity Score": pair['similarity_score']
+        })
+
+    # Convert results to a DataFrame for easier output
+    result_df = pd.DataFrame(similar_pairs)
+    
+    # Perform matching checks for Date and Place of Birth
+    result_df['Date de naissance Match'] = result_df['Date de naissance interdicted checks'] == result_df['Date de naissance client_database']
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance interdicted checks'] == result_df['Lieu de naissance client_database']
+
+    result_df['Date de naissance Match'] = result_df['Date de naissance Match'].map({True: 'yes', False: 'no'})
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance Match'].map({True: 'yes', False: 'no'})
+
+    return result_df
+
+
+
+
+
+
 import PyPDF2
 import httpx
 from oauthlib.oauth2 import BackendApplicationClient
