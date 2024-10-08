@@ -1,4 +1,52 @@
 def find_highest_similarity(interdicted_checks, client_database, threshold=0):
+    model_path = "/mnt/Sentence_model/model"  # Assuming your model is here
+    model = SentenceTransformer(model_path)
+    
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+    
+    # Embedding both lists
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Calculate similarity matrix between the two sets
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    similar_pairs = []
+    
+    # Loop over each name in interdicted_checks
+    for i in range(len(names1)):
+        client_name = names1[i]
+        
+        # For each client, loop through the database to find all matches above threshold
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            
+            # If the similarity score is above the threshold, append all possible matches
+            if similarity_score >= threshold:
+                similar_pairs.append({
+                    'Name interdicted_checks': client_name,
+                    'Name client_database': client_database.iloc[j]['Name'],
+                    'Nom': interdicted_checks.iloc[i]['nom'],
+                    'Prenom': interdicted_checks.iloc[i]['prenom'],
+                    'Date de naissance Match': interdicted_checks.iloc[i]['Date de naissance'],
+                    'Lieu de naissance Match': interdicted_checks.iloc[i]['Lieu de naissance'],
+                    'Sociale': client_database.iloc[j]['raison sociale'],
+                    'Category': client_database.iloc[j]['catégorie client'],
+                    'Date de création (entreprise)': client_database.iloc[j]['date_creation'],
+                    'Code nature juridique compte': client_database.iloc[j]['code nature juridique compte'],
+                    'Similarity Score': similarity_score
+                })
+
+    # Creating a DataFrame for output
+    result_df = pd.DataFrame(similar_pairs)
+    
+    return result_df
+
+
+
+
+def find_highest_similarity(interdicted_checks, client_database, threshold=0):
     model_path = "/ant/Sentence_model_transformer"
     model = SentenceTransformer(model_path)
     
