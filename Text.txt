@@ -1,3 +1,21 @@
+import pandas as pd
+
+# Sample DataFrame
+data = {
+    'name': ['Mohamed Ali', 'Ali Mohamed', 'John Doe', 'Mohamed Salah'],
+    'age': [30, 25, 22, 35]
+}
+
+df = pd.DataFrame(data)
+
+# Filter rows where 'name' contains 'mohamed' (case insensitive)
+filtered_df = df[df['name'].str.contains('mohamed', case=False)]
+
+# Display the filtered DataFrame
+print(filtered_df)
+
+
+
 def find_highest_similarity(interdicted_checks, client_database, threshold=0):
     model_path = "/mnt/Sentence_model/model"  # Assuming your model is here
     model = SentenceTransformer(model_path)
