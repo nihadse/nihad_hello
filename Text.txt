@@ -1,3 +1,57 @@
+def find_highest_similarity(interdicted_checks, client_database, threshold=0):
+    model_path = "/mnt/Sentence_model_path"  # Model path to your Sentence Transformer
+    model = SentenceTransformer(model_path)
+    
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    # Convert names to embeddings
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Calculate similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+    
+    similar_pairs = []
+
+    for i in range(len(names1)):
+        client_name = names1[i]
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            # If the score is above the threshold, store it
+            if similarity_score >= threshold:
+                similar_pairs.append({
+                    'Name interdicted_checks': client_name,
+                    'Matched name in client database': client_database.iloc[j]['Name'],
+                    'Similarity Score': similarity_score,
+                    'Details': {
+                        'nom': interdicted_checks.iloc[i]['nom'],
+                        'nom_clean': interdicted_checks.iloc[i]['nom_clean'],
+                        'prenom': interdicted_checks.iloc[i]['prenom'],
+                        'Date de naissance interdicted_checks': interdicted_checks.iloc[i]['Date de naissance'],
+                        'Lieu de naissance interdicted_checks': interdicted_checks.iloc[i]['Lieu de naissance'],
+                        'Date d’effet': interdicted_checks.iloc[i]['Date d’effet'],
+                        'code wilaya': interdicted_checks.iloc[i]['code wilaya'],
+                        'Raison sociale client': client_database.iloc[j]['raison sociale'],
+                        'Date de naissance client_database': client_database.iloc[j]['Date de naissance'],
+                        'Lieu de naissance client_database': client_database.iloc[j]['Lieu de naissance'],
+                        'Code juridique client': client_database.iloc[j]['code nature juridique compte']
+                    }
+                })
+    
+    # Convert the results into a DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+    
+    # Display all matches
+    result_df['Date de naissance Match'] = result_df['Date de naissance interdicted_checks'] == result_df['Date de naissance client_database']
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance interdicted_checks'] == result_df['Lieu de naissance client_database']
+
+    # Return the complete dataframe with all matches
+    return result_df
+
+
+
+
 import pandas as pd
 
 # Sample DataFrame
