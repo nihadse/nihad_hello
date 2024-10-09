@@ -1,3 +1,87 @@
+import pandas as pd
+import numpy as np
+from sentence_transformers import SentenceTransformer, util
+
+def find_highest_similarity(interdicted_checks, client_database, threshold=0):
+    model_path = "/mnt/Sentence_model_path"  # Path to the model
+    model = SentenceTransformer(model_path)
+    
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    # Get embeddings for both lists of names
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    # Calculate cosine similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+    best_scores = {}
+    num_top_matches = 5  # number of top matches to store
+
+    # Loop through the names and store the top 5 matches based on similarity
+    for i in range(len(names1)):
+        client_name = names1[i]
+        best_scores[client_name] = []
+
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score > threshold:
+                # Append the match to the list
+                best_scores[client_name].append((client_database.iloc[j], similarity_score))
+
+                # Sort the list and keep only the top 5 matches
+                best_scores[client_name] = sorted(best_scores[client_name], 
+                                                  key=lambda x: x[1], reverse=True)[:num_top_matches]
+
+    # Prepare a list to store the similar pairs for comparison
+    similar_pairs = []
+    for i in range(len(interdicted_checks)):
+        client_name = interdicted_checks.iloc[i]['Name']
+
+        # Check if we have matches for this client name
+        if client_name in best_scores:
+            for match, similarity_score in best_scores[client_name]:
+                similar_pairs.append({
+                    'Name interdicted_checks': client_name,
+                    'Nom': interdicted_checks.iloc[i]['nom'],
+                    'Nom clean': interdicted_checks.iloc[i]['nom_clean'],
+                    'Prénom': interdicted_checks.iloc[i]['prenom'],
+                    'Prénom clean': interdicted_checks.iloc[i]['prenom_clean'],
+                    'Date de naissance interdicted_checks': interdicted_checks.iloc[i]['Date de naissance'],
+                    'Lieu de naissance interdicted_checks': interdicted_checks.iloc[i]['Lieu de naissance'],
+                    'Date d’effet': interdicted_checks.iloc[i]['Date d’effet'],
+                    'Code wilaya': interdicted_checks.iloc[i]['Code wilaya'],
+                    'Name client_database': match['Name'],
+                    'Raison sociale': match['raison_sociale'],
+                    'Nom abrégé': match['nom_abrégé'],
+                    'Code juridique': match['code_juridique'],
+                    'Date de naissance client_database': match['Date de naissance'],
+                    'Lieu de naissance client_database': match['Lieu de naissance'],
+                    'Catégorie client': match['Catégorie client'],
+                    'Type de création (entreprise)': match['Type de création (entreprise)'],
+                    'Date de création (entreprise)': match['Date de création (entreprise)'],
+                    'Code nature juridique compte': match['Code nature juridique compte'],
+                    'Id tiers': match['id_tiers'],
+                    'Similarity Score': similarity_score
+                })
+
+    # Convert the results to a DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+
+    # Add columns to check for matches on Date and Place of Birth
+    result_df['Date de naissance Match'] = result_df['Date de naissance interdicted_checks'] == result_df['Date de naissance client_database']
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance interdicted_checks'] == result_df['Lieu de naissance client_database']
+
+    # Convert boolean match values to 'Yes'/'No'
+    result_df['Date de naissance Match'] = result_df['Date de naissance Match'].map({True: 'Yes', False: 'No'})
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance Match'].map({True: 'Yes', False: 'No'})
+
+    return result_df
+
+
+
+
 import openpyxl
 from docx import Document
 
