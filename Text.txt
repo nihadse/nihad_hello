@@ -1,3 +1,61 @@
+import openpyxl
+from docx import Document
+from docx.shared import RGBColor
+import os
+
+# Load the Excel sheet
+excel_path = '/path/to/your/excel_file.xlsx'  # Replace with your actual path
+wb = openpyxl.load_workbook(excel_path)
+sheet = wb.active
+
+# Define the Word template path
+word_template_path = '/path/to/your/word_template.docx'  # Replace with your actual path
+output_folder = '/path/to/save/output_docs/'  # Folder where new documents will be saved
+
+# Create the folder if it doesn't exist
+os.makedirs(output_folder, exist_ok=True)
+
+# Function to replace placeholder text in Word document
+def replace_text(doc, placeholder, replacement):
+    for para in doc.paragraphs:
+        if placeholder in para.text:
+            inline = para.runs
+            for i in range(len(inline)):
+                if placeholder in inline[i].text:
+                    inline[i].text = inline[i].text.replace(placeholder, replacement)
+
+# Iterate over the Excel rows (excluding header)
+for row in range(2, sheet.max_row + 1):
+    # Extract data from each column in the row
+    id_tiers = sheet.cell(row=row, column=1).value
+    nom_abrege = sheet.cell(row=row, column=2).value
+    adresse_atlas = sheet.cell(row=row, column=3).value
+    date_effet = sheet.cell(row=row, column=4).value
+    date_levee = sheet.cell(row=row, column=5).value
+    mandataire = sheet.cell(row=row, column=6).value
+    
+    # Load the Word template
+    doc = Document(word_template_path)
+    
+    # Replace placeholders with Excel data
+    replace_text(doc, 'id_tiers', str(id_tiers))
+    replace_text(doc, 'Nom abrégé tiers', nom_abrege)
+    replace_text(doc, 'adresse_atlas', adresse_atlas)
+    replace_text(doc, 'date_effet', date_effet)
+    replace_text(doc, 'date levee', date_levee)
+    replace_text(doc, 'mandataires', mandataire)
+    
+    # Save the new document with a unique name
+    output_path = os.path.join(output_folder, f'document_{id_tiers}.docx')
+    doc.save(output_path)
+
+print("Documents generated successfully!")
+
+
+
+
+
+
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer, util
