@@ -1,3 +1,6 @@
+Je tiens à vous apporter une petite précision. Nous n'avons pas encore envoyé ni ajouté la feuille <95 suite à un problème technique survenu sur la plateforme de développement.
+
+
 def find_highest_similarity(interdicted_checks, client_database, threshold=0):
     model_path = "/mnt/Sentence_model_path"
     model = SentenceTransformer(model_path)
