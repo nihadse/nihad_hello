@@ -1,3 +1,93 @@
+from sentence_transformers import SentenceTransformer, util
+import pandas as pd
+from tqdm import tqdm  # For progress bar
+
+def find_highest_similarity(interdicted_checks, client_database, threshold=0.85, batch_size=1000):
+    # Load the pre-trained SentenceTransformer model
+    model_path = "/mnt/Sentence_model_transformer"
+    model = SentenceTransformer(model_path)
+    
+    # Convert names to lists
+    names1 = interdicted_checks['Name'].tolist()  # Names from interdicted checks
+    names2 = client_database['Name'].tolist()     # Names from client database
+    
+    # Encode client database names once
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+    
+    # Initialize list to store similar pairs
+    similar_pairs = []
+    
+    # Process interdicted names in batches
+    for start_idx in tqdm(range(0, len(names1), batch_size), desc="Processing batches"):
+        end_idx = min(start_idx + batch_size, len(names1))
+        names1_batch = names1[start_idx:end_idx]
+        
+        # Encode batch of interdicted names
+        embeddings1_batch = model.encode(names1_batch, convert_to_tensor=True)
+        
+        # Calculate cosine similarity between the batch and all client database names
+        similarity_matrix = util.pytorch_cos_sim(embeddings1_batch, embeddings2).cpu().numpy()
+        
+        # Iterate over each name in the batch
+        for i in range(len(names1_batch)):
+            idx = start_idx + i  # Actual index in the full list
+            client_name = names1_batch[i]
+            
+            # Find indices where similarity exceeds the threshold
+            similar_indices = (similarity_matrix[i] >= threshold).nonzero()[0]
+            
+            for j in similar_indices:
+                similarity_score = similarity_matrix[i][j]
+                similar_pairs.append({
+                    "Name Interdicted Checks": client_name,
+                    "nom": interdicted_checks.iloc[idx]['nom'],
+                    "nom_clean": interdicted_checks.iloc[idx]['nom_clean'],
+                    "prenom": interdicted_checks.iloc[idx]['prenom'],
+                    "prenom_clean": interdicted_checks.iloc[idx]['prenom_clean'],
+                    "Date de naissance interdicted checks": interdicted_checks.iloc[idx]['Date de naissance'],
+                    "Lieu de naissance Interdicted checks": interdicted_checks.iloc[idx]['Lieu de naissance'],
+                    "date d'effet": interdicted_checks.iloc[idx]["date d'effet"],
+                    "date de levee": interdicted_checks.iloc[idx]['date de levee'],
+                    "code wilaya": interdicted_checks.iloc[idx]['code wilaya'],
+                    "Name Client Database": client_database.iloc[j]['Name'],
+                    "raison sociale": client_database.iloc[j]['raison sociale'],
+                    "Type de relation": client_database.iloc[j]['Type_de_relation'],
+                    "Compte client": client_database.iloc[j]['Compte client'],
+                    "Nom abrégé tiers": client_database.iloc[j]['Nom abrégé tiers'],
+                    "Date de naissance client database": client_database.iloc[j]['Date de naissance'],
+                    "Lieu de naissance client database": client_database.iloc[j]['Lieu de naissance'],
+                    "adresse atlas": client_database.iloc[j]['adresse_atlas'],
+                    "Code Catégorie client": client_database.iloc[j]['Code catégorie client'],
+                    "Date de création (entreprise)": client_database.iloc[j]['Date de création (entreprise)'],
+                    "Code nature juridique du compte": client_database.iloc[j]['Code nature juridique du compte'],
+                    "Id tiers": client_database.iloc[j]['id_tiers'],
+                    "Similarity Score": similarity_score
+                })
+    
+    # Convert the results into a DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+    
+    # Match Date de naissance between interdicted checks and client database
+    result_df['Date de naissance Match'] = (
+        result_df['Date de naissance interdicted checks'] == result_df['Date de naissance client database']
+    )
+    
+    # Match Lieu de naissance between interdicted checks and client database
+    result_df['Lieu de naissance Match'] = (
+        result_df['Lieu de naissance Interdicted checks'] == result_df['Lieu de naissance client database']
+    )
+    
+    # Convert the matches to 'Yes' or 'No'
+    result_df['Date de naissance Match'] = result_df['Date de naissance Match'].map({True: 'Yes', False: 'No'})
+    result_df['Lieu de naissance Match'] = result_df['Lieu de naissance Match'].map({True: 'Yes', False: 'No'})
+    
+    # Return the final result DataFrame
+    return result_df
+
+
+
+
+
 Bonjour,
 
 Veuillez trouver ci-joint les résultats de ce trimestre, comme convenu avec Omar. Nous vous enverrons ce fichier à chaque fin de trimestre.
