@@ -1,3 +1,44 @@
+Here’s the updated email with "entendre vos commentaires" replaced for a more formal tone:
+
+
+---
+
+Subject: Suivi du projet et retour sur les résultats
+
+Bonjour [Nom du destinataire],
+
+J'espère que vous allez bien.
+
+Je fais suite à nos précédents échanges concernant les résultats de SentinelTA que nous vous avons envoyés au cours des derniers mois, ainsi que le modèle de Data Science que nous avons développé pour le POC. Nous aimerions avoir un retour sur l'état actuel du projet et recueillir vos observations concernant les résultats que nous avons partagés, en particulier en ce qui concerne les clients identifiés parmi la liste fournie.
+
+Nous souhaiterions également organiser une réunion cette semaine pour discuter de ces points plus en détail. Voici nos disponibilités :
+
+[Jour, Heure]
+
+[Jour, Heure]
+
+[Jour, Heure]
+
+
+Merci de nous faire savoir quel créneau vous convient le mieux. Cela nous aidera à évaluer l’efficacité de notre modèle et à apporter des améliorations si nécessaire. N'hésitez pas à nous faire part de toute précision ou question que vous pourriez avoir.
+
+Merci d'avance pour votre retour.
+
+Cordialement,
+
+[Votre nom]
+[Votre poste]
+[Votre entreprise]
+[Votre numéro de téléphone]
+
+
+---
+
+Feel free to adjust any details as needed!
+
+
+
+
 from sentence_transformers import SentenceTransformer, util
 import pandas as pd
 from tqdm import tqdm  # For progress bar
