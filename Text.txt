@@ -1,3 +1,82 @@
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from scipy.spatial.distance import cosine
+import pandas as pd
+from tqdm import tqdm
+
+def process_chunk(model, interdicted_embeddings, chunk, interdicted_checks, threshold):
+    chunk_embeddings = model.encode(chunk['Name'].tolist(), convert_to_tensor=True, show_progress_bar=False)
+    
+    similar_pairs = []
+    for i, ie in enumerate(interdicted_embeddings):
+        similarities = 1 - np.array([cosine(ie, ce) for ce in chunk_embeddings])
+        matches = similarities > threshold
+        for j in np.where(matches)[0]:
+            similar_pairs.append({
+                "Name interdicted_checks": interdicted_checks.iloc[i]['Name'],
+                "nom": interdicted_checks.iloc[i]['nom'],
+                "nom_clean": interdicted_checks.iloc[i]['nom_clean'],
+                "prenom": interdicted_checks.iloc[i]['prenom'],
+                "prenom_clean": interdicted_checks.iloc[i]['prenom_clean'],
+                "Date de naissance interdicted_checks": interdicted_checks.iloc[i]['Date de naissance'],
+                "Lieu de naissance interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+                "Date d'effet": interdicted_checks.iloc[i]['Date d'effet'],
+                "Date de levee": interdicted_checks.iloc[i]['Date de levee'],
+                "code wilaya": interdicted_checks.iloc[i]['code wilaya'],
+                "Name client_database": chunk.iloc[j]['Name'],
+                "raison sociale": chunk.iloc[j]['raison sociale'],
+                "Type de relation": chunk.iloc[j]['Type de relation'],
+                "Compte_Client": chunk.iloc[j]['Compte_Client'],
+                "Nom abrégé tiers": chunk.iloc[j]['Nom abrégé tiers'],
+                "Date de naissance client_database": chunk.iloc[j]['Date de naissance'],
+                "Lieu de naissance client_database": chunk.iloc[j]['Lieu de naissance'],
+                "adresse atlas": chunk.iloc[j]['adresse atlas'],
+                "Code catégorie client": chunk.iloc[j]['Code catégorie client'],
+                "Date de création (entreprise)": chunk.iloc[j]['Date de création (entreprise)'],
+                "Code nature juridique du compte": chunk.iloc[j]['Code nature juridique du compte'],
+                "Id tiers": chunk.iloc[j]['Id tiers'],
+                "Similarity Score": similarities[j]
+            })
+    
+    return similar_pairs
+
+def find_highest_similarity(interdicted_checks, client_database, threshold, chunk_size=1000):
+    model = SentenceTransformer("/mnt/Sentence_model_transformer")
+    
+    interdicted_embeddings = model.encode(interdicted_checks['Name'].tolist(), convert_to_tensor=True, show_progress_bar=True)
+    
+    all_similar_pairs = []
+    
+    for i in tqdm(range(0, len(client_database), chunk_size), desc="Processing chunks"):
+        chunk = client_database.iloc[i:i+chunk_size]
+        similar_pairs = process_chunk(model, interdicted_embeddings, chunk, interdicted_checks, threshold)
+        all_similar_pairs.extend(similar_pairs)
+        
+        # Optional: early stopping if we've found matches for all interdicted checks
+        if len(set(pair['Name interdicted_checks'] for pair in all_similar_pairs)) == len(interdicted_checks):
+            print("Found matches for all interdicted checks. Stopping early.")
+            break
+    
+    result_df = pd.DataFrame(all_similar_pairs)
+    
+    if not result_df.empty:
+        result_df['Date de naissance Match'] = result_df.apply(lambda row: row['Date de naissance interdicted_checks'] == row['Date de naissance client_database'], axis=1)
+        result_df['Lieu de naissance Match'] = result_df.apply(lambda row: row['Lieu de naissance interdicted_checks'] == row['Lieu de naissance client_database'], axis=1)
+    
+    return result_df
+
+# Usage
+# Assuming interdicted_checks and client_database are pandas DataFrames
+# result = find_highest_similarity(interdicted_checks, client_database, threshold=0.8, chunk_size=1000)
+
+
+
+
+
+
 Optimized Highest Similarity Function with Tokenizer Parallelism Disabled
 
 import os
