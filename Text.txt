@@ -1,3 +1,22 @@
+from line_profiler import LineProfiler
+
+def find_highest_similarity(...):
+    # your function code
+    ...
+
+# Create a profiler and add your function
+profiler = LineProfiler()
+profiler.add_function(find_highest_similarity)
+
+# Run the profiler
+profiler_wrapper = profiler(find_highest_similarity)
+profiler_wrapper(interdicted_checks, client_database, threshold, batch_size)
+
+# Print the results
+profiler.print_stats()
+
+
+
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
