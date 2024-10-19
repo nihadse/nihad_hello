@@ -1,3 +1,82 @@
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from scipy.spatial.distance import cdist
+import pandas as pd
+from multiprocessing import Pool, cpu_count
+from functools import partial
+
+def process_batch(batch, model, interdicted_embeddings, threshold, interdicted_checks):
+    # Encode the batch
+    batch_embeddings = model.encode(batch['Name'].tolist(), convert_to_tensor=True)
+    
+    # Compute cosine similarity
+    similarity_matrix = 1 - cdist(interdicted_embeddings, batch_embeddings, metric='cosine')
+    
+    similar_pairs = []
+    for i in range(similarity_matrix.shape[0]):
+        for j in range(similarity_matrix.shape[1]):
+            if similarity_matrix[i, j] > threshold:
+                similar_pairs.append({
+                    "Name interdicted_checks": interdicted_checks.iloc[i]['Name'],
+                    "nom": interdicted_checks.iloc[i]['nom'],
+                    "nom_clean": interdicted_checks.iloc[i]['nom_clean'],
+                    "prenom": interdicted_checks.iloc[i]['prenom'],
+                    "prenom_clean": interdicted_checks.iloc[i]['prenom_clean'],
+                    "Date de naissance interdicted_checks": interdicted_checks.iloc[i]['Date de naissance'],
+                    "Lieu de naissance interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+                    "Date d'effet": interdicted_checks.iloc[i]['Date d'effet'],
+                    "Date de levee": interdicted_checks.iloc[i]['Date de levee'],
+                    "code wilaya": interdicted_checks.iloc[i]['code wilaya'],
+                    "Name client_database": batch.iloc[j]['Name'],
+                    "raison sociale": batch.iloc[j]['raison sociale'],
+                    "Type de relation": batch.iloc[j]['Type de relation'],
+                    "Compte_Client": batch.iloc[j]['Compte_Client'],
+                    "Nom abrégé tiers": batch.iloc[j]['Nom abrégé tiers'],
+                    "Date de naissance client_database": batch.iloc[j]['Date de naissance'],
+                    "Lieu de naissance client_database": batch.iloc[j]['Lieu de naissance'],
+                    "adresse atlas": batch.iloc[j]['adresse atlas'],
+                    "Code catégorie client": batch.iloc[j]['Code catégorie client'],
+                    "Date de création (entreprise)": batch.iloc[j]['Date de création (entreprise)'],
+                    "Code nature juridique du compte": batch.iloc[j]['Code nature juridique du compte'],
+                    "Id tiers": batch.iloc[j]['Id tiers'],
+                    "Similarity Score": similarity_matrix[i, j]
+                })
+    
+    return similar_pairs
+
+def find_highest_similarity(interdicted_checks, client_database, threshold, batch_size=1000):
+    # Load model
+    model = SentenceTransformer("/mnt/Sentence_model_transformer")
+    
+    # Pre-process interdicted checks
+    interdicted_embeddings = model.encode(interdicted_checks['Name'].tolist(), convert_to_tensor=True)
+    
+    # Prepare batches
+    batches = [client_database[i:i+batch_size] for i in range(0, len(client_database), batch_size)]
+    
+    # Prepare partial function for multiprocessing
+    process_batch_partial = partial(process_batch, model=model, interdicted_embeddings=interdicted_embeddings, 
+                                    threshold=threshold, interdicted_checks=interdicted_checks)
+    
+    # Use multiprocessing to process batches
+    with Pool(processes=cpu_count()) as pool:
+        results = pool.map(process_batch_partial, batches)
+    
+    # Flatten results
+    all_similar_pairs = [item for sublist in results for item in sublist]
+    
+    # Convert to DataFrame
+    result_df = pd.DataFrame(all_similar_pairs)
+    
+    # Perform final processing
+    result_df['Date de naissance Match'] = result_df.apply(lambda row: row['Date de naissance interdicted_checks'] == row['Date de naissance client_database'], axis=1)
+    result_df['Lieu de naissance Match'] = result_df.apply(lambda row: row['Lieu de naissance interdicted_checks'] == row['Lieu de naissance client_database'], axis=1)
+    
+    return result_df
+
+
+
+
 similar_indices = np.where((similarity_matrix[i] >= threshold) & (similarity_matrix[i] < 0.95))[0]
 
 for j in similar_indices:
