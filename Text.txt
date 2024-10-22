@@ -1,3 +1,8 @@
+"Nous avons ajouté les produits DCC dans le fichier QAC, et vous trouverez la liste des produits DCC qui nécessitent une codification dans le fichier Excel, onglet 'Produits'. J'ai également ajouté à la liste les DCC présents dans Alerte."
+
+
+
+
 "Nous avons ajouté les produits DCC dans le fichier QAC, et voici la liste des produits DCC qui nécessitent une codification. J'ai également ajouté à la liste les DCC présents dans Alerte."
 
 
