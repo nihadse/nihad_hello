@@ -2,6 +2,72 @@ import torch
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
+def find_highest_similarity(interdicted_checks, client_database, threshold, batch_size=128):
+    modelPath = "/domino/evodev/ModelHub-model-huggingface/sentence-transformers/all-MiniLM-L6-v2/main"
+    model = SentenceTransformer(modelPath)
+    
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+    
+    # Encode all client database names just once
+    with torch.no_grad():
+        embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    similar_pairs = []
+    
+    for batch_start in range(0, len(names1), batch_size):
+        batch_names1 = names1[batch_start:batch_start + batch_size]
+        
+        # Using torch.no_grad() to save memory
+        with torch.no_grad():
+            embeddings1 = model.encode(batch_names1, convert_to_tensor=True)
+            
+            # Compute cosine similarity
+            similarity_matrix = torch.cosine_similarity(embeddings1.unsqueeze(1), embeddings2.unsqueeze(0), dim=-1).cpu().numpy()
+        
+        # Iterate over similarity results and filter by threshold
+        for i in range(len(batch_names1)):
+            for j in range(len(names2)):
+                similarity_score = similarity_matrix[i][j]
+                
+                if similarity_score >= threshold:
+                    similar_pairs.append({
+                        "Name interdicted_checks": batch_names1[i],
+                        "Name client_database": names2[j],
+                        "Nom Interdicted Checks": interdicted_checks.iloc[batch_start + i]['nom_clean'],
+                        "Prénom Interdicted Checks": interdicted_checks.iloc[batch_start + i]['prenom_clean'],
+                        "Date de naissance Interdicted Checks": interdicted_checks.iloc[batch_start + i]['Date de naissance'],
+                        "Lieu de naissance Interdicted Checks": interdicted_checks.iloc[batch_start + i]['Lieu de naissance'],
+                        "Nom Client": client_database.iloc[j]['nom_clean'],
+                        "Prénom Client": client_database.iloc[j]['prenom_clean'],
+                        "Date de naissance Client": client_database.iloc[j]['Date de naissance'],
+                        "Lieu de naissance Client": client_database.iloc[j]['Lieu_de_naissance'],
+                        "Compte client": client_database.iloc[j]['Compte_client'],
+                        "Type de relation": client_database.iloc[j]['Type_de_relation'],
+                        "Nom abrégé client": client_database.iloc[j]['Nom_abrégé_client'],
+                        "Raison sociale": client_database.iloc[j]['raison_sociale'],
+                        "Code catégorie client": client_database.iloc[j]['Code_categorie_client'],
+                        "Nature juridique du compte": client_database.iloc[j]['Code_nature_juridique_du_compte'],
+                        "Similarity Score": similarity_score
+                    })
+    
+    result_df = pd.DataFrame(similar_pairs)
+    
+    # Date and Lieu de naissance match checks
+    result_df['Date de naissance Match'] = result_df.apply(
+        lambda row: 'Yes' if row['Date de naissance Interdicted Checks'] == row['Date de naissance Client'] else 'No', axis=1)
+    result_df['Lieu de naissance Match'] = result_df.apply(
+        lambda row: 'Yes' if row['Lieu de naissance Interdicted Checks'] == row['Lieu de naissance Client'] else 'No', axis=1)
+    
+    return result_df
+
+
+
+
+import torch
+import pandas as pd
+from sentence_transformers import SentenceTransformer
+
 def find_highest_similarity(interdicted_checks, client_database, threshold, batch_size=8):
     modelPath = "/domino/evodev/ModelHub-model-huggingface/sentence-transformers/all-MiniLM-L6-v2/main"
     model = SentenceTransformer(modelPath)
