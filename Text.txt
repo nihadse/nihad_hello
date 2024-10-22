@@ -1,3 +1,7 @@
+"Nous avons ajouté les produits DCC dans le fichier QAC, et voici la liste des produits DCC qui nécessitent une codification. J'ai également ajouté à la liste les DCC présents dans Alerte."
+
+
+
 import torch
 import pandas as pd
 from sentence_transformers import SentenceTransformer
