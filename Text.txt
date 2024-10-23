@@ -1,4 +1,65 @@
 import pandas as pd
+import torch
+from sentence_transformers import SentenceTransformer
+
+def highest_similarity(interdicted_checks, client_database, threshold, batch_size, similarity_csv_path):
+    modelPath = "/domino/evod/modelhub/ModelHub-model-huggingface-sentence-transformers/all-MiniLM-L6-v2/main"
+    model = SentenceTransformer(modelPath)
+
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+    similar_pairs = []
+
+    # Load the similarity scores from the provided CSV file
+    similarity_df = pd.read_csv(similarity_csv_path, index_col=0)
+
+    # Process each pair of names to find matches based on the similarity scores
+    for i, name1 in enumerate(names1):
+        if name1 in similarity_df.index:
+            # Get the similarity scores for the current interdicted check name
+            similarity_scores = similarity_df.loc[name1]
+
+            for j, name2 in enumerate(names2):
+                similarity_score = similarity_scores.get(name2, 0)  # Get the similarity score or default to 0
+                if similarity_score >= threshold:
+                    similar_pairs.append({
+                        'Name interdicted_checks': interdicted_checks.iloc[i]['Name'],
+                        'nom': interdicted_checks.iloc[i]['nom.clean'],
+                        'Prenom': interdicted_checks.iloc[i]['prenom.clean'],
+                        'Date de levee': interdicted_checks.iloc[i]['date de levee'],
+                        'Date de naissance interdicted_checks': pd.to_datetime(interdicted_checks.iloc[i]['Date de naissance'], errors='coerce'),
+                        'Lieu de naissance interdicted_checks': interdicted_checks.iloc[i]['Lieu de naissance'],
+                        'code wilaya': interdicted_checks.iloc[i]['code wilaya'],
+                        'Name client database': name2,
+                        'nom clean client': client_database.iloc[j]['nom.clean'],
+                        'prenom client': client_database.iloc[j]['prenom.clean'],
+                        'Compte client': client_database.iloc[j]['Compte_client'],
+                        'Date de naissance client': pd.to_datetime(client_database.iloc[j]['Date de naissance'], errors='coerce'),
+                        'Lieu de naissance client': client_database.iloc[j]['Lieu de naissance'],
+                        'Type de relation': client_database.iloc[j]['Type de relation'],
+                        'Raison sociale': client_database.iloc[j]['Raison sociale'],
+                        'Code tiers': client_database.iloc[j]['Code tiers'],
+                        'Code categorie client': client_database.iloc[j]['Code categorie client'],
+                        'Code nature juridique du compte': client_database.iloc[j]['Code nature juridique du compte'],
+                        'Code creation entreprise': client_database.iloc[j]['Code creation entreprise'],
+                        'similarity score': similarity_score
+                    })
+
+    # Create a DataFrame from the similar pairs
+    result_df = pd.DataFrame(similar_pairs)
+    # Add matching checks for dates and places of birth
+    result_df['Date de naissance Match'] = result_df.apply(lambda row: 'Yes' if row['Date de naissance interdicted_checks'] == row['Date de naissance client'] else 'No', axis=1)
+    result_df['Lieu de naissance Match'] = result_df.apply(lambda row: 'Yes' if row['Lieu de naissance interdicted_checks'] == row['Lieu de naissance client'] else 'No', axis=1)
+
+    return result_df
+
+
+
+
+
+
+
+import pandas as pd
 
 def highest_similarity(interdicted_checks, client_database, threshold, batch_size):
     modelPath = "/domino/evod/modelhub/ModelHub-model-huggingface-sentence-transformers/all-MiniLM-L6-v2/main"
