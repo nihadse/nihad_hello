@@ -1,4 +1,73 @@
 import pandas as pd
+
+def find_highest_similarity2(interdicted_checks, client_database, threshold=0.99):
+    # Load the similarity matrix from the CSV file
+    similarity_df = pd.read_csv('similarity_matrix.csv', index_col=0)
+
+    # Prepare a list to hold similar pairs
+    similar_pairs = []
+
+    # Extract names from interdicted_checks and client_database
+    names1 = interdicted_checks['Name'].tolist()
+    names2 = client_database['Name'].tolist()
+
+    # Iterate through each interdicted check
+    for i in range(len(names1)):
+        client_name = names1[i]
+
+        # Iterate through each client in the database
+        for j in range(len(names2)):
+            similarity_score = similarity_df.iloc[i, j]  # Get similarity score from DataFrame
+
+            # Check if the similarity score exceeds the threshold
+            if similarity_score > threshold:
+                similar_pairs.append({
+                    "Name interdicted_checks": client_name,
+                    "nom": interdicted_checks.iloc[i]['nom'],
+                    "nom_clean": interdicted_checks.iloc[i]['nom_clean'],
+                    "prenom": interdicted_checks.iloc[i]['prenom'],
+                    "prenom_clean": interdicted_checks.iloc[i]['prenom_clean'],
+                    "Date de naissance interdicted_checks": interdicted_checks.iloc[i]['Date de naissance'],
+                    "Lieu de naissance interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+                    "date d'effet": interdicted_checks.iloc[i]['date d\'effet'],
+                    "date de levee": interdicted_checks.iloc[i]['date de levee'],
+                    "code wilaya": interdicted_checks.iloc[i]['code wilaya'],
+                    "Name client database": client_database.iloc[j]["Name"],
+                    "raison sociale": client_database.iloc[j]['raison sociale'],
+                    "Type de_relation": client_database.iloc[j]['Type_de_relation'],
+                    "Compte client": client_database.iloc[j]['Compte_client'],
+                    "Nom abrégé tiers": client_database.iloc[j]["Nom abrégé tiers"],
+                    "Date de naissance client database": client_database.iloc[j]['Date de naissance'],
+                    "Lieu de naissance client database": client_database.iloc[j]['Lieu de naissance'],
+                    "adresse atlas": client_database.iloc[j]['adresse_atlas'],
+                    "Code catégorie client": client_database.iloc[j]['Code catégorie client'],
+                    "Date de création (entreprise)": client_database.iloc[j]['Date de création (entreprise)'],
+                    "Code nature juridique du compte": client_database.iloc[j]['Code nature juridique du compte'],
+                    "Id tiers": client_database.iloc[j]['Id tiers'],
+                    "Similarity Score": similarity_score
+                })
+
+    # Convert similar_pairs to a DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+
+    # Add matching information for dates and places of birth
+    result_df["Date de naissance Match"] = result_df["Date de naissance interdicted_checks"] == result_df["Date de naissance client database"]
+    result_df["Lieu de naissance Match"] = result_df["Lieu de naissance interdicted_checks"] == result_df["Lieu de naissance client database"]
+
+    # Map boolean values to 'yes'/'no'
+    result_df["Date de naissance Match"] = result_df["Date de naissance Match"].map({True: 'yes', False: 'no'})
+    result_df["Lieu de naissance Match"] = result_df["Lieu de naissance Match"].map({True: 'yes', False: 'no'})
+
+    return result_df
+
+# Example usage
+# result_df = find_highest_similarity2(interdicted_checks, client_database, threshold=0.99)
+
+
+
+
+
+import pandas as pd
 import torch
 from sentence_transformers import SentenceTransformer
 
