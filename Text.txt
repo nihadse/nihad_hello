@@ -1,3 +1,8 @@
+import pickle
+with open('similarity_matrix.pkl', 'rb') as f:
+        similarity_matrix = pickle.load(f)
+
+
 # Save similarity matrix using pickle
 with open('similarity_matrix.pkl', 'wb') as f:
     pickle.dump(similarity_matrix, f)
