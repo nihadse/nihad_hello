@@ -1,4 +1,99 @@
-import pickle
+highest similarity2(Interdicted checks, client database, threshold)
+
+with open( similarity, natrix.pk17) 45
+
+similarity matris pickle lomi(f)
+
+namesi Interdicted checks Noms talist()
+
+names llent database Name Malist()
+
+similar pairs-11
+
+Fud the patry with the highest statlarity score for each client in unterdicted enecks above the threshol
+
+for i in range(len(nameci)):
+
+client name nanes1[1]
+
+for i in range(len(name12))
+
+sislarity score sisilarity matris(1.31
+
+print(datetime.nowt))
+
+If similarity score threshold
+
+similar pairs.append(
+
+"Mane Interdicted checks client name,
+
+nos interdicted checks.iloc[1][now].
+
+now clean interdicted checks.iloc[i]['non clean
+
+prenos: Interdicted checks.iloc[i]['presam'].
+
+"pranon clean interdicted checks loc[1] pranom clean J,
+
+"Oute de naissance interdicted checks" interdicted checks sicri Date de naissance
+
+ags
+
+"Limu de naissance interdicted checks" Interdicted checks Line [1] Leute natssance?) ,
+
+"date d'effet Interdicted checks iloc[] date of effet) "date de leves" interdicted checks.iloc[1] date de levee),
+
+ago
+
+ags
+
+"code wilaya" Interdicted checks, Llec[1] code wilaya). "Hane client database" client database.iloc[3] Ne
+
+Craitne sociale client database, list[3]['raisce sociale),
+
+Type de relation client database, ilnc[31] Type_de_relation.
+
+Compte client client database (loc[3]| Compte client 1.
+
+Nas abrégé tiers client database.lt [3] Nos abrege tiers 1,
+
+raison sociale client database il reston sociale l
+
+" Date de naissanca client database" client database, lloc[7]! Date de naissance'], "Lieu de naissance client database": client database-flot[1] Lieu de naissance
+
+adresse atiat client database, ilor [3]['adresse atlas),
+
+
+
+
+
+
+Code catagorie client client database in [3] Code catégorie client 1. Date de création entreprise) client database slot[3] Date de creation (entreprise)
+
+Code nature juridique de compte client database, ilot[1]] fode nature juridique du compte 1.
+
+Stiers: client database.iloc[3](le tiers,
+
+"Steilarity Score" similarity score
+
+Create Datafrase from similar pairs result of pd-Datafrane similar pairs)
+
+result of "Date asssance Match result result df "Date de naissance Interdicted checks" result of Date de naissance client_database"]
+
+of Date de naissance Hatch result of "Date de naissance Match").map((True yes, False: No
+
+result of Lies de naissance Match result off Lies de nalstance Match") result df("Lieu de naissance interdicted checks" result df["Lleu de naissance Match.map((True result of Lieu de naissance client_database"] yes, False: No'))
+
+return result of
+
+find highest similarity) (Interdicted_checkx,client_database,threshold-8)
+
+2828-10-25 20:56:41.41895
+
+2824-28-25 20:50:41,414581
+
+aimport pickle
 with open('similarity_matrix.pkl', 'rb') as f:
         similarity_matrix = pickle.load(f)
 
