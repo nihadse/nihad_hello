@@ -1,3 +1,63 @@
+]: def find highest_similarity2(interdicted_checks, client database, threshold):
+
+with open('similarity matrix.pkl', 'rb') as f:
+
+similarity_matrix pickle.load(f)
+
+names1 interdicted_checks['Name'].tolist()
+
+names2 client_database_['Name'].tolist()
+
+best_scores()
+
+num_top_matches 10# number of top matches to store
+
+indices np.argwhere(similarity_matrix > threshold)
+
+# Find the pairs with the highest similarity score for each client in interdicted checks above the threshold
+
+for i in zip(indices):
+
+client name names1[i]
+
+best_scores[client_name] []
+
+similarity_score similarity_matrix[i][j]
+
+if similarity_score > threshold:
+
+best_scores[client_name].append((client_database.iloc[j], similarity_score))
+
+best_scores[client_name] sorted(best_scores[client_name], key lambda x: x[1], reverse True) [:num_top_matches]
+
+#Create List of pairs with highest similarity score for each client in interdicted checks
+
+similar pairs []
+
+for i in range(len(interdicted_checks)):
+
+client name interdicted_checks.iloc[i]['Name']
+
+if client_name in best scores:
+
+for match, similarity score in best_scores[client_name]:
+
+similar_pairs.append({ "Name interdicted_checks": client_name, 'Id tiers': client_match['Id tiers'],
+
+"Name client database": client_match["Name"],
+
+'raison sociale: client_match['raison sociale'],
+
+"Similarity Score": similarity_score))
+
+result of pd.DataFrame (similar_pairs)
+
+return result_of
+
+
+
+
+
 def
 
 find highest similarity(interdicted_checks, client database, threshold-8):
