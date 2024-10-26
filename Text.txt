@@ -1,3 +1,8 @@
+Je reviens vers vous avec les points à réaliser suite à la réunion du 21-10-2024. Nous attendons la communication de la conformité concernant les chiffres relatifs au gain réalisé, ainsi que les résultats livrés. Suite à l'analyse des résultats, la Data fera des modifications au modèle AI si nécessaire pour les clients non détectés par Sentinelia (DATA). Enfin, la périodicité des livrables sera fixée à chaque semestre. Je reste disponible pour toute clarification supplémentaire sur ces actions.
+
+
+
+
 ]: def find highest_similarity2(interdicted_checks, client database, threshold):
 
 with open('similarity matrix.pkl', 'rb') as f:
