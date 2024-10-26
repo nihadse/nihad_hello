@@ -1,3 +1,28 @@
+import zipfile
+import os
+
+# Path to the .zip file and the directory to extract the Excel file
+zip_file_path = 'your_archive.zip'
+extract_to = 'extracted_excel_files'
+
+# Create a directory to store extracted files if it doesn't exist
+if not os.path.exists(extract_to):
+    os.makedirs(extract_to)
+
+# Open the .zip file
+with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+    # List all files in the zip archive
+    for file in zip_ref.namelist():
+        # Check if the file is an Excel file (based on the extension)
+        if file.endswith('.xlsx'):
+            # Extract the Excel file to the specified directory
+            zip_ref.extract(file, extract_to)
+            print(f"Extracted '{file}' to '{extract_to}'")
+
+print("Extraction completed.")
+
+
+
 highest similarity2(Interdicted checks, client database, threshold)
 
 with open( similarity, natrix.pk17) 45
