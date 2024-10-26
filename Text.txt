@@ -1,3 +1,91 @@
+def
+
+find highest similarity(interdicted_checks, client database, threshold-8):
+
+#Load sentence transformer model
+
+model path"/mnt/Sentence_model_transformer"
+
+model Sentence Transformer(model_path)
+
+#Extract names from interdicted checks and client database
+
+namesi interdicted_checks ["Name"].tolist()
+
+names2 client_database_['Name'].tolist()
+
+Encode namesi and names2
+
+embeddings1 model.encode(names1, convert_to_tensor-True)
+
+embeddings2 model.encode(names2, convert_to_tensor-True)
+
+Calculate cosine similarity matrix
+
+similarity matrix util.pytorch_cos_sim(embeddingsl, embeddings2).cpu().numpy()
+
+Initialize dictionaries to store highest similarity scores and corresponding interdicted clients
+
+best scores()
+
+best pairs ()
+
+Find the pairs with the highest similarity score for each client in interdicted checks above the threshold
+
+for i in range(len(names1)):
+
+client_name names1[i]
+
+for j in range(len(names2)):
+
+similarity_score similarity_matrix[i][j]
+
+if similarity_score threshold and similarity_score > best_scores.get(client_name, -1):
+
+#Adjusted to filter scores greater than 0.95
+
+I
+
+best scores[client_name] similarity_score
+
+best_pairs(client_name] (client_database.iloc[j], similarity_score)
+
+Create List of pairs with highest similarity score for each client in interdicted_checks
+
+similar pairs []
+
+for i in range(len(interdicted_checks)):
+
+client name interdicted_checks.iloc[i]['Name']
+
+if client_name in best_pairs:
+
+client match, similarity score best_pairs[client_name]
+
+similar_pairs.append({
+
+"Name interdicted_checks": client_name,
+
+'nom': interdicted_checks.iloc[i]['nom'],
+
+'nom clean": interdicted_checks.iloc[i]['nom_clean'],
+
+"prenom': interdicted_checks.iloc[i]['prenom'],
+
+"prenom_clean': interdicted_checks.iloc[i]['prenom_clean'],
+
+"Date de naissance interdicted_checks": interdicted_checks.iloc[i]['Date de naissance"], "Lieu de naissance interdicted_checks": interdicted_checks.iloc[i]['Lieu de naissance'],
+
+"date d'effet" interdicted_checks.iloc[i]['date d\'effet'],
+
+"date de levee" interdicted_checks.iloc[i]['date de levee'],
+
+"code wilaya": interdicted_checks.iloc[i]['code wilaya'],
+
+
+
+
+
 import zipfile
 import os
 
