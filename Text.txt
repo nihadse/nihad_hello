@@ -1,3 +1,38 @@
+Objet : Compte Rendu et Suivi des Actions
+
+Bonjour [Nom du destinataire],
+
+Veuillez trouver ci-dessous les points clés abordés lors de notre réunion :
+
+Revue de la structure du code et de l’implémentation du système RAG (Retrieval-Augmented Generation).
+
+Action : envoi d’une demande d’accès à Xavier pour examiner leur plateforme, le code source, et la méthodologie de construction du RAG.
+
+
+Projet Sentilia
+
+Nous avons constaté que nous travaillions sur des bases de données différentes : moi sur la période 2020-2023 et vous sur la période 2018-2023.
+
+Prochaine étape : création du dataset des déposants.
+
+
+Projet Decad AI
+
+Le publipostage a été effectué.
+
+Nous avons demandé et obtenu leur accord pour nous envoyer un document Word unique regroupant les livrables.
+
+Le temps d'exécution a été optimisé pour de meilleures performances.
+
+
+N’hésitez pas à nous faire part de vos questions ou de tout point additionnel à traiter.
+
+Cordialement,
+Nihad
+
+
+
+
 Je reviens vers vous avec les points à réaliser suite à la réunion du 21-10-2024 :
 
 Nous attendons la communication de la conformité concernant les chiffres relatifs au gain réalisé.
