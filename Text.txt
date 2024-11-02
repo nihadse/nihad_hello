@@ -1,1 +1,40 @@
+pip install langchain pymupdf unstructured
+import os
+from langchain.document_loaders import PyMuPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import Chroma
+
+def load_pdfs_with_langchain(folder_path):
+    documents = []
+
+    # Loop through each file in the folder
+    for filename in os.listdir(folder_path):
+        if filename.endswith(".pdf"):
+            file_path = os.path.join(folder_path, filename)
+            loader = PyMuPDFLoader(file_path)
+            docs = loader.load()
+            documents.extend(docs)
+
+    return documents
+
+# Example usage
+folder_path = "path/to/your/pdfs"
+documents = load_pdfs_with_langchain(folder_path)
+
+# Split text into manageable chunks (for embedding)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+split_docs = text_splitter.split_documents(documents)
+
+# Embed using OpenAI embeddings and store in Chroma for querying
+embeddings = OpenAIEmbeddings()  # Substitute with your embedding model
+vector_store = Chroma.from_documents(split_docs, embedding=embeddings)
+
+# Now you can query `vector_store` for retrieval-augmented generation (RAG)pip install langchain pymupdf unstructured
+
+
+
+
+
+
 https://github.com/langchain-ai/rag-from-scratch/blob/main/rag_from_scratch_5_to_9.ipynb
