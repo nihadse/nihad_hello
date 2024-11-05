@@ -1,3 +1,14 @@
+Bonjour [Nom de la personne],
+
+J'aimerais savoir comment vous envoyez les résultats ou les outputs des cas d'usage que vous avez développés dans Domino Data Lab. Pourriez-vous m'en dire plus sur votre processus de transmission de ces informations ?
+
+Merci d'avance pour votre retour !
+
+Cordialement,
+Nihad
+
+
+
 WriteBot réécrit 270 procédures en raison de l'implémentation du nouveau système CBS, ce qui permet de rationaliser les opérations, d'améliorer l'efficacité et d'automatiser les tâches manuelles
 
 
