@@ -1,3 +1,6 @@
+IF LEFT([numéro], 2) = "00" THEN "0" + RIGHT([numéro], LEN([numéro]) - 2) ELSE [numéro] ENDIF
+
+
 Bonjour [Nom de la personne],
 
 J'aimerais savoir comment vous envoyez les résultats ou les outputs des cas d'usage que vous avez développés dans Domino Data Lab. Pourriez-vous m'en dire plus sur votre processus de transmission de ces informations ?
