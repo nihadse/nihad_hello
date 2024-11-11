@@ -1,3 +1,19 @@
+Subject: Documents de Notification d'Interdiction
+
+Bonjour [Nom de la destinataire],
+
+Veuillez trouver en pièce jointe le fichier Word ainsi que le fichier PDF contenant les lettres de notification d'interdiction générées. Ces fichiers ne contiennent que les enregistrements de la feuille Excel ayant un score de similarité supérieur à 95 %. Vous trouverez également en pièce jointe le fichier des résultats pour ce mois d'octobre.
+
+Je vous informe par ailleurs que la base de données avec laquelle nous travaillons est mise à jour chaque 7 du mois.
+
+N'hésitez pas à revenir vers moi pour toute question ou demande d'information supplémentaire.
+
+Cordialement,
+Nihad Senhadji
+
+
+
+
 IF LEFT([numéro], 2) = "00" THEN "0" + RIGHT([numéro], LEN([numéro]) - 2) ELSE [numéro] ENDIF
 
 
