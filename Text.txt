@@ -1,3 +1,6 @@
+Après vérification des contrôles, un problème a été détecté dans la base de données mise à jour.
+
+
 Subject: Documents de Notification d'Interdiction
 
 Bonjour [Nom de la destinataire],
