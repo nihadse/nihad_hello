@@ -1,3 +1,7 @@
+Après vérification des contrôles, ceux-ci sont corrects, mais la base de données n’a pas été mise à jour.
+
+
+
 Après vérification des contrôles, un problème a été détecté dans la base de données mise à jour.
 
 
