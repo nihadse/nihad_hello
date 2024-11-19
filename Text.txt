@@ -1,3 +1,6 @@
+IF REGEX_Match([VotreChamp], "^\d+\.\d{2,}$") THEN "Valide" ELSE "Invalide" ENDIF
+
+
 Après vérification des contrôles, ceux-ci sont corrects, mais la base de données n’a pas été mise à jour lors de l’extraction des données.
 
 
