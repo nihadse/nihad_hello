@@ -1,4 +1,11 @@
 IF Contains(ToString([Amount]), ".") THEN 
+    REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
+ELSE 
+    "0"
+ENDIF
+
+
+IF Contains(ToString([Amount]), ".") THEN 
     REGEX_Replace(ToString([Amount]), "^\d+\.(\d+)$", "\1")
 ELSE 
     "0"
