@@ -1,3 +1,11 @@
+IF Contains(ToString([Amount]), ".") THEN 
+    REGEX_CountMatches(ToString([Amount]), "(?<=\.)\d") 
+ELSE 
+    0 
+ENDIF
+
+
+
 IF REGEX_Match([VotreChamp], "^\d+\.\d{2,}$") THEN "Valide" ELSE "Invalide" ENDIF
 
 
