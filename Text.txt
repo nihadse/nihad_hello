@@ -1,3 +1,10 @@
+IF Length([CM]) = 7 AND Right([CM], 3) = "ALG" THEN 
+    "Valide" 
+ELSE 
+    "Anomalie" 
+ENDIF
+
+
 IF REGEX_Match(ToString([Amount]), "^-?\d+\.\d{2,}$") THEN 
     REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
 ELSE 
