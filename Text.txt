@@ -1,3 +1,10 @@
+IF REGEX_Match(ToString([Amount]), "^-?\d+\.\d{2,}$") THEN 
+    REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
+ELSE 
+    "Anomalie"
+ENDIF
+
+
 IF Contains(ToString([Amount]), ".") THEN 
     REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
 ELSE 
