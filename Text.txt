@@ -16,6 +16,55 @@ def transliterate_name_mt5_large(name, num_variations=5):
     Returns:
         List[str]: A list of transliterated variations in French.
     """
+    # Prepare input text with explicit instruction for French transliteration
+    input_text = f"transliterate the Arabic name '{name}' into French"
+    
+    # Tokenize the input text and handle padding/truncation
+    inputs = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True)
+    
+    # Generate variations with beam search
+    outputs = model.generate(
+        **inputs,
+        num_beams=5,            # Beam search to generate multiple variations
+        num_return_sequences=num_variations,  # Number of variations
+        max_length=15,          # Limit output length to avoid overlong results
+        early_stopping=True     # Stop early to improve speed
+    )
+    
+    # Decode and clean up the translations
+    transliterations = [tokenizer.decode(output, skip_special_tokens=True).strip() for output in outputs]
+    return transliterations
+
+# Example usage
+name = "محمد"
+variations = transliterate_name_mt5_large(name, num_variations=5)
+print("Transliterated Name Variations (in French):", variations)
+
+
+
+
+
+
+
+
+from transformers import MT5Tokenizer, MT5ForConditionalGeneration
+
+# Load mT5-large model and tokenizer
+model_name = "google/mt5-large"
+tokenizer = MT5Tokenizer.from_pretrained(model_name)
+model = MT5ForConditionalGeneration.from_pretrained(model_name)
+
+def transliterate_name_mt5_large(name, num_variations=5):
+    """
+    Generate multiple variations of a name transliterated from Arabic to French using mT5-large.
+    
+    Args:
+        name (str): The Arabic name to transliterate.
+        num_variations (int): Number of variations to generate.
+    
+    Returns:
+        List[str]: A list of transliterated variations in French.
+    """
     # Prepare input text for transliteration, with explicit instruction for French output
     input_text = f"transliterate Arabic name to French: {name}"
     
