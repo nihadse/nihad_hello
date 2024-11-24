@@ -1,3 +1,34 @@
+from transformers import MarianMTModel, MarianTokenizer
+
+# Load MarianMT model and tokenizer for Arabic to French
+model_name = "Helsinki-NLP/opus-mt-ar-fr"
+tokenizer = MarianTokenizer.from_pretrained(model_name)
+model = MarianMTModel.from_pretrained(model_name)
+
+def translate_name_variations(name, num_variations=3):
+    # Tokenize the input name
+    tokenized_text = tokenizer.prepare_seq2seq_batch([name], return_tensors="pt")
+    
+    # Generate translations using beam search to get multiple variations
+    translated = model.generate(
+        **tokenized_text,
+        num_beams=num_variations,
+        num_return_sequences=num_variations,
+        max_length=10,  # Limit to short translations
+    )
+    
+    # Decode translations
+    translations = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
+    return translations
+
+# Example usage
+name = "محمد"
+variations = translate_name_variations(name, num_variations=5)
+print("Name Variations:", variations)
+
+
+
+
 Objet : Demande de fichier Excel pour projet d'IA
 
 Cher/Chère [Nom du destinataire],
