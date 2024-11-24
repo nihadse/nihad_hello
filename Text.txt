@@ -1,3 +1,29 @@
+Objet : Demande de fichier Excel pour projet d'IA
+
+Cher/Chère [Nom du destinataire],
+
+Dans le cadre de notre projet d’intelligence artificielle, je vous prie de bien vouloir me transmettre un fichier Excel contenant les informations suivantes :
+
+1. Noms et prénoms (en arabe et en français)
+
+
+2. Dates de naissance
+
+
+3. Lieux de naissance
+
+
+
+Le fichier doit inclure les noms et prénoms des personnes que vous avez identifiées comme ayant été nos clients, ainsi que ceux des personnes qui ne le sont pas. Ces données sont essentielles pour l’analyse et le traitement dans le cadre de ce projet.
+
+Je reste à votre disposition pour toute précision. Merci d’avance pour votre collaboration.
+
+Cordialement,
+Nihad Senhadji
+
+
+
+
 IF Length([CM]) = 7 AND Right([CM], 3) = "ALG" THEN 
     "Valide" 
 ELSE 
