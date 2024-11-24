@@ -1,3 +1,6 @@
+https://www.atyun.com/models/files/Helsinki-NLP/opus-mt-ar-fr.html
+
+
 from transformers import MT5Tokenizer, MT5ForConditionalGeneration
 
 # Load mT5-large model and tokenizer
