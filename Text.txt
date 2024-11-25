@@ -1,3 +1,8 @@
+https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr
+
+
+
+
 https://www.atyun.com/models/files/Helsinki-NLP/opus-mt-ar-fr.html
 
 
