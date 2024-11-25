@@ -1,3 +1,7 @@
+https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr/tree/main
+
+
+
 https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr
 
 
