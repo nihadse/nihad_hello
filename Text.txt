@@ -5,6 +5,42 @@ model_name = "google/mt5-large"
 tokenizer = MT5Tokenizer.from_pretrained(model_name)
 model = MT5ForConditionalGeneration.from_pretrained(model_name)
 
+# Translation function with variations
+def translate_ar_to_fr_variations(name_ar, num_variations=5):
+    # Prepare the input for the model
+    input_text = f"translate Arabic name to French: {name_ar}"
+    inputs = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True)
+    
+    # Generate multiple outputs with sampling
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=20,  # Limit the maximum length of the output
+        num_return_sequences=num_variations,  # Number of variations to generate
+        do_sample=True,  # Use sampling for diverse outputs
+        top_k=50,  # Limit sampling to the top 50 tokens
+        temperature=0.7  # Adjust randomness (lower = more deterministic)
+    )
+    
+    # Decode and return the variations
+    return [tokenizer.decode(output, skip_special_tokens=True).strip() for output in outputs]
+
+# Example Arabic names
+arabic_names = ["محمد", "أحمد", "فاطمة"]
+
+# Translate and print variations
+for name in arabic_names:
+    variations = translate_ar_to_fr_variations(name)
+    print(f"Arabic Name: {name} -> French Variations: {variations}")
+
+
+
+from transformers import MT5ForConditionalGeneration, MT5Tokenizer
+
+# Load the model and tokenizer
+model_name = "google/mt5-large"
+tokenizer = MT5Tokenizer.from_pretrained(model_name)
+model = MT5ForConditionalGeneration.from_pretrained(model_name)
+
 # Translation function
 def translate_ar_to_fr(name_ar):
     # Prepare the input in the format mT5 expects
