@@ -1,595 +1,80 @@
-import openai
+import pandas as pd
+import json
+from transformers import GPT2Tokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
+from datasets import load_dataset
 
-# Set your Azure OpenAI endpoint and API key
-openai.api_type = "azure"
-openai.api_base = "https://your-azure-openai-endpoint"  # Replace with your endpoint
-openai.api_version = "2023-03-15-preview"
-openai.api_key = "your_azure_api_key"  # Replace with your API key
+# Step 1: Read the dataset from the Excel file
+# Make sure to provide the correct path to your Excel file
+df = pd.read_excel('path_to_your_file.xlsx')
 
-def get_name_transliterations(name_ar, num_variations=5):
-    prompt = (f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
-              "Make sure the variations are realistic.")
+# Step 2: Prepare the dataset for fine-tuning
+name_pairs = []
+for _, row in df.iterrows():
+    # Create prompt and completion pairs from Arabic and French names
+    prompt = f"Arabic: {row['name_ar']} {row['family_name_ar']}\nFrench transliterations:"
+    completion = f" {row['name_fr']} {row['family_name_fr']}"
     
-    response = openai.ChatCompletion.create(
-        engine="gpt-4",  # Replace with your deployment name
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=100,
-        temperature=0.7
-    )
-    return response['choices'][0]['message']['content']
-
-# Example names
-arabic_names = ["محمد", "أحمد", "فاطمة"]
-
-# Generate and display transliterations
-for name in arabic_names:
-    variations = get_name_transliterations(name)
-    print(f"Arabic Name: {name} -> French Variations:\n{variations}\n")
-
-
-
-
-from transformers import MT5ForConditionalGeneration, MT5Tokenizer
-
-# Load the model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-# Translation function with variations
-def translate_ar_to_fr_variations(name_ar, num_variations=5):
-    # Prepare the input for the model
-    input_text = f"translate Arabic name to French: {name_ar}"
-    inputs = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True)
-    
-    # Generate multiple outputs with sampling
-    outputs = model.generate(
-        **inputs,
-        max_new_tokens=20,  # Limit the maximum length of the output
-        num_return_sequences=num_variations,  # Number of variations to generate
-        do_sample=True,  # Use sampling for diverse outputs
-        top_k=50,  # Limit sampling to the top 50 tokens
-        temperature=0.7  # Adjust randomness (lower = more deterministic)
-    )
-    
-    # Decode and return the variations
-    return [tokenizer.decode(output, skip_special_tokens=True).strip() for output in outputs]
-
-# Example Arabic names
-arabic_names = ["محمد", "أحمد", "فاطمة"]
-
-# Translate and print variations
-for name in arabic_names:
-    variations = translate_ar_to_fr_variations(name)
-    print(f"Arabic Name: {name} -> French Variations: {variations}")
-
-
-
-from transformers import MT5ForConditionalGeneration, MT5Tokenizer
-
-# Load the model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-# Translation function
-def translate_ar_to_fr(name_ar):
-    # Prepare the input in the format mT5 expects
-    input_text = f"translate Arabic to French: {name_ar}"
-    inputs = tokenizer(input_text, return_tensors="pt", padding=True)
-    # Generate the output
-    outputs = model.generate(**inputs)
-    # Decode the output into readable text
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-# Example Arabic names
-arabic_names = ["أحمد", "محمد", "علي", "فاطمة"]
-
-# Translate and print results
-for name in arabic_names:
-    french_name = translate_ar_to_fr(name)
-    print(f"Arabic Name: {name} -> French Name: {french_name}")
-
-
-
-
-
-https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr/tree/main
-
-
-
-https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr
-
-
-
-
-https://www.atyun.com/models/files/Helsinki-NLP/opus-mt-ar-fr.html
-
-
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-
-# Load mT5-large model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-def transliterate_name_mt5_large(name, num_variations=5):
-    """
-    Generate multiple variations of a name transliterated from Arabic to French using mT5-large.
-    
-    Args:
-        name (str): The Arabic name to transliterate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of transliterated variations in French.
-    """
-    # Prepare input text with explicit instruction for French transliteration
-    input_text = f"transliterate the Arabic name '{name}' into French"
-    
-    # Tokenize the input text and handle padding/truncation
-    inputs = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True)
-    
-    # Generate variations with beam search
-    outputs = model.generate(
-        **inputs,
-        num_beams=5,            # Beam search to generate multiple variations
-        num_return_sequences=num_variations,  # Number of variations
-        max_length=15,          # Limit output length to avoid overlong results
-        early_stopping=True     # Stop early to improve speed
-    )
-    
-    # Decode and clean up the translations
-    transliterations = [tokenizer.decode(output, skip_special_tokens=True).strip() for output in outputs]
-    return transliterations
-
-# Example usage
-name = "محمد"
-variations = transliterate_name_mt5_large(name, num_variations=5)
-print("Transliterated Name Variations (in French):", variations)
-
-
-
-
-
-
-
-
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-
-# Load mT5-large model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-def transliterate_name_mt5_large(name, num_variations=5):
-    """
-    Generate multiple variations of a name transliterated from Arabic to French using mT5-large.
-    
-    Args:
-        name (str): The Arabic name to transliterate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of transliterated variations in French.
-    """
-    # Prepare input text for transliteration, with explicit instruction for French output
-    input_text = f"transliterate Arabic name to French: {name}"
-    
-    # Tokenize the input text and make sure padding is handled
-    inputs = tokenizer(input_text, return_tensors="pt", padding=True, truncation=True)
-    
-    # Generate variations with beam search
-    outputs = model.generate(
-        **inputs,
-        num_beams=5,            # Higher beam search for more variation
-        num_return_sequences=num_variations,  # Number of variations
-        max_length=10,          # Limit output length to avoid overlong translations
-        early_stopping=True     # Stop early for efficiency
-    )
-    
-    # Decode translations and extract transliterations
-    transliterations = [tokenizer.decode(output, skip_special_tokens=True).strip() for output in outputs]
-    return transliterations
-
-# Example usage
-name = "محمد"
-variations = transliterate_name_mt5_large(name, num_variations=5)
-print("Transliterated Name Variations (in French):", variations)
-
-
-
-
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-
-# Load mT5-large model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-def transliterate_name_mt5_large(name, num_variations=5):
-    """
-    Generate multiple variations of a name transliterated from Arabic to French using mT5-large.
-    
-    Args:
-        name (str): The Arabic name to transliterate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of transliterated variations in French.
-    """
-    # Prepare input text for transliteration
-    input_text = f"transliterate Arabic to French: {name}"
-    inputs = tokenizer(input_text, return_tensors="pt")
-    
-    # Generate variations with beam search
-    outputs = model.generate(
-        **inputs,
-        num_beams=5,            # Higher beam search for more variation
-        num_return_sequences=num_variations,  # Number of variations
-        max_length=10,          # Limit output length to avoid overlong translations
-        early_stopping=True     # Stop early for efficiency
-    )
-    
-    # Decode translations and extract transliterations
-    transliterations = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return transliterations
-
-# Example usage
-name = "محمد"
-variations = transliterate_name_mt5_large(name, num_variations=5)
-print("Transliterated Name Variations:", variations)
-
-
-
-
-
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-
-# Load mT5-small model and tokenizer
-model_name = "google/mt5-small"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-def translate_name_mt5_small(name, num_variations=3):
-    """
-    Translate an Arabic name into French with multiple variations using mT5-small.
-    
-    Args:
-        name (str): The Arabic name to translate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of name variations in French.
-    """
-    # Prepare input text for translation
-    input_text = f"translate Arabic to French: {name}"
-    inputs = tokenizer(input_text, return_tensors="pt")
-    
-    # Generate translations with greedy decoding (faster) or beam search
-    outputs = model.generate(
-        **inputs,
-        num_beams=1,             # Greedy decoding (faster)
-        num_return_sequences=num_variations, # Number of variations
-        max_length=10,           # Limit output length
-        early_stopping=True      # Stop early for efficiency
-    )
-    
-    # Decode translations
-    translations = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return translations
-
-# Example usage
-name = "محمد"
-variations = translate_name_mt5_small(name, num_variations=3)
-print("Name Variations:", variations)
-
-
-
-
-
-
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-
-# Load mT5-large model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = MT5Tokenizer.from_pretrained(model_name)
-model = MT5ForConditionalGeneration.from_pretrained(model_name)
-
-def translate_name_mt5_large(name, num_variations=5):
-    """
-    Translate an Arabic name into French with multiple variations using mT5-large.
-    
-    Args:
-        name (str): The Arabic name to translate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of name variations in French.
-    """
-    # Prepare input text for translation
-    input_text = f"translate Arabic to French: {name}"
-    inputs = tokenizer(input_text, return_tensors="pt")
-    
-    # Generate translations with beam search for multiple variations
-    outputs = model.generate(
-        **inputs,
-        num_beams=num_variations,            # Number of beams for diversity
-        num_return_sequences=num_variations, # Number of returned sequences
-        max_length=10,                       # Limit to short outputs
-        early_stopping=True                  # Stop early for efficiency
-    )
-    
-    # Decode translations
-    translations = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return translations
-
-# Example usage
-name = "محمد"
-variations = translate_name_mt5_large(name, num_variations=5)
-print("Name Variations:", variations)
-
-
-
-
-
-
-
-from transformers import T5Tokenizer, T5ForConditionalGeneration
-
-# Load mT5-large model and tokenizer
-model_name = "google/mt5-large"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
-
-def translate_name_mt5_large(name, num_variations=5):
-    """
-    Translate an Arabic name into French with multiple variations using mT5-large.
-    
-    Args:
-        name (str): The Arabic name to translate.
-        num_variations (int): Number of variations to generate.
-    
-    Returns:
-        List[str]: A list of name variations in French.
-    """
-    # Prepare input text for translation
-    input_text = f"translate Arabic to French: {name}"
-    inputs = tokenizer(input_text, return_tensors="pt")
-    
-    # Generate translations with beam search for multiple variations
-    outputs = model.generate(
-        **inputs,
-        num_beams=num_variations,            # Number of beams for diversity
-        num_return_sequences=num_variations, # Number of returned sequences
-        max_length=10,                       # Limit to short outputs
-        early_stopping=True                  # Stop early for efficiency
-    )
-    
-    # Decode translations
-    translations = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return translations
-
-# Example usage
-name = "محمد"
-variations = translate_name_mt5_large(name, num_variations=5)
-print("Name Variations:", variations)
-
-
-
-
-from transformers import MarianMTModel, MarianTokenizer
-
-# Load MarianMT model and tokenizer for Arabic to French
-model_name = "Helsinki-NLP/opus-mt-ar-fr"
-tokenizer = MarianTokenizer.from_pretrained(model_name)
-model = MarianMTModel.from_pretrained(model_name)
-
-def translate_name_variations(name, num_variations=3):
-    # Tokenize the input name
-    tokenized_text = tokenizer.prepare_seq2seq_batch([name], return_tensors="pt")
-    
-    # Generate translations using beam search to get multiple variations
-    translated = model.generate(
-        **tokenized_text,
-        num_beams=num_variations,
-        num_return_sequences=num_variations,
-        max_length=10,  # Limit to short translations
-    )
-    
-    # Decode translations
-    translations = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
-    return translations
-
-# Example usage
-name = "محمد"
-variations = translate_name_variations(name, num_variations=5)
-print("Name Variations:", variations)
-
-
-
-
-Objet : Demande de fichier Excel pour projet d'IA
-
-Cher/Chère [Nom du destinataire],
-
-Dans le cadre de notre projet d’intelligence artificielle, je vous prie de bien vouloir me transmettre un fichier Excel contenant les informations suivantes :
-
-1. Noms et prénoms (en arabe et en français)
-
-
-2. Dates de naissance
-
-
-3. Lieux de naissance
-
-
-
-Le fichier doit inclure les noms et prénoms des personnes que vous avez identifiées comme ayant été nos clients, ainsi que ceux des personnes qui ne le sont pas. Ces données sont essentielles pour l’analyse et le traitement dans le cadre de ce projet.
-
-Je reste à votre disposition pour toute précision. Merci d’avance pour votre collaboration.
-
-Cordialement,
-Nihad Senhadji
-
-
-
-
-IF Length([CM]) = 7 AND Right([CM], 3) = "ALG" THEN 
-    "Valide" 
-ELSE 
-    "Anomalie" 
-ENDIF
-
-
-IF REGEX_Match(ToString([Amount]), "^-?\d+\.\d{2,}$") THEN 
-    REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
-ELSE 
-    "Anomalie"
-ENDIF
-
-
-IF Contains(ToString([Amount]), ".") THEN 
-    REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
-ELSE 
-    "0"
-ENDIF
-IF Contains(ToString([Amount]), ".") THEN 
-    REGEX_Replace(ToString([Amount]), "^-?\d+\.(\d+)$", "\1")
-ELSE 
-    "0"
-ENDIF
-
-
-IF Contains(ToString([Amount]), ".") THEN 
-    REGEX_Replace(ToString([Amount]), "^\d+\.(\d+)$", "\1")
-ELSE 
-    "0"
-ENDIF
-
-
-IF Contains(ToString([Amount]), ".") THEN 
-    REGEX_CountMatches(ToString([Amount]), "(?<=\.)\d") 
-ELSE 
-    0 
-ENDIF
-
-
-
-IF REGEX_Match([VotreChamp], "^\d+\.\d{2,}$") THEN "Valide" ELSE "Invalide" ENDIF
-
-
-Après vérification des contrôles, ceux-ci sont corrects, mais la base de données n’a pas été mise à jour lors de l’extraction des données.
-
-
-
-Après vérification des contrôles, ceux-ci sont corrects, mais la base de données n’a pas été mise à jour.
-
-
-
-Après vérification des contrôles, un problème a été détecté dans la base de données mise à jour.
-
-
-Subject: Documents de Notification d'Interdiction
-
-Bonjour [Nom de la destinataire],
-
-Veuillez trouver en pièce jointe le fichier Word ainsi que le fichier PDF contenant les lettres de notification d'interdiction générées. Ces fichiers ne contiennent que les enregistrements de la feuille Excel ayant un score de similarité supérieur à 95 %. Vous trouverez également en pièce jointe le fichier des résultats pour ce mois d'octobre.
-
-Je vous informe par ailleurs que la base de données avec laquelle nous travaillons est mise à jour chaque 7 du mois.
-
-N'hésitez pas à revenir vers moi pour toute question ou demande d'information supplémentaire.
-
-Cordialement,
-Nihad Senhadji
-
-
-
-
-IF LEFT([numéro], 2) = "00" THEN "0" + RIGHT([numéro], LEN([numéro]) - 2) ELSE [numéro] ENDIF
-
-
-Bonjour [Nom de la personne],
-
-J'aimerais savoir comment vous envoyez les résultats ou les outputs des cas d'usage que vous avez développés dans Domino Data Lab. Pourriez-vous m'en dire plus sur votre processus de transmission de ces informations ?
-
-Merci d'avance pour votre retour !
-
-Cordialement,
-Nihad
-
-
-
-WriteBot réécrit 270 procédures en raison de l'implémentation du nouveau système CBS, ce qui permet de rationaliser les opérations, d'améliorer l'efficacité et d'automatiser les tâches manuelles
-
-
-
-
-WriteBot réécrit 270 procédures en raison de l'implémentation du nouveau système CBS, ce qui permet de rationaliser les opérations, d'améliorer l'efficacité et d'automatiser les tâches manuelles
-
-
-Pour votre information, cette extraction date du mois dernier, et nous la recevons au début de chaque mois.
-
-Cordialement,
-Nihad
-
-
-
-Here's an updated version:
-
-
----
-
-Hi [Name],
-
-I came across your message in the Gen AI chats regarding your request for the embeddings model. Could you let me know how you requested it? I'm interested in the process.
-
-Thanks!
-
-
-
-
-
-pip install langchain pymupdf unstructured
-import os
-from langchain.document_loaders import PyMuPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
-
-def load_pdfs_with_langchain(folder_path):
-    documents = []
-
-    # Loop through each file in the folder
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".pdf"):
-            file_path = os.path.join(folder_path, filename)
-            loader = PyMuPDFLoader(file_path)
-            docs = loader.load()
-            documents.extend(docs)
-
-    return documents
-
-# Example usage
-folder_path = "path/to/your/pdfs"
-documents = load_pdfs_with_langchain(folder_path)
-
-# Split text into manageable chunks (for embedding)
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-split_docs = text_splitter.split_documents(documents)
-
-# Embed using OpenAI embeddings and store in Chroma for querying
-embeddings = OpenAIEmbeddings()  # Substitute with your embedding model
-vector_store = Chroma.from_documents(split_docs, embedding=embeddings)
-
-# Now you can query `vector_store` for retrieval-augmented generation (RAG)pip install langchain pymupdf unstructured
-
-
-
-
-
-
-https://github.com/langchain-ai/rag-from-scratch/blob/main/rag_from_scratch_5_to_9.ipynb
+    name_pairs.append({
+        "prompt": prompt,
+        "completion": completion
+    })
+
+# Save the prepared data into a JSONL file (JSON Lines format)
+with open('name_transliterations.jsonl', 'w', encoding='utf-8') as f:
+    for pair in name_pairs:
+        json.dump(pair, f, ensure_ascii=False)
+        f.write('\n')
+
+# Step 3: Fine-tune the GPT-2 model on the dataset
+# Load the dataset from the JSONL file
+dataset = load_dataset('json', data_files={'train': 'name_transliterations.jsonl'})
+
+# Load the pre-trained GPT-2 model and tokenizer
+model = GPT2LMHeadModel.from_pretrained("gpt2")
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+
+# Tokenize the dataset
+def tokenize_function(examples):
+    return tokenizer(examples['prompt'], padding="max_length", truncation=True)
+
+tokenized_dataset = dataset.map(tokenize_function, batched=True)
+
+# Define the training arguments for fine-tuning
+training_args = TrainingArguments(
+    output_dir="./results",  # Directory where the fine-tuned model will be saved
+    per_device_train_batch_size=4,
+    num_train_epochs=3,
+    save_steps=10_000,
+    save_total_limit=2,
+)
+
+# Initialize the Trainer
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_dataset["train"],
+)
+
+# Fine-tune the model
+trainer.train()
+
+# Save the fine-tuned model
+trainer.save_model("fine_tuned_model")
+
+# Step 4: Generate French transliterations for Arabic names using the fine-tuned model
+
+def generate_french_variations(arabic_name):
+    # Prepare the prompt for generation
+    prompt = f"Arabic: {arabic_name}\nFrench transliterations:"
+    inputs = tokenizer(prompt, return_tensors="pt")
+
+    # Generate French transliterations
+    outputs = model.generate(inputs['input_ids'], max_length=100, num_return_sequences=5, temperature=0.7)
+
+    # Decode and display the generated variations
+    for i, output in enumerate(outputs):
+        generated_text = tokenizer.decode(output, skip_special_tokens=True)
+        print(f"Variation {i + 1}: {generated_text}")
+
+# Example: Generate French variations for an Arabic name
+generate_french_variations("محمد")
