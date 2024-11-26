@@ -1,3 +1,37 @@
+import openai
+
+# Set your Azure OpenAI endpoint and API key
+openai.api_type = "azure"
+openai.api_base = "https://your-azure-openai-endpoint"  # Replace with your endpoint
+openai.api_version = "2023-03-15-preview"
+openai.api_key = "your_azure_api_key"  # Replace with your API key
+
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = (f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
+              "Make sure the variations are realistic.")
+    
+    response = openai.ChatCompletion.create(
+        engine="gpt-4",  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    return response['choices'][0]['message']['content']
+
+# Example names
+arabic_names = ["محمد", "أحمد", "فاطمة"]
+
+# Generate and display transliterations
+for name in arabic_names:
+    variations = get_name_transliterations(name)
+    print(f"Arabic Name: {name} -> French Variations:\n{variations}\n")
+
+
+
+
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 
 # Load the model and tokenizer
