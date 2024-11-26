@@ -1,3 +1,32 @@
+from transformers import MT5ForConditionalGeneration, MT5Tokenizer
+
+# Load the model and tokenizer
+model_name = "google/mt5-large"
+tokenizer = MT5Tokenizer.from_pretrained(model_name)
+model = MT5ForConditionalGeneration.from_pretrained(model_name)
+
+# Translation function
+def translate_ar_to_fr(name_ar):
+    # Prepare the input in the format mT5 expects
+    input_text = f"translate Arabic to French: {name_ar}"
+    inputs = tokenizer(input_text, return_tensors="pt", padding=True)
+    # Generate the output
+    outputs = model.generate(**inputs)
+    # Decode the output into readable text
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+# Example Arabic names
+arabic_names = ["أحمد", "محمد", "علي", "فاطمة"]
+
+# Translate and print results
+for name in arabic_names:
+    french_name = translate_ar_to_fr(name)
+    print(f"Arabic Name: {name} -> French Name: {french_name}")
+
+
+
+
+
 https://huggingface.co/Helsinki-NLP/opus-mt-ar-fr/tree/main
 
 
