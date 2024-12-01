@@ -4,7 +4,57 @@ import json
 import requests
 
 # Load the dataset
+import pandas as pd
+from azure.ai.openai import OpenAIClient
+from azure.core.credentials import AzureKeyCredential
+
+# Load dataset
 file_path = '/mnt/data/file-41nBb3fcbUh6iC4V7is4JP'
+data = pd.read_excel(file_path)
+
+# Azure OpenAI credentials
+AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "Your_Deployment_Name"
+AZURE_AOAI_API_VERSION = "2024-02-15-preview"
+AZURE_ENDPOINT = "https://<your-resource-name>.openai.azure.com/"
+AZURE_API_KEY = "Your_API_Key"
+
+# Initialize the OpenAI client
+client = OpenAIClient(endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(AZURE_API_KEY))
+
+# Function for name transliterations
+def get_name_transliterations(name_ar, num_variations=8):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
+        "Make sure the variations are realistic."
+    )
+
+    try:
+        # Make the API call
+        response = client.chat_completions.create(
+            model=AZURE_AOAI_MODEL_DEPLOYMENT_NAME,  # Replace with your deployment name
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=100,
+            temperature=0.7
+        )
+
+        # Return the generated transliterations
+        return response.choices[0].message.content
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+# Example usage
+name_arabic = "أحمد"
+transliterations = get_name_transliterations(name_arabic)
+print(f"French transliterations for '{name_arabic}': {transliterations}")
+
+
+
+.file_path = '/mnt/data/file-41nBb3fcbUh6iC4V7is4JP'
 data = pd.read_excel(file_path)
 
 # Create a dictionary for quick lookups
