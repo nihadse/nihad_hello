@@ -1,3 +1,74 @@
+import pandas as pd
+import openai
+import json
+import requests
+
+# Load the dataset
+file_path = '/mnt/data/file-41nBb3fcbUh6iC4V7is4JP'
+data = pd.read_excel(file_path)
+
+# Create a dictionary for quick lookups
+name_mappings = {
+    (row['Arabic Name'], row['Arabic Family Name']): (row['French Name'], row['French Family Name'])
+    for _, row in data.iterrows()
+}
+
+# Azure OpenAI credentials
+AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "Your_Deployment_Name"
+AZURE_AOAI_API_VERSION = "2024-02-15-preview"
+AZURE_API_KEY = "Your_API_Key"
+AZURE_ENDPOINT = "Your_Azure_Endpoint"
+
+# Function to get translations
+def get_name_and_family_translation(name_ar, family_name_ar):
+    # Check if the name and family name exist in the dataset
+    key = (name_ar, family_name_ar)
+    if key in name_mappings:
+        french_name, french_family_name = name_mappings[key]
+        return french_name, french_family_name
+    
+    # If not in dataset, use Azure OpenAI
+    prompt = f"""
+    Translate the Arabic name "{name_ar}" and family name "{family_name_ar}" into French.
+    Ensure the translation is accurate and appropriate.
+    """
+    
+    # Call the GPT model
+    headers = {
+        "Content-Type": "application/json",
+        "api-key": AZURE_API_KEY,
+    }
+    data = {
+        "messages": [
+            {"role": "system", "content": "You are a helpful assistant for name translations."},
+            {"role": "user", "content": prompt},
+        ],
+        "max_tokens": 100,
+        "temperature": 0.7,
+    }
+    response = requests.post(
+        f"{AZURE_ENDPOINT}/openai/deployments/{AZURE_AOAI_MODEL_DEPLOYMENT_NAME}/chat/completions?api-version={AZURE_AOAI_API_VERSION}",
+        headers=headers,
+        data=json.dumps(data),
+    )
+    
+    if response.status_code == 200:
+        result = response.json()
+        return result['choices'][0]['message']['content']
+    else:
+        return f"Error: {response.status_code}, {response.text}"
+
+# Example usage
+name_arabic = "أحمد"
+family_name_arabic = "بن صالح"
+translation = get_name_and_family_translation(name_arabic, family_name_arabic)
+print(f"The French translation is: {translation}")
+
+
+
+
+
+
 import openai
 import pandas as pd
 import json
