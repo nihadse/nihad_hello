@@ -1,4 +1,62 @@
 import pandas as pd
+import httpx
+
+# Define your function for getting name transliterations
+def get_name_transliterations(name_ar, num_variations=8):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    
+    # Azure OpenAI Client setup
+    api_version = "2023-05-15"  # Replace with your Azure OpenAI API version
+    azure_endpoint = "https://your-endpoint.openai.azure.com/"  # Replace with your endpoint
+    api_key = "YOUR_API_KEY"  # Replace with your Azure OpenAI API key
+    
+    # HTTP client
+    client = httpx.Client(
+        headers={"Authorization": f"Bearer {api_key}"},
+        verify=False
+    )
+    
+    try:
+        response = client.post(
+            f"{azure_endpoint}openai/deployments/your-deployment-name/chat/completions?api-version={api_version}",
+            json={
+                "model": "gpt-4",  # Replace with your deployment model name
+                "messages": [
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt}
+                ],
+                "max_tokens": 100,
+                "temperature": 0.7
+            }
+        )
+        
+        response_json = response.json()
+        return response_json["choices"][0]["message"]["content"].strip()
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return ""
+
+# Example DataFrame with Arabic names
+data = {
+    "First Name": ["خروبي", "ياسمينة", "محمد", "عثمان"],
+    "Last Name": ["كنزة", "ياسيف", "صنهاجي", "عمر"]
+}
+df = pd.DataFrame(data)
+
+# Add a column for transliterations
+df["French Variations"] = df.apply(
+    lambda row: get_name_transliterations(f"{row['First Name']} {row['Last Name']}", num_variations=8),
+    axis=1
+)
+
+# Display the updated DataFrame
+print(df)
+
+
+
+
+import pandas as pd
 import openai
 import json
 import requests
