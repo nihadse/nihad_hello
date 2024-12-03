@@ -1,3 +1,15 @@
+Bonjour [Nom du destinataire],
+
+J'espère que vous allez bien.
+
+Je vous informe qu'il y a deux fichiers envoyés. Le premier fichier contient les garanties comptabilisées, c'est-à-dire celles qui ont un compte 717. Ce fichier inclut à la fois les garanties avec un rang garant disponible et celles sans rang garant.
+
+Le deuxième fichier contient les garantir non compatibles, c'est-à-dire celles qui n'ont pas de compte 717. Pour ces garanties, nous n'avons pas encore obtenu les informations nécessaires concernant leur rang garant.
+
+
+
+
+
 import pandas as pd
 import httpx
 
