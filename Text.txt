@@ -1,3 +1,66 @@
+import pandas as pd
+import openai
+import json
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Create a DataFrame with Arabic names and their French translations
+data = {
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
+}
+df = pd.DataFrame(data)
+
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
+    })
+
+# Save the training data to a JSONL file
+training_file_name = 'training_data.jsonl'
+with open(training_file_name, 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
+
+# Upload the training dataset file to Azure OpenAI
+training_response = client.files.create(
+    file=open(training_file_name, "rb"), purpose="fine-tune"
+)
+training_file_id = training_response.id
+
+# Print the training file ID
+print("Training file ID:", training_file_id)
+
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
+
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
+
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
+
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")
+
+
+
+
 Fine-tuning a model involves taking a pre-trained model and training it further on a specific dataset to adapt it to a particular task or domain. This process helps the model learn the nuances and specifics of the new data, improving its performance on the desired task. Fine-tuning is often used to customize models for specialized applications without needing to train a model from scratch.
 
 
