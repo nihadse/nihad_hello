@@ -1,3 +1,60 @@
+import pandas as pd
+import openai
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Function to get French transliterations of Arabic names
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    response = client.chat.completions.create(
+        model='your-model-deployment-name',  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+# Load the CSV file
+csv_file_name = 'arabic_names.csv'
+df = pd.read_csv(csv_file_name)
+
+# Generate and display transliterations
+transliterations = []
+for index, row in df.iterrows():
+    name = row['Arabic Name']
+    variations = get_name_transliterations(name)
+    transliterations.append({"Arabic Name": name, "French Transliterations": variations})
+    print(f"Arabic Name: {name} -> French Transliterations: \n{variations}\n")
+
+# Save the transliterations to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterations.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+# Upload the Excel file to Azure OpenAI
+try:
+    with open(excel_file_name, "rb") as file:
+        training_response = client.files.create(file=file, purpose="fine-tune")
+    training_file_id = training_response.id
+    print("Training file ID:", training_file_id)
+except Exception as e:
+    print(f"Error uploading training file: {e}")
+
+
+
+
+
+
 # Upload the training dataset file to Azure OpenAI try: with open(training_file_name, "rb") as file: training_response = client.files.create(file=file, purpose="fine-tune") training_file_id = training_response.id print("Training file ID:", training_file_id) except Exception as e: print(f"Error uploading training file: {e}")
 
 
