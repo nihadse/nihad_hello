@@ -1,3 +1,8 @@
+variations = response.choices[0].message.content.split('\n') formatted_variations = ' '.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations) if variation.strip()]) return formatted_variations
+
+
+
+
 import pandas as pd
 import openai
 import os
