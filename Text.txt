@@ -1,3 +1,8 @@
+Fine-tuning a model involves taking a pre-trained model and training it further on a specific dataset to adapt it to a particular task or domain. This process helps the model learn the nuances and specifics of the new data, improving its performance on the desired task. Fine-tuning is often used to customize models for specialized applications without needing to train a model from scratch.
+
+
+
+
 import pandas as pd
 import openai
 import json
