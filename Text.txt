@@ -1,442 +1,52 @@
-Oui, effectivement. Je vous transmets ci-joint la version finale et corrigée des deux fichiers.
-
-
-comptabilisées
-
-Bonjour [Nom du destinataire],
-
-J'espère que vous allez bien.
-
-Je vous informe qu'il y a deux fichiers envoyés. Le premier fichier contient les garanties comptabilisées, c'est-à-dire celles qui ont un compte 717. Ce fichier inclut à la fois les garanties avec un rang garant disponible et celles sans rang garant.
-
-Le deuxième fichier contient les garantir non compatibles, c'est-à-dire celles qui n'ont pas de compte 717. Pour ces garanties, nous n'avons pas encore obtenu les informations nécessaires concernant leur rang garant.
-
-
-
-
-
 import pandas as pd
-import httpx
+import openai
+import json
 
-# Define your function for getting name transliterations
-def get_name_transliterations(name_ar, num_variations=8):
-    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
-    
-    # Azure OpenAI Client setup
-    api_version = "2023-05-15"  # Replace with your Azure OpenAI API version
-    azure_endpoint = "https://your-endpoint.openai.azure.com/"  # Replace with your endpoint
-    api_key = "YOUR_API_KEY"  # Replace with your Azure OpenAI API key
-    
-    # HTTP client
-    client = httpx.Client(
-        headers={"Authorization": f"Bearer {api_key}"},
-        verify=False
-    )
-    
-    try:
-        response = client.post(
-            f"{azure_endpoint}openai/deployments/your-deployment-name/chat/completions?api-version={api_version}",
-            json={
-                "model": "gpt-4",  # Replace with your deployment model name
-                "messages": [
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": prompt}
-                ],
-                "max_tokens": 100,
-                "temperature": 0.7
-            }
-        )
-        
-        response_json = response.json()
-        return response_json["choices"][0]["message"]["content"].strip()
-    
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return ""
+# Set your OpenAI API key
+openai.api_key = 'your-api-key'
 
-# Example DataFrame with Arabic names
+# Create a DataFrame with Arabic names and their French translations
 data = {
-    "First Name": ["خروبي", "ياسمينة", "محمد", "عثمان"],
-    "Last Name": ["كنزة", "ياسيف", "صنهاجي", "عمر"]
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
 }
 df = pd.DataFrame(data)
 
-# Add a column for transliterations
-df["French Variations"] = df.apply(
-    lambda row: get_name_transliterations(f"{row['First Name']} {row['Last Name']}", num_variations=8),
-    axis=1
-)
-
-# Display the updated DataFrame
-print(df)
-
-
-
-
-import pandas as pd
-import openai
-import json
-import requests
-
-# Load the dataset
-import pandas as pd
-from azure.ai.openai import OpenAIClient
-from azure.core.credentials import AzureKeyCredential
-
-# Load dataset
-file_path = '/mnt/data/file-41nBb3fcbUh6iC4V7is4JP'
-data = pd.read_excel(file_path)
-
-# Azure OpenAI credentials
-AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "Your_Deployment_Name"
-AZURE_AOAI_API_VERSION = "2024-02-15-preview"
-AZURE_ENDPOINT = "https://<your-resource-name>.openai.azure.com/"
-AZURE_API_KEY = "Your_API_Key"
-
-# Initialize the OpenAI client
-client = OpenAIClient(endpoint=AZURE_ENDPOINT, credential=AzureKeyCredential(AZURE_API_KEY))
-
-# Function for name transliterations
-def get_name_transliterations(name_ar, num_variations=8):
-    prompt = (
-        f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
-        "Make sure the variations are realistic."
-    )
-
-    try:
-        # Make the API call
-        response = client.chat_completions.create(
-            model=AZURE_AOAI_MODEL_DEPLOYMENT_NAME,  # Replace with your deployment name
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt},
-            ],
-            max_tokens=100,
-            temperature=0.7
-        )
-
-        # Return the generated transliterations
-        return response.choices[0].message.content
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-
-# Example usage
-name_arabic = "أحمد"
-transliterations = get_name_transliterations(name_arabic)
-print(f"French transliterations for '{name_arabic}': {transliterations}")
-
-
-
-.file_path = '/mnt/data/file-41nBb3fcbUh6iC4V7is4JP'
-data = pd.read_excel(file_path)
-
-# Create a dictionary for quick lookups
-name_mappings = {
-    (row['Arabic Name'], row['Arabic Family Name']): (row['French Name'], row['French Family Name'])
-    for _, row in data.iterrows()
-}
-
-# Azure OpenAI credentials
-AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "Your_Deployment_Name"
-AZURE_AOAI_API_VERSION = "2024-02-15-preview"
-AZURE_API_KEY = "Your_API_Key"
-AZURE_ENDPOINT = "Your_Azure_Endpoint"
-
-# Function to get translations
-def get_name_and_family_translation(name_ar, family_name_ar):
-    # Check if the name and family name exist in the dataset
-    key = (name_ar, family_name_ar)
-    if key in name_mappings:
-        french_name, french_family_name = name_mappings[key]
-        return french_name, french_family_name
-    
-    # If not in dataset, use Azure OpenAI
-    prompt = f"""
-    Translate the Arabic name "{name_ar}" and family name "{family_name_ar}" into French.
-    Ensure the translation is accurate and appropriate.
-    """
-    
-    # Call the GPT model
-    headers = {
-        "Content-Type": "application/json",
-        "api-key": AZURE_API_KEY,
-    }
-    data = {
-        "messages": [
-            {"role": "system", "content": "You are a helpful assistant for name translations."},
-            {"role": "user", "content": prompt},
-        ],
-        "max_tokens": 100,
-        "temperature": 0.7,
-    }
-    response = requests.post(
-        f"{AZURE_ENDPOINT}/openai/deployments/{AZURE_AOAI_MODEL_DEPLOYMENT_NAME}/chat/completions?api-version={AZURE_AOAI_API_VERSION}",
-        headers=headers,
-        data=json.dumps(data),
-    )
-    
-    if response.status_code == 200:
-        result = response.json()
-        return result['choices'][0]['message']['content']
-    else:
-        return f"Error: {response.status_code}, {response.text}"
-
-# Example usage
-name_arabic = "أحمد"
-family_name_arabic = "بن صالح"
-translation = get_name_and_family_translation(name_arabic, family_name_arabic)
-print(f"The French translation is: {translation}")
-
-
-
-
-
-
-import openai
-import pandas as pd
-import json
-import httpx
-from openai import oauth2
-from transformers import GPT2Tokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
-
-# Azure setup variables
-OIDC_CLIENT_ID = "HP102kBeK3e3bicundGc32кмухокна"
-OIDC_CLIENT_SECRET = "HEEU1PPiaZoi6ys"
-OIDC_ENDPOINT = "https://aifactory.api.staging.echonet/auth/oauth2/v2/token"
-APIGEE_ENDPOINT = "https://alfactory.api.staging.echonet/genal-model/v1"
-AZURE_AGAI_MODEL_DEPLOYMENT_NAME = "gpt-3.5-turbo"  # GPT-3 model name for Azure
-AZURE_ADAI_API_VERSION = "2024-02-15-preview"
-AZURE_ADAI_API_KEY = "FAKE_KEY"
-AZURE_ADAI_EMBEDDING_DEPLOYMENT_NAME = "text-embedding-ada"
-
-# OAuth2 client setup for Azure OpenAI API authentication
-auth = oauth2.OAuth2ClientCredentials(
-    OIDC_ENDPOINT, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET, scope="genai model", client=httpx.Client(verify=False)
-)
-
-# Initialize the API client
-client = openai.ChatCompletion.create(
-    api_key=AZURE_ADAI_API_KEY,
-    api_base=APIGEE_ENDPOINT,
-    api_version=AZURE_ADAI_API_VERSION,
-    model=AZURE_AGAI_MODEL_DEPLOYMENT_NAME,
-    http_client=httpx.Client(auth=auth, verify=False)
-)
-
-# Load the dataset from the Excel file
-df = pd.read_excel("path_to_your_file.xlsx")
-
-# Prepare the dataset for fine-tuning
-name_pairs = []
-for _, row in df.iterrows():
-    # Create prompt-completion pairs from Arabic and French names
-    prompt = f"Arabic: {row['name_ar']} {row['family_name_ar']}\nFrench transliterations:"
-    completion = f" {row['name_fr']} {row['family_name_fr']}"
-    
-    name_pairs.append({
-        "prompt": prompt,
-        "completion": completion
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
     })
 
-# Save the dataset as a JSONL file for fine-tuning
-with open('name_transliterations.jsonl', 'w', encoding='utf-8') as f:
-    for pair in name_pairs:
-        json.dump(pair, f, ensure_ascii=False)
-        f.write('\n')
-
-# Fine-tuning the GPT-3 model using Azure OpenAI
-def fine_tune_model():
-    response = openai.FineTune.create(
-        training_file='name_transliterations.jsonl',
-        model="gpt-3.5-turbo",  # Fine-tune GPT-3.5 Turbo model
-    )
-    print(f"Fine-tuning started: {response}")
-
-fine_tune_model()
-
-# Monitor fine-tuning status
-def check_fine_tune_status():
-    status = openai.FineTune.retrieve(id="fine-tune-id")  # Use actual fine-tune ID
-    print(f"Fine-tuning status: {status}")
-
-check_fine_tune_status()
-
-# Function to generate French transliterations for Arabic names
-def generate_french_variations(name_arabic):
-    prompt = f"Arabic: {name_arabic}\nFrench transliterations:"
-    response = client.chat.completions.create(
-        model=AZURE_AGAI_MODEL_DEPLOYMENT_NAME,  # Fine-tuned model
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=100,
-        temperature=0.7,
-        n=5  # Generate 5 variations
-    )
-
-    for i, choice in enumerate(response.choices):
-        print(f"Variation {i + 1}: {choice['text'].strip()}")
-
-# Example: Generate variations for an Arabic name
-generate_french_variations("محمد")
-
-
-
-
-
-
-import pandas as pd
-import json
-import openai
-
-# Step 1: Read the dataset from the Excel file
-# Make sure to provide the correct path to your Excel file
-df = pd.read_excel('path_to_your_file.xlsx')  # Replace with the actual path to your Excel file
-
-# Step 2: Prepare the dataset for fine-tuning
-name_pairs = []
-for _, row in df.iterrows():
-    # Create prompt and completion pairs from Arabic and French names
-    prompt = f"Arabic Name: {row['name_ar']} {row['family_name_ar']}\nFrench transliterations:"
-    completion = f" {row['name_fr']} {row['family_name_fr']}"
-    
-    name_pairs.append({
-        "prompt": prompt,
-        "completion": completion
-    })
-
-# Save the prepared data into a JSONL file (JSON Lines format)
-with open('name_transliterations.jsonl', 'w', encoding='utf-8') as f:
-    for pair in name_pairs:
-        json.dump(pair, f, ensure_ascii=False)
-        f.write('\n')
-
-# Step 3: Upload your dataset to OpenAI for fine-tuning
-openai.api_key = "your-api-key"  # Replace with your OpenAI API key
-
-# Upload the dataset file to OpenAI
-response = openai.File.create(
-    file=open("name_transliterations.jsonl"),
-    purpose='fine-tune'
-)
-
-# Print the file upload response
-print("File uploaded successfully:", response)
-
-# Step 4: Fine-tune the GPT-3 model using the uploaded dataset
-fine_tune_response = openai.FineTune.create(
-    training_file=response['id'],
-    model="davinci"  # You can use other models like "curie" or "babbage" depending on your needs
-)
-
-# Print fine-tune response
-print("Fine-tuning started:", fine_tune_response)
-
-# Step 5: Monitor the fine-tuning process (check the fine-tuning status)
-status = openai.FineTune.retrieve(id=fine_tune_response['id'])
-print("Fine-tuning status:", status)
-
-# Step 6: Use the fine-tuned model to generate French variations for Arabic names
-def generate_french_variations(name_arabic):
-    response = openai.Completion.create(
-        model=fine_tune_response['fine_tuned_model'],  # Use the fine-tuned model ID
-        prompt=f"Arabic Name: {name_arabic}\nFrench transliterations:",
-        max_tokens=100,
-        n=5,  # Generate 5 variations
-        temperature=0.7
-    )
-
-    # Print out the variations generated by the fine-tuned model
-    for i, choice in enumerate(response.choices):
-        print(f"Variation {i + 1}: {choice.text.strip()}")
-
-# Example usage: Generate variations for an Arabic name
-generate_french_variations("محمد بن علي")
-
-
-
-
-
-import pandas as pd
-import json
-from transformers import GPT2Tokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
-from datasets import load_dataset
-
-# Step 1: Read the dataset from the Excel file
-# Make sure to provide the correct path to your Excel file
-df = pd.read_excel('path_to_your_file.xlsx')
-
-# Step 2: Prepare the dataset for fine-tuning
-name_pairs = []
-for _, row in df.iterrows():
-    # Create prompt and completion pairs from Arabic and French names
-    prompt = f"Arabic: {row['name_ar']} {row['family_name_ar']}\nFrench transliterations:"
-    completion = f" {row['name_fr']} {row['family_name_fr']}"
-    
-    name_pairs.append({
-        "prompt": prompt,
-        "completion": completion
-    })
-
-# Save the prepared data into a JSONL file (JSON Lines format)
-with open('name_transliterations.jsonl', 'w', encoding='utf-8') as f:
-    for pair in name_pairs:
-        json.dump(pair, f, ensure_ascii=False)
-        f.write('\n')
-
-# Step 3: Fine-tune the GPT-2 model on the dataset
-# Load the dataset from the JSONL file
-dataset = load_dataset('json', data_files={'train': 'name_transliterations.jsonl'})
-
-# Load the pre-trained GPT-2 model and tokenizer
-model = GPT2LMHeadModel.from_pretrained("gpt2")
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-
-# Tokenize the dataset
-def tokenize_function(examples):
-    return tokenizer(examples['prompt'], padding="max_length", truncation=True)
-
-tokenized_dataset = dataset.map(tokenize_function, batched=True)
-
-# Define the training arguments for fine-tuning
-training_args = TrainingArguments(
-    output_dir="./results",  # Directory where the fine-tuned model will be saved
-    per_device_train_batch_size=4,
-    num_train_epochs=3,
-    save_steps=10_000,
-    save_total_limit=2,
-)
-
-# Initialize the Trainer
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=tokenized_dataset["train"],
-)
+# Save the training data to a JSONL file
+with open('training_data.jsonl', 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
 
 # Fine-tune the model
-trainer.train()
+response = openai.FineTune.create(
+    training_file=openai.File.create(file=open('training_data.jsonl'), purpose='fine-tune').id,
+    model='chatgpt-turbo'
+)
 
-# Save the fine-tuned model
-trainer.save_model("fine_tuned_model")
+# Print the fine-tuning job ID
+print(f"Fine-tuning job ID: {response['id']}")
 
-# Step 4: Generate French transliterations for Arabic names using the fine-tuned model
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
 
-def generate_french_variations(arabic_name):
-    # Prepare the prompt for generation
-    prompt = f"Arabic: {arabic_name}\nFrench transliterations:"
-    inputs = tokenizer(prompt, return_tensors="pt")
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
 
-    # Generate French transliterations
-    outputs = model.generate(inputs['input_ids'], max_length=100, num_return_sequences=5, temperature=0.7)
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
 
-    # Decode and display the generated variations
-    for i, output in enumerate(outputs):
-        generated_text = tokenizer.decode(output, skip_special_tokens=True)
-        print(f"Variation {i + 1}: {generated_text}")
-
-# Example: Generate French variations for an Arabic name
-generate_french_variations("محمد")
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")
