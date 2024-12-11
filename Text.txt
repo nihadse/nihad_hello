@@ -1,3 +1,42 @@
+import pandas as pd
+import datetime
+
+# Function to simulate getting transliterations for a batch of names
+def get_name_transliterations_batch(names):
+    """
+    Generate transliterations for a batch of names.
+    Simulate the process with your actual implementation for Azure OpenAI.
+    """
+    # For simplicity, just append mock transliterations for now
+    return [f"Transliteration {i}" for i in range(1, len(names) + 1)]
+
+# Load and clean data
+print(datetime.datetime.now())
+df = Train_data.dropna(subset=['name_ar'])
+
+# Initialize results list
+transliterations = []
+
+# Process in batches of 5
+batch_size = 5
+for i in range(0, len(df), batch_size):
+    batch = df['name_ar'].iloc[i:i + batch_size].tolist()  # Get a batch of 5 names
+    batch_transliterations = get_name_transliterations_batch(batch)  # Call the API for the batch
+
+    # Append results for the batch
+    for name, variations in zip(batch, batch_transliterations):
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+
+# Save results to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterationsV8_batch5.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+print(datetime.datetime.now())
+
+
+
+
 variations = response.choices[0].message.content.split('\n') formatted_variations = ' '.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations) if variation.strip()]) return formatted_variations
 
 
