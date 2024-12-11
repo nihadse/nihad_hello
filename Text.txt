@@ -1,3 +1,50 @@
+def get_name_transliterations(name_ar, num_variations=10):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
+        "I want only the translations without any additional text, just separated by semicolons. "
+        "Remove any number from the output, even number 1. "
+        "Ensure the variations are realistic."
+    )
+    
+    for i in range(1, 4):  # Retry logic
+        try:
+            # Replace with actual API setup
+            client = AzureOpenAI(
+                api_version="AZURE_AOAI_API_VERSION",
+                azure_endpoint="APIGEE_ENDPOINT",
+                api_key="FAKE_KEY",
+            )
+            response = client.chat.completions.create(
+                model="AZURE_AOAI_MODEL_DEPLOYMENT_NAME",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+            )
+            # Debugging: Print the response to verify
+            print("API Response:", response)
+            
+            # Check if the response has the expected structure
+            content = response.choices[0].message.content if response.choices and response.choices[0].message.content else None
+            
+            if content:
+                variations = content.split(';')
+                return [variation.strip() for variation in variations if variation.strip()]
+            else:
+                print(f"Warning: Empty content in response for name: {name_ar}")
+                return []  # Return an empty list if content is None
+            
+        except Exception as e:
+            print(f"Retry {i}: Error occurred - {e}")
+            continue
+    
+    return []  # Return an empty list if all retries fail
+
+
+
+
 import datetime
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
