@@ -1,3 +1,39 @@
+import datetime
+import pandas as pd
+
+# Log the start time
+print(datetime.datetime.now())
+
+# Assuming Train_data is your DataFrame with 100 Arabic names
+batch_size = 5
+total_names = len(Train_data)
+
+for i in range(0, total_names, batch_size):
+    # Get the current batch
+    df = Train_data[i:i + batch_size]
+    
+    # Drop rows with missing Arabic names
+    df = df.dropna(subset=['name_ar'])
+    
+    # Generate and display transliterations
+    transliterations = []
+    for index, row in df.iterrows():
+        name = row['name_ar']
+        variations = get_name_transliterations(name)  # Assuming this function is defined elsewhere
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+    
+    # Save the transliterations to an Excel file
+    df_transliterations = pd.DataFrame(transliterations)
+    excel_file_name = f'name_transliterations_batch_{i//batch_size + 1}.xlsx'
+    df_transliterations.to_excel(excel_file_name, index=False)
+
+# Log the end time
+print(datetime.datetime.now())
+
+
+
+
+
 import pandas as pd
 import datetime
 
