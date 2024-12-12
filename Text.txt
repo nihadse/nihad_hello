@@ -1,3 +1,7 @@
+Pour finaliser le projet, je propose une réunion la semaine prochaine
+
+
+
 def get_name_transliterations(name_ar, num_variations=10):
     prompt = (
         f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
