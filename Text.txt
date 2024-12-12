@@ -1,3 +1,39 @@
+def get_name_transliterations(name_ar, num_variations=10):
+    try:
+        prompt = (
+            f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
+            "I want only the translations without any additional text, just the translated names. "
+            "Don't list the translated names, just separate them with a semi-colon. "
+            "Remove any number from the output, even the number 1. "
+            "Make sure the variations are realistic."
+        )
+        
+        # OpenAI API call (update with Azure OpenAI setup if needed)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Replace with the correct model or Azure deployment name
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=400,
+            temperature=0,
+        )
+        
+        # Extract content safely
+        content = response.choices[0].message.content if response.choices else None
+        
+        if content and content.strip():  # Check if content is valid
+            return [variation.strip() for variation in content.split(';') if variation.strip()]
+        else:
+            return []  # Return an empty list if no valid content
+    except Exception as e:
+        print(f"Error in API call: {e}")
+        return []
+
+
+
+
+
 Pour finaliser le projet, je propose une réunion la semaine prochaine
 
 
