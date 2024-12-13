@@ -1,5 +1,54 @@
 import pandas as pd
 
+# Sample dataset
+data = {
+    'name1': ['Alice', 'Bob'],
+    'birth1': ['1990-01-01', '1985-05-12'],
+    'name2': ['Charlie', 'Diana'],
+    'birth2': ['1992-07-08', '1987-11-23'],
+    'address_1': ['123 Street', '456 Avenue']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Melt the columns name1, birth1 and name2, birth2
+name_birth_df = pd.melt(df, 
+                        id_vars=['address_1'], 
+                        value_vars=['name1', 'name2'], 
+                        var_name='type', 
+                        value_name='name')
+
+birth_df = pd.melt(df, 
+                   id_vars=['address_1'], 
+                   value_vars=['birth1', 'birth2'], 
+                   var_name='type', 
+                   value_name='birth')
+
+# Combine the melted data
+name_birth_df['birth'] = birth_df['birth']
+
+# Add a "type" column to distinguish between 1 and 2
+name_birth_df['type'] = name_birth_df['type'].str.extract('(\d)')
+
+# Assign NaN to address_1 for rows corresponding to name2 and birth2
+name_birth_df.loc[name_birth_df['type'] == '2', 'address_1'] = None
+
+# Rename columns for clarity
+name_birth_df = name_birth_df.rename(columns={'address_1': 'address'})
+
+# Reset index
+name_birth_df.reset_index(drop=True, inplace=True)
+
+# Display the transformed DataFrame
+print(name_birth_df)
+
+
+
+
+
+import pandas as pd
+
 # Sample data with 'address_1'
 data = {
     'address_1': ['A', 'B'],
