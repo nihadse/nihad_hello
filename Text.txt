@@ -1,5 +1,45 @@
 import pandas as pd
 
+# Sample data with missing 'address_1' for C and D
+data = {
+    'address_1': ['A', 'B', None, None],  # No address for C and D
+    'name_1': ['Alice', 'John', 'Emma', 'Sam'], 
+    'birth_1': [1990, 1980, 1985, 1992], 
+    'name_2': ['Bob', 'Alice', 'James', 'Nina'], 
+    'birth_2': [1985, 1990, 1995, 1993]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Print the original DataFrame
+print("Original DataFrame:")
+print(df)
+
+# Melt the dataframe to long format, keeping 'address_1', 'birth_1', and 'birth_2' as id variables
+df_melted = pd.melt(df, id_vars=['address_1', 'birth_1', 'birth_2'], 
+                    value_vars=['name_1', 'name_2'], 
+                    var_name='type', value_name='name')
+
+# Adjust the birth column based on the 'type' (name_1 or name_2)
+df_melted['birth'] = df_melted.apply(lambda row: row['birth_1'] if row['type'] == 'name_1' else row['birth_2'], axis=1)
+
+# Drop the original birth columns
+df_melted = df_melted.drop(columns=['birth_1', 'birth_2'])
+
+# Map 'type' to 1 for 'name_1' and 2 for 'name_2'
+df_melted['type'] = df_melted['type'].map({'name_1': 1, 'name_2': 2})
+
+# Print the final result
+print("\nTransformed DataFrame:")
+print(df_melted)
+
+
+
+
+
+.import pandas as pd
+
 # Example data
 data = {
     "name_ar": ["دوايب كريمة", "دويب كريمة", None],
