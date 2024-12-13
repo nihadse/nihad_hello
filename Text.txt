@@ -1,3 +1,41 @@
+import pandas as pd
+import io
+import streamlit as st
+
+def save_results_to_files(df_transliterations):
+    # Create a buffer to use for Excel writer
+    buffer = io.BytesIO()
+    
+    # Ensure the DataFrame is valid before processing
+    if df_transliterations is None or df_transliterations.empty:
+        st.warning("The DataFrame is empty. Please provide valid data.")
+        return None
+    
+    # Display the DataFrame on the Streamlit app
+    st.write("Preview of DataFrame:", df_transliterations.head())
+
+    # Write the DataFrame to an Excel worksheet
+    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+        df_transliterations.to_excel(writer, sheet_name='Petit_contentieux', index=False)
+
+    # Rewind the buffer to prepare it for download
+    buffer.seek(0)
+
+    # Add a download button to download the DataFrame as an Excel file
+    st.download_button(
+        label="Download data as Excel",
+        data=buffer,
+        file_name='Petit_contentieux.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    return 'Petit_contentieux.xlsx'
+
+
+
+
+
+
 def get_name_transliterations(name_ar, num_variations=10):
     try:
         prompt = (
