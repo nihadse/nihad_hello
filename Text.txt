@@ -3,6 +3,41 @@ import pandas as pd
 # Example data for the first DataFrame
 df1 = pd.DataFrame({
     'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z'],
+    'other_col_1': [100, 200, 300]
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30],
+    'other_col_2': [500, 600, 700]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Melt both DataFrames, turning info_1 and info_2 into a single 'info' column
+df1_melted = df1.melt(id_vars=['client_1', 'other_col_1'], value_vars=['info_1'], 
+                      var_name='info_type', value_name='info')
+df2_melted = df2.melt(id_vars=['client_1', 'other_col_2', 'value'], value_vars=['info_2'], 
+                      var_name='info_type', value_name='info')
+
+# Concatenate the two melted DataFrames
+result = pd.concat([df1_melted, df2_melted], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
     'info_1': ['info_X', 'info_Y', 'info_Z']
 })
 
