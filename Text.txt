@@ -11,6 +11,40 @@ data = {
 
 df = pd.DataFrame(data)
 
+# Create a new DataFrame for 'name1' and 'birth1'
+df1 = df[['address_1', 'name1', 'birth1']].rename(columns={'name1': 'name', 'birth1': 'birth'})
+df1['type'] = 1  # Type for 'name1' and 'birth1'
+
+# Create a new DataFrame for 'name2' and 'birth2'
+df2 = df[['name2', 'birth2']].rename(columns={'name2': 'name', 'birth2': 'birth'})
+df2['type'] = 2  # Type for 'name2' and 'birth2'
+
+# Add 'address_1' column to df2 with NaN (for rows coming from 'name2' and 'birth2')
+df2['address_1'] = pd.NA
+
+# Concatenate the two DataFrames (df1 and df2)
+final_df = pd.concat([df1, df2], ignore_index=True)
+
+# Display the final result
+print(final_df[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
 # Melt the dataframe to long format, keeping address_1
 df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
                     var_name='variable', value_name='value')
