@@ -1,5 +1,41 @@
 import pandas as pd
 
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'name2', 'birth1', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Add 'type' column based on the variable names
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Split the melted data into separate columns for name and birth
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they are no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for the 'name2' and 'birth2' rows
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if 'name' in row['variable'] else pd.NA, axis=1)
+
+# Display the result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+import pandas as pd
+
 # Sample data with an additional 'group' column
 data = {
     'group': ['A', 'B'],
