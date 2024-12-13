@@ -10,6 +10,56 @@ data = {
 }
 df = pd.DataFrame(data)
 
+# Melt the columns `French Traduction` and `name_fr` into one column
+names_melted = df.melt(
+    id_vars=["name_ar", "Date_Naiss_AR", "Date_Naiss_FR"],
+    value_vars=["French Traduction", "name_fr"],
+    var_name="name_type",
+    value_name="name"
+)
+
+# Melt the columns `Date_Naiss_AR` and `Date_Naiss_FR` into one column
+dates_melted = df.melt(
+    id_vars=["name_ar", "French Traduction", "name_fr"],
+    value_vars=["Date_Naiss_AR", "Date_Naiss_FR"],
+    var_name="date_type",
+    value_name="birthday"
+)
+
+# Merge the melted results to combine `name` and `birthday`
+result = names_melted.merge(
+    dates_melted, 
+    left_index=True, 
+    right_index=True
+)
+
+# Clean up columns
+result = result[["name_ar_x", "name", "birthday"]].rename(columns={"name_ar_x": "name_ar"})
+
+# Adjust `name_ar` to be NaN where the name is from `name_fr`
+result.loc[result['name'].isin(df['name_fr']), 'name_ar'] = None
+
+# Drop duplicates caused by the melt process
+result = result.drop_duplicates()
+
+# Display the resulting DataFrame
+print(result)
+
+
+
+
+import pandas as pd
+
+# Example data
+data = {
+    "name_ar": ["دوايب كريمة", "دويب كريمة", None],
+    "French Traduction": ["DOUAIB KARIMA", "DOUAIB KARIME", None],
+    "Date_Naiss_AR": ["23/05/1976", "23/05/1976", None],
+    "name_fr": ["HADJARI Nadjla", "HADJARI Nadjla", "NEZER Djahida"],
+    "Date_Naiss_FR": ["24/06/1973", "24/06/1973", "06/12/1964"],
+}
+df = pd.DataFrame(data)
+
 # Create `name` by stacking `French Traduction` and `name_fr`
 df['name'] = df['French Traduction'].combine_first(df['name_fr'])
 
