@@ -17,6 +17,41 @@ df['name'] = df['French Traduction'].combine_first(df['name_fr'])
 df['birthday'] = df['Date_Naiss_AR'].combine_first(df['Date_Naiss_FR'])
 
 # Ensure `name_ar` corresponds only to `French Traduction` rows
+df['name_ar'] = df.apply(lambda row: row['name_ar'] if pd.notna(row['French Traduction']) else None, axis=1)
+
+# Drop unnecessary columns
+df = df.drop(columns=['French Traduction', 'name_fr', 'Date_Naiss_AR', 'Date_Naiss_FR'])
+
+# Reorder columns (optional)
+df = df[['name_ar', 'name', 'birthday']]
+
+# Show the transformed DataFrame
+print(df)
+
+
+
+
+
+
+import pandas as pd
+
+# Example data
+data = {
+    "name_ar": ["دوايب كريمة", "دويب كريمة", None],
+    "French Traduction": ["DOUAIB KARIMA", "DOUAIB KARIME", None],
+    "Date_Naiss_AR": ["23/05/1976", "23/05/1976", None],
+    "name_fr": ["HADJARI Nadjla", "HADJARI Nadjla", "NEZER Djahida"],
+    "Date_Naiss_FR": ["24/06/1973", "24/06/1973", "06/12/1964"],
+}
+df = pd.DataFrame(data)
+
+# Create `name` by stacking `French Traduction` and `name_fr`
+df['name'] = df['French Traduction'].combine_first(df['name_fr'])
+
+# Create `birthday` by stacking `Date_Naiss_AR` and `Date_Naiss_FR`
+df['birthday'] = df['Date_Naiss_AR'].combine_first(df['Date_Naiss_FR'])
+
+# Ensure `name_ar` corresponds only to `French Traduction` rows
 df.loc[df['French Traduction'].isna(), 'name_ar'] = None
 
 # Drop unnecessary columns
