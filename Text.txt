@@ -1,5 +1,2028 @@
 import pandas as pd
 
+# Example data
+data = {
+    "name_ar": ["دوايب كريمة", "دويب كريمة", None],
+    "French Traduction": ["DOUAIB KARIMA", "DOUAIB KARIME", None],
+    "Date_Naiss_AR": ["23/05/1976", "23/05/1976", None],
+    "name_fr": ["HADJARI Nadjla", "HADJARI Nadjla", "NEZER Djahida"],
+    "Date_Naiss_FR": ["24/06/1973", "24/06/1973", "06/12/1964"],
+}
+df = pd.DataFrame(data)
+
+# Create `name` by stacking `French Traduction` and `name_fr`
+df['name'] = df['French Traduction'].combine_first(df['name_fr'])
+
+# Create `birthday` by stacking `Date_Naiss_AR` and `Date_Naiss_FR`
+df['birthday'] = df['Date_Naiss_AR'].combine_first(df['Date_Naiss_FR'])
+
+# Ensure `name_ar` corresponds only to `French Traduction` rows
+df.loc[df['French Traduction'].isna(), 'name_ar'] = None
+
+# Drop unnecessary columns
+df = df.drop(columns=['French Traduction', 'name_fr', 'Date_Naiss_AR', 'Date_Naiss_FR'])
+
+# Reorder columns (optional)
+df = df[['name_ar', 'name', 'birthday']]
+
+# Show the transformed DataFrame
+print(df)
+
+
+
+
+import pandas as pd
+
+# Sample dataset
+data = {
+    'name1': ['Alice', 'Bob'],
+    'birth1': ['1990-01-01', '1985-05-12'],
+    'name2': ['Charlie', 'Diana'],
+    'birth2': ['1992-07-08', '1987-11-23'],
+    'address_1': ['123 Street', '456 Avenue']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Melt the columns name1, birth1 and name2, birth2
+name_birth_df = pd.melt(df, 
+                        id_vars=['address_1'], 
+                        value_vars=['name1', 'name2'], 
+                        var_name='type', 
+                        value_name='name')
+
+birth_df = pd.melt(df, 
+                   id_vars=['address_1'], 
+                   value_vars=['birth1', 'birth2'], 
+                   var_name='type', 
+                   value_name='birth')
+
+# Combine the melted data
+name_birth_df['birth'] = birth_df['birth']
+
+# Add a "type" column to distinguish between 1 and 2
+name_birth_df['type'] = name_birth_df['type'].str.extract('(\d)')
+
+# Assign NaN to address_1 for rows corresponding to name2 and birth2
+name_birth_df.loc[name_birth_df['type'] == '2', 'address_1'] = None
+
+# Rename columns for clarity
+name_birth_df = name_birth_df.rename(columns={'address_1': 'address'})
+
+# Reset index
+name_birth_df.reset_index(drop=True, inplace=True)
+
+# Display the transformed DataFrame
+print(name_birth_df)
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Create a new DataFrame for 'name1' and 'birth1'
+df1 = df[['address_1', 'name1', 'birth1']].rename(columns={'name1': 'name', 'birth1': 'birth'})
+df1['type'] = 1  # Type for 'name1' and 'birth1'
+
+# Create a new DataFrame for 'name2' and 'birth2'
+df2 = df[['name2', 'birth2']].rename(columns={'name2': 'name', 'birth2': 'birth'})
+df2['type'] = 2  # Type for 'name2' and 'birth2'
+
+# Add 'address_1' column to df2 with NaN (for rows coming from 'name2' and 'birth2')
+df2['address_1'] = pd.NA
+
+# Concatenate the two DataFrames (df1 and df2)
+final_df = pd.concat([df1, df2], ignore_index=True)
+
+# Display the final result
+print(final_df[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe, keeping 'address_1' as an id variable
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'name2', 'birth1', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a 'type' column based on the variable names
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the intermediate 'variable' and 'value' columns
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows where 'name2' and 'birth2' are found
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if 'name1' in row['variable'] or 'birth1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'name2', 'birth1', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Add 'type' column based on the variable names
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Split the melted data into separate columns for name and birth
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they are no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for the 'name2' and 'birth2' rows
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if 'name' in row['variable'] else pd.NA, axis=1)
+
+# Display the result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+import pandas as pd
+
+# Sample data with an additional 'group' column
+data = {
+    'group': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping 'group' as an id variable
+df_melted = pd.melt(df, id_vars=['group', 'birth1', 'birth2'], value_vars=['name1', 'name2'], 
+                    var_name='type', value_name='name')
+
+# Adjust the birth column based on the type (name1 or name2)
+df_melted['birth'] = df_melted.apply(lambda row: row['birth1'] if row['type'] == 'name1' else row['birth2'], axis=1)
+
+# Drop the original birth columns
+df_melted = df_melted.drop(columns=['birth1', 'birth2'])
+
+# Map type to 1 for 'name1' and 2 for 'name2'
+df_melted['type'] = df_melted['type'].map({'name1': 1, 'name2': 2})
+
+# Display the final result
+print(df_melted)
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z'],
+    'other_col_1': [100, 200, 300]
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30],
+    'other_col_2': [500, 600, 700]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Melt both DataFrames, turning info_1 and info_2 into a single 'info' column
+df1_melted = df1.melt(id_vars=['client_1', 'other_col_1'], value_vars=['info_1'], 
+                      var_name='info_type', value_name='info')
+df2_melted = df2.melt(id_vars=['client_1', 'other_col_2', 'value'], value_vars=['info_2'], 
+                      var_name='info_type', value_name='info')
+
+# Concatenate the two melted DataFrames
+result = pd.concat([df1_melted, df2_melted], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z']
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Melt the two DataFrames so that info_1 and info_2 are in the same column
+df1_melted = df1.melt(id_vars=['client_1'], value_vars=['info_1'], var_name='info_type', value_name='info')
+df2_melted = df2.melt(id_vars=['client_1'], value_vars=['info_2'], var_name='info_type', value_name='info')
+
+# Concatenate the melted DataFrames
+result = pd.concat([df1_melted, df2_melted], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z']
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Concatenate the two DataFrames
+result = pd.concat([df1, df2], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
+import io
+import streamlit as st
+
+def save_results_to_files(df_transliterations):
+    # Create a buffer to use for Excel writer
+    buffer = io.BytesIO()
+    
+    # Ensure the DataFrame is valid before processing
+    if df_transliterations is None or df_transliterations.empty:
+        st.warning("The DataFrame is empty. Please provide valid data.")
+        return None
+    
+    # Display the DataFrame on the Streamlit app
+    st.write("Preview of DataFrame:", df_transliterations.head())
+
+    # Write the DataFrame to an Excel worksheet
+    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+        df_transliterations.to_excel(writer, sheet_name='Petit_contentieux', index=False)
+
+    # Rewind the buffer to prepare it for download
+    buffer.seek(0)
+
+    # Add a download button to download the DataFrame as an Excel file
+    st.download_button(
+        label="Download data as Excel",
+        data=buffer,
+        file_name='Petit_contentieux.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    return 'Petit_contentieux.xlsx'
+
+
+
+
+
+
+def get_name_transliterations(name_ar, num_variations=10):
+    try:
+        prompt = (
+            f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
+            "I want only the translations without any additional text, just the translated names. "
+            "Don't list the translated names, just separate them with a semi-colon. "
+            "Remove any number from the output, even the number 1. "
+            "Make sure the variations are realistic."
+        )
+        
+        # OpenAI API call (update with Azure OpenAI setup if needed)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Replace with the correct model or Azure deployment name
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=400,
+            temperature=0,
+        )
+        
+        # Extract content safely
+        content = response.choices[0].message.content if response.choices else None
+        
+        if content and content.strip():  # Check if content is valid
+            return [variation.strip() for variation in content.split(';') if variation.strip()]
+        else:
+            return []  # Return an empty list if no valid content
+    except Exception as e:
+        print(f"Error in API call: {e}")
+        return []
+
+
+
+
+
+Pour finaliser le projet, je propose une réunion la semaine prochaine
+
+
+
+def get_name_transliterations(name_ar, num_variations=10):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
+        "I want only the translations without any additional text, just separated by semicolons. "
+        "Remove any number from the output, even number 1. "
+        "Ensure the variations are realistic."
+    )
+    
+    for i in range(1, 4):  # Retry logic
+        try:
+            # Replace with actual API setup
+            client = AzureOpenAI(
+                api_version="AZURE_AOAI_API_VERSION",
+                azure_endpoint="APIGEE_ENDPOINT",
+                api_key="FAKE_KEY",
+            )
+            response = client.chat.completions.create(
+                model="AZURE_AOAI_MODEL_DEPLOYMENT_NAME",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+            )
+            # Debugging: Print the response to verify
+            print("API Response:", response)
+            
+            # Check if the response has the expected structure
+            content = response.choices[0].message.content if response.choices and response.choices[0].message.content else None
+            
+            if content:
+                variations = content.split(';')
+                return [variation.strip() for variation in variations if variation.strip()]
+            else:
+                print(f"Warning: Empty content in response for name: {name_ar}")
+                return []  # Return an empty list if content is None
+            
+        except Exception as e:
+            print(f"Retry {i}: Error occurred - {e}")
+            continue
+    
+    return []  # Return an empty list if all retries fail
+
+
+
+
+import datetime
+import pandas as pd
+from concurrent.futures import ThreadPoolExecutor
+
+# Define the function to get name transliterations
+def get_name_transliterations(name_ar, num_variations=10):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
+        "I want only the translations without any additional text, just separated by semicolons. "
+        "Remove any number from the output, even number 1. "
+        "Ensure the variations are realistic."
+    )
+    
+    for i in range(1, 4):  # Retry logic
+        try:
+            # Replace with actual API setup
+            client = AzureOpenAI(
+                api_version="AZURE_AOAI_API_VERSION",
+                azure_endpoint="APIGEE_ENDPOINT",
+                api_key="FAKE_KEY",
+            )
+            response = client.chat.completions.create(
+                model="AZURE_AOAI_MODEL_DEPLOYMENT_NAME",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+            )
+            variations = response.choices[0].message.content.split(';')
+            return [variation.strip() for variation in variations if variation.strip()]
+        except Exception as e:
+            print(f"Retry {i}: Error occurred - {e}")
+            continue
+    return []  # Return an empty list if all retries fail
+
+# Batch processing function
+def process_batch(batch_df):
+    transliterations = []
+    for index, row in batch_df.iterrows():
+        name = row['name_ar']
+        variations = get_name_transliterations(name)
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+    return transliterations
+
+# Main script
+if __name__ == "__main__":
+    print("Start Time:", datetime.datetime.now())
+    
+    # Load data
+    batch_size = 5
+    Train_data = Train_data.dropna(subset=['name_ar'])  # Ensure no NaN values
+    total_names = len(Train_data)
+    
+    # Split data into batches
+    batches = [Train_data[i:i + batch_size] for i in range(0, total_names, batch_size)]
+    
+    # Use ThreadPoolExecutor for parallel processing
+    all_transliterations = []
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(process_batch, batches)
+        for batch_result in results:
+            all_transliterations.extend(batch_result)
+    
+    # Save the results to an Excel file
+    df_transliterations = pd.DataFrame(all_transliterations)
+    df_transliterations.to_excel('name_transliterationsV8.xlsx', index=False)
+    
+    print("End Time:", datetime.datetime.now())
+
+
+
+
+
+
+
+import datetime
+import pandas as pd
+
+# Log the start time
+print(datetime.datetime.now())
+
+# Assuming Train_data is your DataFrame with 100 Arabic names
+batch_size = 5
+total_names = len(Train_data)
+
+for i in range(0, total_names, batch_size):
+    # Get the current batch
+    df = Train_data[i:i + batch_size]
+    
+    # Drop rows with missing Arabic names
+    df = df.dropna(subset=['name_ar'])
+    
+    # Generate and display transliterations
+    transliterations = []
+    for index, row in df.iterrows():
+        name = row['name_ar']
+        variations = get_name_transliterations(name)  # Assuming this function is defined elsewhere
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+    
+    # Save the transliterations to an Excel file
+    df_transliterations = pd.DataFrame(transliterations)
+    excel_file_name = f'name_transliterations_batch_{i//batch_size + 1}.xlsx'
+    df_transliterations.to_excel(excel_file_name, index=False)
+
+# Log the end time
+print(datetime.datetime.now())
+
+
+
+
+
+import pandas as pd
+import datetime
+
+# Function to simulate getting transliterations for a batch of names
+def get_name_transliterations_batch(names):
+    """
+    Generate transliterations for a batch of names.
+    Simulate the process with your actual implementation for Azure OpenAI.
+    """
+    # For simplicity, just append mock transliterations for now
+    return [f"Transliteration {i}" for i in range(1, len(names) + 1)]
+
+# Load and clean data
+print(datetime.datetime.now())
+df = Train_data.dropna(subset=['name_ar'])
+
+# Initialize results list
+transliterations = []
+
+# Process in batches of 5
+batch_size = 5
+for i in range(0, len(df), batch_size):
+    batch = df['name_ar'].iloc[i:i + batch_size].tolist()  # Get a batch of 5 names
+    batch_transliterations = get_name_transliterations_batch(batch)  # Call the API for the batch
+
+    # Append results for the batch
+    for name, variations in zip(batch, batch_transliterations):
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+
+# Save results to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterationsV8_batch5.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+print(datetime.datetime.now())
+
+
+
+
+import pandas as pd
+import datetime
+
+# Function to simulate getting transliterations for a batch of names
+def get_name_transliterations_batch(names):
+    """
+    Generate transliterations for a batch of names.
+    Simulate the process with your actual implementation for Azure OpenAI.
+    """
+    # For simplicity, just append mock transliterations for now
+    return [f"Transliteration {i}" for i in range(1, len(names) + 1)]
+
+# Load and clean data
+print(datetime.datetime.now())
+df = Train_data.dropna(subset=['name_ar'])
+
+# Initialize results list
+transliterations = []
+
+# Process in batches of 5
+batch_size = 5
+for i in range(0, len(df), batch_size):
+    batch = df['name_ar'].iloc[i:i + batch_size].tolist()  # Get a batch of 5 names
+    batch_transliterations = get_name_transliterations_batch(batch)  # Call the API for the batch
+
+    # Append results for the batch
+    for name, variations in zip(batch, batch_transliterations):
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+
+# Save results to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterationsV8_batch5.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+print(datetime.datetime.now())
+
+
+
+
+variations = response.choices[0].message.content.split('\n') formatted_variations = ' '.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations) if variation.strip()]) return formatted_variations
+
+
+
+
+import pandas as pd
+import openai
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Function to get French transliterations of Arabic names
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    response = client.chat.completions.create(
+        model='your-model-deployment-name',  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    variations = response.choices[0].message.content.split('\n')
+    formatted_variations = '\n'.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations)])
+    return formatted_variations
+
+# Load the CSV file
+csv_file_name = 'arabic_names.csv'
+df = pd.read_csv(csv_file_name)
+
+# Generate and display transliterations
+transliterations = []
+for index, row in df.iterrows():
+    name = row['Arabic Name']
+    variations = get_name_transliterations(name)
+    transliterations.append({"Arabic Name": name, "French Transliterations": variations})
+    print(f"Arabic Name: {name} -> French Transliterations: \n{variations}\n")
+
+# Save the transliterations to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterations.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+# Upload the Excel file to Azure OpenAI
+try:
+    with open(excel_file_name, "rb") as file:
+        training_response = client.files.create(file=file, purpose="fine-tune")
+    training_file_id = training_response.id
+    print("Training file ID:", training_file_id)
+except Exception as e:
+    print(f"Error uploading training file: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+import openai
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Function to get French transliterations of Arabic names
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    response = client.chat.completions.create(
+        model='your-model-deployment-name',  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+# Load the CSV file
+csv_file_name = 'arabic_names.csv'
+df = pd.read_csv(csv_file_name)
+
+# Generate and display transliterations
+transliterations = []
+for index, row in df.iterrows():
+    name = row['Arabic Name']
+    variations = get_name_transliterations(name)
+    transliterations.append({"Arabic Name": name, "French Transliterations": variations})
+    print(f"Arabic Name: {name} -> French Transliterations: \n{variations}\n")
+
+# Save the transliterations to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterations.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+# Upload the Excel file to Azure OpenAI
+try:
+    with open(excel_file_name, "rb") as file:
+        training_response = client.files.create(file=file, purpose="fine-tune")
+    training_file_id = training_response.id
+    print("Training file ID:", training_file_id)
+except Exception as e:
+    print(f"Error uploading training file: {e}")
+
+
+
+
+
+
+# Upload the training dataset file to Azure OpenAI try: with open(training_file_name, "rb") as file: training_response = client.files.create(file=file, purpose="fine-tune") training_file_id = training_response.id print("Training file ID:", training_file_id) except Exception as e: print(f"Error uploading training file: {e}")
+
+
+
+import pandas as pd
+import openai
+import json
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Create a DataFrame with Arabic names and their French translations
+data = {
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
+}
+df = pd.DataFrame(data)
+
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
+    })
+
+# Save the training data to a JSONL file
+training_file_name = 'training_data.jsonl'
+with open(training_file_name, 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
+
+# Upload the training dataset file to Azure OpenAI
+training_response = client.files.create(
+    file=open(training_file_name, "rb"), purpose="fine-tune"
+)
+training_file_id = training_response.id
+
+# Print the training file ID
+print("Training file ID:", training_file_id)
+
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
+
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
+
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
+
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")
+
+
+
+
+Fine-tuning a model involves taking a pre-trained model and training it further on a specific dataset to adapt it to a particular task or domain. This process helps the model learn the nuances and specifics of the new data, improving its performance on the desired task. Fine-tuning is often used to customize models for specialized applications without needing to train a model from scratch.
+
+
+
+
+import pandas as pd
+import openai
+import json
+
+# Set your OpenAI API key
+openai.api_key = 'your-api-key'
+
+# Create a DataFrame with Arabic names and their French translations
+data = {
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
+}
+df = pd.DataFrame(data)
+
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
+    })
+
+# Save the training data to a JSONL file
+with open('training_data.jsonl', 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
+
+# Fine-tune the model
+response = openai.FineTune.create(
+    training_file=openai.File.create(file=open('training_data.jsonl'), purpose='fine-tune').id,
+    model='chatgpt-turbo'
+)
+
+# Print the fine-tuning job ID
+print(f"Fine-tuning job ID: {response['id']}")
+
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
+
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
+
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
+
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")import pandas as pd
+
+# Sample dataset
+data = {
+    'name1': ['Alice', 'Bob'],
+    'birth1': ['1990-01-01', '1985-05-12'],
+    'name2': ['Charlie', 'Diana'],
+    'birth2': ['1992-07-08', '1987-11-23'],
+    'address_1': ['123 Street', '456 Avenue']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Melt the columns name1, birth1 and name2, birth2
+name_birth_df = pd.melt(df, 
+                        id_vars=['address_1'], 
+                        value_vars=['name1', 'name2'], 
+                        var_name='type', 
+                        value_name='name')
+
+birth_df = pd.melt(df, 
+                   id_vars=['address_1'], 
+                   value_vars=['birth1', 'birth2'], 
+                   var_name='type', 
+                   value_name='birth')
+
+# Combine the melted data
+name_birth_df['birth'] = birth_df['birth']
+
+# Add a "type" column to distinguish between 1 and 2
+name_birth_df['type'] = name_birth_df['type'].str.extract('(\d)')
+
+# Assign NaN to address_1 for rows corresponding to name2 and birth2
+name_birth_df.loc[name_birth_df['type'] == '2', 'address_1'] = None
+
+# Rename columns for clarity
+name_birth_df = name_birth_df.rename(columns={'address_1': 'address'})
+
+# Reset index
+name_birth_df.reset_index(drop=True, inplace=True)
+
+# Display the transformed DataFrame
+print(name_birth_df)
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Create a new DataFrame for 'name1' and 'birth1'
+df1 = df[['address_1', 'name1', 'birth1']].rename(columns={'name1': 'name', 'birth1': 'birth'})
+df1['type'] = 1  # Type for 'name1' and 'birth1'
+
+# Create a new DataFrame for 'name2' and 'birth2'
+df2 = df[['name2', 'birth2']].rename(columns={'name2': 'name', 'birth2': 'birth'})
+df2['type'] = 2  # Type for 'name2' and 'birth2'
+
+# Add 'address_1' column to df2 with NaN (for rows coming from 'name2' and 'birth2')
+df2['address_1'] = pd.NA
+
+# Concatenate the two DataFrames (df1 and df2)
+final_df = pd.concat([df1, df2], ignore_index=True)
+
+# Display the final result
+print(final_df[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping address_1
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'birth1', 'name2', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a new 'type' column based on whether the variable is a name or birth
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth based on the 'variable' column
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they're no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows with 'name2' and 'birth2'
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if '1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe, keeping 'address_1' as an id variable
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'name2', 'birth1', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Create a 'type' column based on the variable names
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Create separate columns for name and birth
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the intermediate 'variable' and 'value' columns
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for rows where 'name2' and 'birth2' are found
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if 'name1' in row['variable'] or 'birth1' in row['variable'] else pd.NA, axis=1)
+
+# Display the final result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+
+import pandas as pd
+
+# Sample data with 'address_1'
+data = {
+    'address_1': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format
+df_melted = pd.melt(df, id_vars=['address_1'], value_vars=['name1', 'name2', 'birth1', 'birth2'], 
+                    var_name='variable', value_name='value')
+
+# Add 'type' column based on the variable names
+df_melted['type'] = df_melted['variable'].apply(lambda x: 1 if 'name' in x else 2)
+
+# Split the melted data into separate columns for name and birth
+df_melted['name'] = df_melted.apply(lambda row: row['value'] if 'name' in row['variable'] else None, axis=1)
+df_melted['birth'] = df_melted.apply(lambda row: row['value'] if 'birth' in row['variable'] else None, axis=1)
+
+# Drop the 'variable' and 'value' columns as they are no longer needed
+df_melted = df_melted.drop(columns=['variable', 'value'])
+
+# Set 'address_1' to NaN for the 'name2' and 'birth2' rows
+df_melted['address_1'] = df_melted.apply(lambda row: row['address_1'] if 'name' in row['variable'] else pd.NA, axis=1)
+
+# Display the result
+print(df_melted[['address_1', 'name', 'type', 'birth']])
+
+
+
+
+import pandas as pd
+
+# Sample data with an additional 'group' column
+data = {
+    'group': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping 'group' as an id variable
+df_melted = pd.melt(df, id_vars=['group', 'birth1', 'birth2'], value_vars=['name1', 'name2'], 
+                    var_name='type', value_name='name')
+
+# Adjust the birth column based on the type (name1 or name2)
+df_melted['birth'] = df_melted.apply(lambda row: row['birth1'] if row['type'] == 'name1' else row['birth2'], axis=1)
+
+# Drop the original birth columns
+df_melted = df_melted.drop(columns=['birth1', 'birth2'])
+
+# Map type to 1 for 'name1' and 2 for 'name2'
+df_melted['type'] = df_melted['type'].map({'name1': 1, 'name2': 2})
+
+# Display the final result
+print(df_melted)
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z'],
+    'other_col_1': [100, 200, 300]
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30],
+    'other_col_2': [500, 600, 700]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Melt both DataFrames, turning info_1 and info_2 into a single 'info' column
+df1_melted = df1.melt(id_vars=['client_1', 'other_col_1'], value_vars=['info_1'], 
+                      var_name='info_type', value_name='info')
+df2_melted = df2.melt(id_vars=['client_1', 'other_col_2', 'value'], value_vars=['info_2'], 
+                      var_name='info_type', value_name='info')
+
+# Concatenate the two melted DataFrames
+result = pd.concat([df1_melted, df2_melted], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z']
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Melt the two DataFrames so that info_1 and info_2 are in the same column
+df1_melted = df1.melt(id_vars=['client_1'], value_vars=['info_1'], var_name='info_type', value_name='info')
+df2_melted = df2.melt(id_vars=['client_1'], value_vars=['info_2'], var_name='info_type', value_name='info')
+
+# Concatenate the melted DataFrames
+result = pd.concat([df1_melted, df2_melted], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+
+import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z']
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Concatenate the two DataFrames
+result = pd.concat([df1, df2], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
+import io
+import streamlit as st
+
+def save_results_to_files(df_transliterations):
+    # Create a buffer to use for Excel writer
+    buffer = io.BytesIO()
+    
+    # Ensure the DataFrame is valid before processing
+    if df_transliterations is None or df_transliterations.empty:
+        st.warning("The DataFrame is empty. Please provide valid data.")
+        return None
+    
+    # Display the DataFrame on the Streamlit app
+    st.write("Preview of DataFrame:", df_transliterations.head())
+
+    # Write the DataFrame to an Excel worksheet
+    with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+        df_transliterations.to_excel(writer, sheet_name='Petit_contentieux', index=False)
+
+    # Rewind the buffer to prepare it for download
+    buffer.seek(0)
+
+    # Add a download button to download the DataFrame as an Excel file
+    st.download_button(
+        label="Download data as Excel",
+        data=buffer,
+        file_name='Petit_contentieux.xlsx',
+        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    return 'Petit_contentieux.xlsx'
+
+
+
+
+
+
+def get_name_transliterations(name_ar, num_variations=10):
+    try:
+        prompt = (
+            f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. "
+            "I want only the translations without any additional text, just the translated names. "
+            "Don't list the translated names, just separate them with a semi-colon. "
+            "Remove any number from the output, even the number 1. "
+            "Make sure the variations are realistic."
+        )
+        
+        # OpenAI API call (update with Azure OpenAI setup if needed)
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # Replace with the correct model or Azure deployment name
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=400,
+            temperature=0,
+        )
+        
+        # Extract content safely
+        content = response.choices[0].message.content if response.choices else None
+        
+        if content and content.strip():  # Check if content is valid
+            return [variation.strip() for variation in content.split(';') if variation.strip()]
+        else:
+            return []  # Return an empty list if no valid content
+    except Exception as e:
+        print(f"Error in API call: {e}")
+        return []
+
+
+
+
+
+Pour finaliser le projet, je propose une réunion la semaine prochaine
+
+
+
+def get_name_transliterations(name_ar, num_variations=10):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
+        "I want only the translations without any additional text, just separated by semicolons. "
+        "Remove any number from the output, even number 1. "
+        "Ensure the variations are realistic."
+    )
+    
+    for i in range(1, 4):  # Retry logic
+        try:
+            # Replace with actual API setup
+            client = AzureOpenAI(
+                api_version="AZURE_AOAI_API_VERSION",
+                azure_endpoint="APIGEE_ENDPOINT",
+                api_key="FAKE_KEY",
+            )
+            response = client.chat.completions.create(
+                model="AZURE_AOAI_MODEL_DEPLOYMENT_NAME",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+            )
+            # Debugging: Print the response to verify
+            print("API Response:", response)
+            
+            # Check if the response has the expected structure
+            content = response.choices[0].message.content if response.choices and response.choices[0].message.content else None
+            
+            if content:
+                variations = content.split(';')
+                return [variation.strip() for variation in variations if variation.strip()]
+            else:
+                print(f"Warning: Empty content in response for name: {name_ar}")
+                return []  # Return an empty list if content is None
+            
+        except Exception as e:
+            print(f"Retry {i}: Error occurred - {e}")
+            continue
+    
+    return []  # Return an empty list if all retries fail
+
+
+
+
+import datetime
+import pandas as pd
+from concurrent.futures import ThreadPoolExecutor
+
+# Define the function to get name transliterations
+def get_name_transliterations(name_ar, num_variations=10):
+    prompt = (
+        f"Generate {num_variations} French transliterations of the Arabic name {name_ar}. "
+        "I want only the translations without any additional text, just separated by semicolons. "
+        "Remove any number from the output, even number 1. "
+        "Ensure the variations are realistic."
+    )
+    
+    for i in range(1, 4):  # Retry logic
+        try:
+            # Replace with actual API setup
+            client = AzureOpenAI(
+                api_version="AZURE_AOAI_API_VERSION",
+                azure_endpoint="APIGEE_ENDPOINT",
+                api_key="FAKE_KEY",
+            )
+            response = client.chat.completions.create(
+                model="AZURE_AOAI_MODEL_DEPLOYMENT_NAME",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+                max_tokens=4000,
+                temperature=0.7,
+            )
+            variations = response.choices[0].message.content.split(';')
+            return [variation.strip() for variation in variations if variation.strip()]
+        except Exception as e:
+            print(f"Retry {i}: Error occurred - {e}")
+            continue
+    return []  # Return an empty list if all retries fail
+
+# Batch processing function
+def process_batch(batch_df):
+    transliterations = []
+    for index, row in batch_df.iterrows():
+        name = row['name_ar']
+        variations = get_name_transliterations(name)
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+    return transliterations
+
+# Main script
+if __name__ == "__main__":
+    print("Start Time:", datetime.datetime.now())
+    
+    # Load data
+    batch_size = 5
+    Train_data = Train_data.dropna(subset=['name_ar'])  # Ensure no NaN values
+    total_names = len(Train_data)
+    
+    # Split data into batches
+    batches = [Train_data[i:i + batch_size] for i in range(0, total_names, batch_size)]
+    
+    # Use ThreadPoolExecutor for parallel processing
+    all_transliterations = []
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(process_batch, batches)
+        for batch_result in results:
+            all_transliterations.extend(batch_result)
+    
+    # Save the results to an Excel file
+    df_transliterations = pd.DataFrame(all_transliterations)
+    df_transliterations.to_excel('name_transliterationsV8.xlsx', index=False)
+    
+    print("End Time:", datetime.datetime.now())
+
+
+
+
+
+
+
+import datetime
+import pandas as pd
+
+# Log the start time
+print(datetime.datetime.now())
+
+# Assuming Train_data is your DataFrame with 100 Arabic names
+batch_size = 5
+total_names = len(Train_data)
+
+for i in range(0, total_names, batch_size):
+    # Get the current batch
+    df = Train_data[i:i + batch_size]
+    
+    # Drop rows with missing Arabic names
+    df = df.dropna(subset=['name_ar'])
+    
+    # Generate and display transliterations
+    transliterations = []
+    for index, row in df.iterrows():
+        name = row['name_ar']
+        variations = get_name_transliterations(name)  # Assuming this function is defined elsewhere
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+    
+    # Save the transliterations to an Excel file
+    df_transliterations = pd.DataFrame(transliterations)
+    excel_file_name = f'name_transliterations_batch_{i//batch_size + 1}.xlsx'
+    df_transliterations.to_excel(excel_file_name, index=False)
+
+# Log the end time
+print(datetime.datetime.now())
+
+
+
+
+
+import pandas as pd
+import datetime
+
+# Function to simulate getting transliterations for a batch of names
+def get_name_transliterations_batch(names):
+    """
+    Generate transliterations for a batch of names.
+    Simulate the process with your actual implementation for Azure OpenAI.
+    """
+    # For simplicity, just append mock transliterations for now
+    return [f"Transliteration {i}" for i in range(1, len(names) + 1)]
+
+# Load and clean data
+print(datetime.datetime.now())
+df = Train_data.dropna(subset=['name_ar'])
+
+# Initialize results list
+transliterations = []
+
+# Process in batches of 5
+batch_size = 5
+for i in range(0, len(df), batch_size):
+    batch = df['name_ar'].iloc[i:i + batch_size].tolist()  # Get a batch of 5 names
+    batch_transliterations = get_name_transliterations_batch(batch)  # Call the API for the batch
+
+    # Append results for the batch
+    for name, variations in zip(batch, batch_transliterations):
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+
+# Save results to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterationsV8_batch5.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+print(datetime.datetime.now())
+
+
+
+
+import pandas as pd
+import datetime
+
+# Function to simulate getting transliterations for a batch of names
+def get_name_transliterations_batch(names):
+    """
+    Generate transliterations for a batch of names.
+    Simulate the process with your actual implementation for Azure OpenAI.
+    """
+    # For simplicity, just append mock transliterations for now
+    return [f"Transliteration {i}" for i in range(1, len(names) + 1)]
+
+# Load and clean data
+print(datetime.datetime.now())
+df = Train_data.dropna(subset=['name_ar'])
+
+# Initialize results list
+transliterations = []
+
+# Process in batches of 5
+batch_size = 5
+for i in range(0, len(df), batch_size):
+    batch = df['name_ar'].iloc[i:i + batch_size].tolist()  # Get a batch of 5 names
+    batch_transliterations = get_name_transliterations_batch(batch)  # Call the API for the batch
+
+    # Append results for the batch
+    for name, variations in zip(batch, batch_transliterations):
+        transliterations.append({"name_ar": name, "French Transliterations": variations})
+
+# Save results to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterationsV8_batch5.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+print(datetime.datetime.now())
+
+
+
+
+variations = response.choices[0].message.content.split('\n') formatted_variations = ' '.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations) if variation.strip()]) return formatted_variations
+
+
+
+
+import pandas as pd
+import openai
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Function to get French transliterations of Arabic names
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    response = client.chat.completions.create(
+        model='your-model-deployment-name',  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    variations = response.choices[0].message.content.split('\n')
+    formatted_variations = '\n'.join([f"{i+1}. {variation.strip()}" for i, variation in enumerate(variations)])
+    return formatted_variations
+
+# Load the CSV file
+csv_file_name = 'arabic_names.csv'
+df = pd.read_csv(csv_file_name)
+
+# Generate and display transliterations
+transliterations = []
+for index, row in df.iterrows():
+    name = row['Arabic Name']
+    variations = get_name_transliterations(name)
+    transliterations.append({"Arabic Name": name, "French Transliterations": variations})
+    print(f"Arabic Name: {name} -> French Transliterations: \n{variations}\n")
+
+# Save the transliterations to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterations.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+# Upload the Excel file to Azure OpenAI
+try:
+    with open(excel_file_name, "rb") as file:
+        training_response = client.files.create(file=file, purpose="fine-tune")
+    training_file_id = training_response.id
+    print("Training file ID:", training_file_id)
+except Exception as e:
+    print(f"Error uploading training file: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+import openai
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Function to get French transliterations of Arabic names
+def get_name_transliterations(name_ar, num_variations=5):
+    prompt = f"Generate {num_variations} French transliterations of the Arabic name '{name_ar}'. Make sure the variations are realistic."
+    response = client.chat.completions.create(
+        model='your-model-deployment-name',  # Replace with your deployment name
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+# Load the CSV file
+csv_file_name = 'arabic_names.csv'
+df = pd.read_csv(csv_file_name)
+
+# Generate and display transliterations
+transliterations = []
+for index, row in df.iterrows():
+    name = row['Arabic Name']
+    variations = get_name_transliterations(name)
+    transliterations.append({"Arabic Name": name, "French Transliterations": variations})
+    print(f"Arabic Name: {name} -> French Transliterations: \n{variations}\n")
+
+# Save the transliterations to an Excel file
+df_transliterations = pd.DataFrame(transliterations)
+excel_file_name = 'name_transliterations.xlsx'
+df_transliterations.to_excel(excel_file_name, index=False)
+
+# Upload the Excel file to Azure OpenAI
+try:
+    with open(excel_file_name, "rb") as file:
+        training_response = client.files.create(file=file, purpose="fine-tune")
+    training_file_id = training_response.id
+    print("Training file ID:", training_file_id)
+except Exception as e:
+    print(f"Error uploading training file: {e}")
+
+
+
+
+
+
+# Upload the training dataset file to Azure OpenAI try: with open(training_file_name, "rb") as file: training_response = client.files.create(file=file, purpose="fine-tune") training_file_id = training_response.id print("Training file ID:", training_file_id) except Exception as e: print(f"Error uploading training file: {e}")
+
+
+
+import pandas as pd
+import openai
+import json
+import os
+from openai import AzureOpenAI
+
+# Set your Azure OpenAI API key and endpoint
+client = AzureOpenAI(
+  azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  api_key=os.getenv("AZURE_OPENAI_API_KEY"),  
+  api_version="2024-05-01-preview"  # This API version or later is required to access seed/events/checkpoint capabilities
+)
+
+# Create a DataFrame with Arabic names and their French translations
+data = {
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
+}
+df = pd.DataFrame(data)
+
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
+    })
+
+# Save the training data to a JSONL file
+training_file_name = 'training_data.jsonl'
+with open(training_file_name, 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
+
+# Upload the training dataset file to Azure OpenAI
+training_response = client.files.create(
+    file=open(training_file_name, "rb"), purpose="fine-tune"
+)
+training_file_id = training_response.id
+
+# Print the training file ID
+print("Training file ID:", training_file_id)
+
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
+
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
+
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
+
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")
+
+
+
+
+Fine-tuning a model involves taking a pre-trained model and training it further on a specific dataset to adapt it to a particular task or domain. This process helps the model learn the nuances and specifics of the new data, improving its performance on the desired task. Fine-tuning is often used to customize models for specialized applications without needing to train a model from scratch.
+
+
+
+
+import pandas as pd
+import openai
+import json
+
+# Set your OpenAI API key
+openai.api_key = 'your-api-key'
+
+# Create a DataFrame with Arabic names and their French translations
+data = {
+    'Arabic Name': ['محمد علي', 'فاطمة الزهراء', 'يوسف بن تاشفين'],
+    'French Name': ['Mohamed Ali', 'Fatima Zahra', 'Youssef Ben Tachfine']
+}
+df = pd.DataFrame(data)
+
+# Convert the DataFrame to JSONL format
+training_data = []
+for index, row in df.iterrows():
+    training_data.append({
+        "prompt": f"Translate the following Arabic name to French: '{row['Arabic Name']}'",
+        "completion": row['French Name']
+    })
+
+# Save the training data to a JSONL file
+with open('training_data.jsonl', 'w') as f:
+    for entry in training_data:
+        f.write(json.dumps(entry) + '\n')
+
+# Fine-tune the model
+response = openai.FineTune.create(
+    training_file=openai.File.create(file=open('training_data.jsonl'), purpose='fine-tune').id,
+    model='chatgpt-turbo'
+)
+
+# Print the fine-tuning job ID
+print(f"Fine-tuning job ID: {response['id']}")
+
+# Define the new Arabic name and family name
+arabic_name = "علي بن أبي طالب"
+
+# Create the prompt for translation
+prompt = f"Translate the following Arabic name to French: '{arabic_name}'"
+
+# Make a request to the fine-tuned model
+response = openai.Completion.create(
+    model='chatgpt-turbo',
+    prompt=prompt,
+    max_tokens=50
+)
+
+# Extract and print the translation
+translation = response.choices[0].text.strip()
+print(f"Translation: {translation}")
+
+import pandas as pd
+
 # Sample dataset
 data = {
     'name1': ['Alice', 'Bob'],
