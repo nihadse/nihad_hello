@@ -1,4 +1,31 @@
 import pandas as pd
+
+# Example data for the first DataFrame
+df1 = pd.DataFrame({
+    'client_1': ['A', 'B', 'C'],
+    'info_1': ['info_X', 'info_Y', 'info_Z']
+})
+
+# Example data for the second DataFrame
+df2 = pd.DataFrame({
+    'client_A': ['A', 'B', 'D'],
+    'info_2': ['info_W', 'info_V', 'info_U'],
+    'value': [10, 20, 30]
+})
+
+# Rename the column in df2 to match df1
+df2.rename(columns={'client_A': 'client_1'}, inplace=True)
+
+# Concatenate the two DataFrames
+result = pd.concat([df1, df2], ignore_index=True)
+
+# Display the result
+print(result)
+
+
+
+
+import pandas as pd
 import io
 import streamlit as st
 
