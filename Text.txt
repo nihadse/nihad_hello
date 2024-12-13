@@ -1,5 +1,37 @@
 import pandas as pd
 
+# Sample data with an additional 'group' column
+data = {
+    'group': ['A', 'B'],
+    'name1': ['Alice', 'John'],
+    'birth1': [1990, 1980],
+    'name2': ['Bob', 'Emma'],
+    'birth2': [1985, 1995]
+}
+
+df = pd.DataFrame(data)
+
+# Melt the dataframe to long format, keeping 'group' as an id variable
+df_melted = pd.melt(df, id_vars=['group', 'birth1', 'birth2'], value_vars=['name1', 'name2'], 
+                    var_name='type', value_name='name')
+
+# Adjust the birth column based on the type (name1 or name2)
+df_melted['birth'] = df_melted.apply(lambda row: row['birth1'] if row['type'] == 'name1' else row['birth2'], axis=1)
+
+# Drop the original birth columns
+df_melted = df_melted.drop(columns=['birth1', 'birth2'])
+
+# Map type to 1 for 'name1' and 2 for 'name2'
+df_melted['type'] = df_melted['type'].map({'name1': 1, 'name2': 2})
+
+# Display the final result
+print(df_melted)
+
+
+
+
+import pandas as pd
+
 # Example data for the first DataFrame
 df1 = pd.DataFrame({
     'client_1': ['A', 'B', 'C'],
