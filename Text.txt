@@ -1,3 +1,14 @@
+Bonjour Mohamed,
+
+Vous trouverez ci-joint la deuxième version de la requête GESKYC relative à la "DATE DE DERNIÈRE RÉVISION DE DOSSIER" pour la période du 01/04/2024 au 30/09/2024.
+
+N’hésitez pas à me contacter pour toute question.
+
+Cordialement,
+Nihad
+
+
+
 import pandas as pd
 
 # Sample data with 'address_1' only related to 'name_1'
