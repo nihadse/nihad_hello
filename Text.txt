@@ -1,3 +1,29 @@
+from transformers import MarianMTModel, MarianTokenizer
+
+# Load the model and tokenizer
+model_name = "Helsinki-NLP/opus-mt-fr-ar"
+tokenizer = MarianTokenizer.from_pretrained(model_name)
+model = MarianMTModel.from_pretrained(model_name)
+
+# List of French names to translate
+french_names = ["Jean Dupont", "Marie Curie", "Jacques Cartier"]
+
+# Tokenize and translate
+translated_names = []
+for name in french_names:
+    inputs = tokenizer(name, return_tensors="pt", padding=True)
+    outputs = model.generate(**inputs)
+    translated_name = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    translated_names.append(translated_name)
+
+# Display the results
+for fr_name, ar_name in zip(french_names, translated_names):
+    print(f"French: {fr_name} -> Arabic: {ar_name}")
+
+
+
+
+
 "Ensure that the transliterations follow the exact order of the input name:\n"
         "The first part of the Arabic name (family name) should appear first in the output.\n"
         "The second part of the Arabic name (first name) should appear second in the output.\n"
