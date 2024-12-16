@@ -1,7 +1,7 @@
 "Ensure that the transliterations follow the exact order of the input name:\n"
         "The first part of the Arabic name (family name) should appear first in the output.\n"
         "The second part of the Arabic name (first name) should appear second in the output.\n"
-        "For example, if the input is 'باش خالد', the output should always have the order 'Beche Khaled'.\n"
+        "For example, if the input is 'باش خالد', the output should 8always have the order 'Beche Khaled'.\n"
 
 
 
