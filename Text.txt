@@ -1,3 +1,11 @@
+"Ensure that the transliterations follow the exact order of the input name:\n"
+        "The first part of the Arabic name (family name) should appear first in the output.\n"
+        "The second part of the Arabic name (first name) should appear second in the output.\n"
+        "For example, if the input is 'باش خالد', the output should always have the order 'Beche Khaled'.\n"
+
+
+
+
 Bonjour Mohamed,
 
 Vous trouverez ci-joint la deuxième version de la requête GESKYC relative à la "DATE DE DERNIÈRE RÉVISION DE DOSSIER" pour la période du 01/04/2024 au 30/09/2024.
