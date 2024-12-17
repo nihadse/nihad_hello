@@ -1,3 +1,68 @@
+import pandas as pd
+from sentence_transformers import SentenceTransformer, util
+
+def preprocess_remove_duplicates(df, name_col, dob_col):
+    """
+    Remove duplicate names but keep all rows to display later.
+    Group by the name column and create a combined representation of the rows with different DOBs.
+    """
+    return df.groupby(name_col).apply(lambda x: x).reset_index(drop=True)
+
+def find_highest_similarity(df_transliterations, df, threshold):
+    """
+    Find highest similarity between names in two datasets after removing duplicate names.
+    """
+    # Path to the model
+    model_path = "/domino/edv/modelhub/ModelHub-model-huggingface-sentence-transformers/all-MiniLM-L6-v2/main"
+    model = SentenceTransformer(model_path)
+
+    # Remove duplicate names from both datasets
+    df_transliterations = preprocess_remove_duplicates(df_transliterations, 'name', 'Date_Naiss')
+    df = preprocess_remove_duplicates(df, 'raison_sociale_cleaned', 'Date de naissance')
+
+    # Extract names lists for similarity computation
+    names1 = df_transliterations['name'].tolist()
+    names2 = df['raison_sociale_cleaned'].tolist()
+
+    # Encode names into embeddings
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(names2, convert_to_tensor=True)
+
+    # Compute similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2).cpu().numpy()
+
+    # Collect similar pairs
+    similar_pairs = []
+    for i in range(len(names1)):
+        for j in range(len(names2)):
+            similarity_score = similarity_matrix[i][j]
+            if similarity_score >= threshold:
+                similar_pairs.append({
+                    'French Traduction': names1[i],
+                    'name': df_transliterations.iloc[i]['name'],
+                    'name_ar': df_transliterations.iloc[i]['name_ar'],
+                    'Date_Naiss': df_transliterations.iloc[i]['Date_Naiss'],
+                    'type': df_transliterations.iloc[i]['type'],
+                    'raison_sociale_cleaned': names2[j],
+                    'Id Tiers': df.iloc[j]['Id Tiers'],
+                    'raison sociale': df.iloc[j]['raison sociale'],
+                    'Date de création (entreprise)': df.iloc[j]['Date de création (entreprise)'],
+                    'Date d\'entree en relation': df.iloc[j]['Date d\'entree en relation'],
+                    'Nom abrégé tiers': df.iloc[j]['Nom abrégé tiers'],
+                    'Code nature juridique du compte': df.iloc[j]['Code nature juridique du compte'],
+                    'Code catégorie client': df.iloc[j]['Code catégorie client'],
+                    'Date de naissance': df.iloc[j]['Date de naissance'],
+                    'similarity_score': similarity_score
+                })
+
+    # Create the result DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+    return result_df
+
+
+
+
+
 # Handle cases where "Date de naissance" is None
 result_df["Date de naissance Match"] = result_df.apply(
     lambda row: 'No' if pd.isna(row["Date de naissance"]) else (
