@@ -1,3 +1,23 @@
+# Handle cases where "Date de naissance" is None
+result_df["Date de naissance Match"] = result_df.apply(
+    lambda row: 'No' if pd.isna(row["Date de naissance"]) else (
+        'Yes' if row["Date de naissance"] == row["Date_Naiss"] else 'No'
+    ), 
+    axis=1
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 from transformers import MarianMTModel, MarianTokenizer
 
 # Load the model and tokenizer
