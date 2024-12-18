@@ -1,4 +1,16 @@
 import pandas as pd
+
+# Sample DataFrame
+data = {'Text': ["['Hello World']", "['Python']", "['Data Science']"]}
+df = pd.DataFrame(data)
+
+# Remove '[' and ' from the Text column
+df['Text'] = df['Text'].str.replace(r"[']", '', regex=True)
+
+print(df)
+
+
+import pandas as pd
 from sentence_transformers import util
 import torch
 
