@@ -1,3 +1,28 @@
+Objet : Mise à jour du projet, aperçu de l'application web et demande de réunion
+
+Bonjour [Nom du Manager],
+
+Voici les points principaux concernant le projet :
+
+Optimisation du temps d’exécution et amélioration de la précision du modèle.
+
+Mise en place d’une méthode pour crypter les fichiers.
+
+Installation réussie des packages nécessaires pour renforcer la sécurité.
+
+Nouvelles améliorations mises en œuvre nécessitant validation et retours.
+
+Préparation des prochaines étapes en fonction de vos feedbacks.
+
+
+Vous trouverez ci-joint une capture d’écran de l’application web pour un aperçu des développements réalisés.
+
+Je propose de faire une réunion demain pour discuter des avancées et recueillir vos retours. Merci de me confirmer un créneau qui vous conviendrait.
+
+Cordialement,
+Nihad
+
+
 import pandas as pd
 
 # Sample DataFrame
