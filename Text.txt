@@ -15,6 +15,51 @@ def find_highest_similarity2(df_transliterations, df, threshold, model):
     similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2)
     
     # Collect similar pairs
+    similar_pairs = []
+    for i in range(similarity_matrix.shape[0]):  # Loop over transliteration names
+        for j in range(similarity_matrix.shape[1]):  # Loop over unique raison sociale names
+            if similarity_matrix[i, j] > threshold:
+                matched_name = unique_names2[j]
+                
+                # Retrieve all rows from the original DataFrame with the matched name
+                matched_rows = df[df["raison_sociale_cleaned"] == matched_name]
+                for _, row in matched_rows.iterrows():
+                    similar_pairs.append({
+                        "French Traduction": df_transliterations.iloc[i]["name"],
+                        "Date Naiss": df_transliterations.iloc[i]["Date_Naiss"],
+                        "raison sociale": row["raison_sociale_cleaned"],
+                        "Date de naissance": row["Date de naissance"],
+                        "Id Tiers": row["Id Tiers"],
+                        "Racine": row["Racine"],
+                        "similarity_score": similarity_matrix[i, j].item()
+                    })
+
+    # Convert results to DataFrame
+    result_df = pd.DataFrame(similar_pairs)
+    return result_df
+
+
+
+
+
+
+import pandas as pd
+from sentence_transformers import util
+import torch
+
+def find_highest_similarity2(df_transliterations, df, threshold, model):
+    # Extract unique names for embeddings
+    unique_names2 = df["raison_sociale_cleaned"].unique().tolist()
+    names1 = df_transliterations["name"].tolist()
+    
+    # Compute embeddings (only for unique names)
+    embeddings1 = model.encode(names1, convert_to_tensor=True)
+    embeddings2 = model.encode(unique_names2, convert_to_tensor=True)
+    
+    # Compute similarity matrix
+    similarity_matrix = util.pytorch_cos_sim(embeddings1, embeddings2)
+    
+    # Collect similar pairs
     indices = (similarity_matrix > threshold).nonzero(as_tuple=False)
     similar_pairs = []
     for i, j in indices:
