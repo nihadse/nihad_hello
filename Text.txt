@@ -1,3 +1,31 @@
+import pandas as pd
+
+# Sample DataFrame with mixed date formats
+data = {'Date_Naiss': ['19-03-1983', '1983-03-19', '25-12-2000', '2000-12-25', 'invalid-date']}
+df_transliterations = pd.DataFrame(data)
+
+# First parsing attempt with "DD-MM-YYYY"
+df_transliterations['Date_Naiss'] = pd.to_datetime(
+    df_transliterations['Date_Naiss'], 
+    format="%d-%m-%Y", 
+    errors="coerce"
+)
+
+# Second parsing attempt for rows with NaT using "YYYY-MM-DD"
+df_transliterations['Date_Naiss'] = df_transliterations['Date_Naiss'].fillna(
+    pd.to_datetime(
+        df_transliterations['Date_Naiss'].astype(str),  # Ensure strings for parsing
+        format="%Y-%m-%d", 
+        errors="coerce"
+    )
+)
+
+# Display the result
+print(df_transliterations)
+
+
+
+
 Objet : Mise à jour du projet, aperçu de l'application web et demande de réunion
 
 Bonjour [Nom du Manager],
