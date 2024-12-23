@@ -1,3 +1,14 @@
+pyinstaller --onedir --add-data "Petit_contentieux.py:." --name Petit_contentieux Petit_contentieux.py
+
+
+cd dist/Petit_contentieux
+./Petit_contentieux
+
+
+
+
+
+
 pyinstaller --onefile --add-data "Petit_contentieux.py:." --hidden-import streamlit --hidden-import streamlit.components.v1 --hidden-import streamlit.logger Petit_contentieux.py
 
 
