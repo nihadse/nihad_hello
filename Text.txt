@@ -1,3 +1,8 @@
+pyinstaller --onefile --add-data "Petit_contentieux.py:." --hidden-import streamlit --hidden-import streamlit.components.v1 --hidden-import streamlit.logger Petit_contentieux.py
+
+
+
+
 pyinstaller --onefile --hidden-import=streamlit --add-data "$(python -m site --user-site)/../lib/site-packages/streamlit:streamlit" Petit_contentieux.py
 
 
