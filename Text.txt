@@ -1,3 +1,7 @@
+pyinstaller --onefile --hidden-import=streamlit --add-data "$(python -m site --user-site)/../lib/site-packages/streamlit:streamlit" Petit_contentieux.py
+
+
+
 pyinstaller --onedir --add-data "nihad.py:." --hidden-import=streamlit nihad.py
 
 
