@@ -1,3 +1,8 @@
+pyinstaller --onedir --add-data "nihad.py:." --hidden-import=streamlit nihad.py
+
+
+
+
 Voici une traduction formelle en français :
 
 
