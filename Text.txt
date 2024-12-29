@@ -1,3 +1,7 @@
+If the name (name_ar) contains the name of a company, such as "سونلغاز" (Sonelgaz) or "بي ان بي باريبا" (BNP Paribas), translate it as the Arabic company name and include it in the output following the same rules above.
+
+
+
 pyinstaller --onedir --add-data "Petit_contentieux.py:." --name Petit_contentieux Petit_contentieux.py
 
 
