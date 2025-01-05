@@ -1,3 +1,9 @@
+Bonjour [Nom du destinataire],
+
+Je tiens à vous informer que j'ai bien reçu le fichier de manière automatique et qu'il fonctionne correctement. Merci pour votre envoi.
+
+
+
 If the name (name_ar) contains the name of a company, such as "سونلغاز" (Sonelgaz) or "بي ان بي باريبا" (BNP Paribas), translate it as the Arabic company name and include it in the output following the same rules above.
 
 
