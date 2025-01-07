@@ -1,3 +1,6 @@
+Après analyse, nous n'avons pas identifié de justification ou de nécessité claire pour appliquer ce contrôle.
+
+
 Bonjour [Nom du destinataire],
 
 Je tiens à vous informer que j'ai bien reçu le fichier de manière automatique et qu'il fonctionne correctement. Merci pour votre envoi.
