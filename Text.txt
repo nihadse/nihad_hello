@@ -1,3 +1,86 @@
+import PyPDF2
+import httpx
+from azure.ai.openai import AzureOpenAI
+
+# Constants
+OIDC_CLIENT_ID = "HP162k8eKJe3bkumdGc32a9UwyX90KhА"
+OIDC_CLIENT_SECRET = "HXtu1PPlazqZ16ys"
+OIDC_ENDPOINT = "https://alfactory.api.staging.echonet/auth/oauth2/v2/token"
+OIDC_SCOPE = "genai-model"
+APIGEE_ENDPOINT = "https://aifactory.api.staging.echonet/genai-model/v1"
+AZURE_ADAI_MODEL_DEPLOYMENT_NAME = "gpt4turbo"
+AZURE_ADAI_API_VERSION = "2024-02-15-preview"
+AZURE_ADAI_API_KEY = "FAKE KEY"
+
+oauth2_httpxclient = httpx.Client(verify=False)
+auth = {
+    "OIDC_ENDPOINT": OIDC_ENDPOINT,
+    "client_id": OIDC_CLIENT_ID,
+    "client_secret": OIDC_CLIENT_SECRET,
+    "scope": OIDC_SCOPE,
+    "client": oauth2_httpxclient,
+}
+
+print(APIGEE_ENDPOINT, OIDC_ENDPOINT)
+
+# Extract text from PDF and include file name and page number
+def extract_text_from_pdf(pdf_path):
+    text_with_metadata = []
+    with open(pdf_path, "rb") as pdf_file:
+        reader = PyPDF2.PdfReader(pdf_file)
+        for page_num in range(len(reader.pages)):
+            page = reader.pages[page_num]
+            text = page.extract_text()
+            text_with_metadata.append({
+                "file_name": pdf_path,
+                "page_number": page_num + 1,
+                "text": text,
+            })
+    return text_with_metadata
+
+# Ask a question about the PDF content
+def ask_pdf_question(pdf_metadata, question):
+    client = AzureOpenAI(
+        api_version=AZURE_ADAI_API_VERSION,
+        azure_endpoint=APIGEE_ENDPOINT,
+        api_key=AZURE_ADAI_API_KEY,
+        http_client=httpx.Client(auth=auth, verify=False),
+    )
+    with httpx.Client(verify=False) as http_client:
+        for entry in pdf_metadata:
+            prompt = (
+                f"File: {entry['file_name']}, Page: {entry['page_number']}\n\n"
+                f"Text:\n{entry['text']}\n\n"
+                f"Question: {question}"
+            )
+            completion = client.chat.completions.create(
+                model=AZURE_ADAI_MODEL_DEPLOYMENT_NAME,
+                messages=[
+                    {"role": "system", "content": "You are an AI assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            print(f"Response for File: {entry['file_name']}, Page: {entry['page_number']}")
+            print(completion.choices[0].message.content)
+
+# Loader for PDF files
+loader = PyPDFDirectoryLoader("/mnt/LMMS/Procedures")
+docs = loader.load()
+
+# Process loaded PDFs and extract metadata
+pdf_metadata = []
+for doc in docs:
+    pdf_metadata.extend(extract_text_from_pdf(doc))
+
+# Define the question
+question = "Quelle est la définition de la donnée personnelle"
+
+# Ask questions
+ask_pdf_question(pdf_metadata, question)
+
+
+
+
 Après analyse, nous n'avons pas identifié de justification ou de nécessité claire pour appliquer ce contrôle.
 
 
