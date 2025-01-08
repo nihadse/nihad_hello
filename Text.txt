@@ -1,3 +1,88 @@
+import streamlit as st
+from httpx_oauth import OAuth2ClientCredentials
+import fitz  # PyMuPDF
+from langchain.document_loaders import PyPDFDirectoryLoader
+from sentence_transformers import SentenceTransformer
+import httpx
+
+# Azure API credentials
+OIDC_CLIENT_ID = "Your_Client_ID"
+OIDC_CLIENT_SECRET = "Your_Client_Secret"
+OIDC_ENDPOINT = "Your_OIDC_Endpoint"
+OIDC_SCOPE = "Your_OIDC_Scope"
+APIGEE_ENDPOINT = "Your_APIGEE_Endpoint"
+AZURE_AOAI_MODEL_DEPLOYMENT_NAME = "gpt-4"
+AZURE_AOAI_API_VERSION = "2024-06-01"
+AZURE_AOAI_KEY = "Your_API_Key"
+
+# Initialize OAuth2
+auth = OAuth2ClientCredentials(
+    token_url=OIDC_ENDPOINT,
+    client_id=OIDC_CLIENT_ID,
+    client_secret=OIDC_CLIENT_SECRET,
+    scope=OIDC_SCOPE
+)
+
+# Function to extract text from PDF
+def extract_text_from_pdf(pdf_path):
+    pdf_reader = fitz.open(pdf_path)
+    full_text = []
+    for page_num in range(len(pdf_reader)):
+        page = pdf_reader[page_num]
+        full_text.append(page.get_text())
+    return "\n".join(full_text)
+
+# Function to process the question and fetch response
+def ask_question(docs, question):
+    prompt = f"{docs}\n\nQuestion: {question}\n\nProvide the pages and sources for the information."
+    with httpx.Client(verify=False) as client:
+        response = client.post(
+            APIGEE_ENDPOINT,
+            headers={"Authorization": f"Bearer {AZURE_AOAI_KEY}"},
+            json={
+                "messages": [
+                    {"role": "system", "content": "You are an AI assistant."},
+                    {"role": "user", "content": prompt}
+                ],
+                "model": AZURE_AOAI_MODEL_DEPLOYMENT_NAME
+            }
+        )
+        return response.json()["choices"][0]["message"]["content"]
+
+# Streamlit App
+st.title("RAG Chatbot - DATA Procedures")
+st.sidebar.title("Options")
+uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
+
+if uploaded_file:
+    # Load and display the PDF file
+    with open("uploaded_file.pdf", "wb") as f:
+        f.write(uploaded_file.read())
+    
+    st.sidebar.success("PDF uploaded successfully!")
+    
+    docs = extract_text_from_pdf("uploaded_file.pdf")
+
+    question = st.text_input("Ask your question:")
+    if st.button("Submit"):
+        if question:
+            with st.spinner("Processing..."):
+                response = ask_question(docs, question)
+            st.success("Answer:")
+            st.write(response)
+        else:
+            st.error("Please enter a question.")
+else:
+    st.warning("Please upload a PDF file to proceed.")
+
+
+
+
+
+
+
+
+
 import PyPDF2
 import httpx
 from azure.ai.openai import AzureOpenAI
