@@ -1,3 +1,25 @@
+# Define the custom aggregation function
+def agg_func(x):
+    if x.name == 'Id tiers':  # For 'Id tiers', combine into a single string
+        return ', '.join(map(str, x))
+    else:
+        return x.iloc[0]  # For other columns, take the first value
+
+# Define a function to group by both 'raison sociale' and 'date of birth'
+def group_by_person(client_database_):
+    # Group by both 'raison sociale' and 'date of birth'
+    grouped_data = client_database_.groupby(['raison sociale', 'date of birth']).agg(agg_func).reset_index()
+    return grouped_data
+
+# Apply the grouping function
+client_database_ = group_by_person(client_database_)
+
+
+
+
+
+
+
 # Define a custom aggregation function
 def agg_func(x):
     if x.name == 'Id tiers':  # Handle 'Id tiers'
