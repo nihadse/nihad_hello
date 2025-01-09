@@ -1,3 +1,31 @@
+# Define a custom aggregation function
+def agg_func(x):
+    if x.name == 'Id tiers':  # Handle 'Id tiers'
+        return x.iloc[0]
+    elif x.name == 'date of birth' or x.name == 'date of creation':
+        # Return date of birth for 'personne physique' and date of creation for 'personne morale'
+        if 'code nature juridique' in x.index and x['code nature juridique'].iloc[0] == 1:
+            return x['date of creation'].iloc[0] if 'date of creation' in x else None
+        elif 'code nature juridique' in x.index and x['code nature juridique'].iloc[0] == 2:
+            return x['date of birth'].iloc[0] if 'date of birth' in x else None
+    elif x.name == 'raison sociale':  # Handle 'raison sociale'
+        return x.iloc[0]
+    else:
+        return ', '.join(map(str, x))  # Default join for other columns
+
+# Group by 'raison sociale' and 'date of birth'/'date of creation' based on client type
+aggregated_data = client_database.groupby(
+    ['raison sociale', 'code nature juridique', 'date of birth', 'date of creation']
+).agg(agg_func).reset_index()
+
+# Display the resulting DataFrame
+print(aggregated_data)
+
+
+
+
+
+
 import streamlit as st
 from langchain.document_loaders import PyPDFDirectoryLoader
 import httpx
