@@ -3,6 +3,27 @@ def agg_func(x):
         # Combine id_tiers into a comma-separated string
         return ', '.join(x.astype(str))
     elif x.name == 'birthday':
+        # If all birthdays are the same, return only one; otherwise, list all unique birthdays
+        unique_birthdays = x.unique()
+        if len(unique_birthdays) == 1:
+            return unique_birthdays[0]
+        else:
+            return ', '.join(unique_birthdays.astype(str))
+    else:
+        # For other columns, return the first entry
+        return x.iloc[0]
+
+# Apply the custom aggregation function
+client_database = client_database_.groupby(['raison sociale', 'name']).agg(agg_func).reset_index()
+
+print(client_database)
+
+
+def agg_func(x):
+    if x.name == 'id_tiers':
+        # Combine id_tiers into a comma-separated string
+        return ', '.join(x.astype(str))
+    elif x.name == 'birthday':
         # Return the first birthday (assumes all are the same in the group)
         return x.iloc[0]
     else:
