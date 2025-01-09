@@ -19,6 +19,30 @@ print(client_database)
 
 
 
+
+
+
+def agg_func(x):
+    if x.name == 'id_tiers':
+        # Combine id_tiers into a comma-separated string
+        return ', '.join(x.astype(str))
+    elif x.name == 'birthday':
+        # Return the first birthday (assumes all are the same in the group)
+        return x.iloc[0]
+    else:
+        # For other columns, concatenate as a single string or return first value
+        return x.iloc[0]
+
+# Apply the custom aggregation function
+client_database = client_database_.groupby(['raison sociale', 'birthday']).agg(agg_func).reset_index()
+
+print(client_database)
+
+
+
+
+
+
 # Define the custom aggregation function
 def agg_func(x):
     if x.name == 'Id tiers':  # For 'Id tiers', combine into a single string
