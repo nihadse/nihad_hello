@@ -1,3 +1,30 @@
+import pandas as pd
+
+# Sample data with additional columns
+data = {
+    'ID': [1, 2, 3, 4, 5],
+    'Name': ['John Doe', 'Jane Smith', 'John Doe', 'John Doe', 'Jane Smith'],
+    'Birthday': ['1990-01-01', '1985-05-15', '1990-01-01', '1990-01-01', '1985-05-15'],
+    'Email': ['john@example.com', 'jane@example.com', 'john2@example.com', 'john3@example.com', 'jane2@example.com'],
+    'Address': ['123 Main St', '456 Oak St', '123 Main St', '123 Main St', '456 Oak St']
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Group by Name and Birthday, combine IDs, and take the first value for other columns
+combined_df = df.groupby(['Name', 'Birthday'], as_index=False).agg({
+    'ID': lambda x: ', '.join(map(str, x)),  # Combine IDs
+    'Email': 'first',  # Keep the first email for each group
+    'Address': 'first'  # Keep the first address for each group
+})
+
+# Show the combined result
+print(combined_df)
+
+
+
+
 def agg_func(x):
     if x.name == 'id_tiers':
         return ', '.join(x.astype(str))  # Combine id_tiers values into a string
