@@ -1,3 +1,20 @@
+Madame, Monsieur,
+
+Dans le cadre des tests RAG EM, nous avons sélectionné les procédures de données de notre département afin de procéder aux tests nécessaires du chatbot. Par ailleurs, dans le cadre de la refonte du système d’information (SI), nous avons également inclus le fichier de documentation Atlas lié à notre projet principal.
+
+Vous trouverez en pièce jointe l’ensemble des documents requis pour vos analyses et tests.
+
+Nous restons à votre disposition pour toute question ou précision.
+
+Cordialement,
+[Votre prénom et nom]
+[Votre poste]
+[Votre contact]
+
+
+
+
+
 import pandas as pd
 
 # Sample data with additional columns
