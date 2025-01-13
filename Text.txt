@@ -1,3 +1,9 @@
+Vous trouverez en pièce jointe l’ensemble des documents nécessaires pour procéder aux tests.
+
+
+
+
+
 Madame, Monsieur,
 
 Dans le cadre des tests RAG EM, nous avons sélectionné les procédures de données de notre département afin de procéder aux tests nécessaires du chatbot. Par ailleurs, dans le cadre de la refonte du système d’information (SI), nous avons également inclus le fichier de documentation Atlas lié à notre projet principal.
