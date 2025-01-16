@@ -1,3 +1,59 @@
+import PyPDF2
+import openai
+import httpx
+
+# Azure OpenAI Setup
+AZURE_OPENAI_API_VERSION = "2024-08-01"
+AZURE_OPENAI_ENDPOINT = "YOUR_AZURE_ENDPOINT"
+AZURE_OPENAI_API_KEY = "YOUR_API_KEY"
+MODEL_NAME = "gpt-4-turbo"
+
+def ask_chatgpt(prompt):
+    """
+    Sends a prompt to ChatGPT Turbo 4 for a response.
+    """
+    headers = {
+        "Content-Type": "application/json",
+        "api-key": AZURE_OPENAI_API_KEY,
+    }
+    endpoint = f"{AZURE_OPENAI_ENDPOINT}/openai/deployments/{MODEL_NAME}/chat/completions?api-version={AZURE_OPENAI_API_VERSION}"
+    payload = {
+        "messages": [
+            {"role": "system", "content": "You are a professional translator."},
+            {"role": "user", "content": prompt},
+        ],
+    }
+
+    with httpx.Client(verify=False) as client:
+        response = client.post(endpoint, headers=headers, json=payload)
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"]
+
+def translate_pdf(file_path, output_path, source_language="French", target_language="English"):
+    """
+    Translates a PDF from source_language to target_language.
+    """
+    # Read PDF
+    pdf_reader = PyPDF2.PdfReader(file_path)
+    translated_text = ""
+
+    for page_num, page in enumerate(pdf_reader.pages):
+        original_text = page.extract_text()
+        if not original_text.strip():
+            continue
+        
+        prompt = f"Translate the following text from {source_language} to {target_language}:\n{original_text}"
+        translation = ask_chatgpt(prompt)
+        translated_text += f"\n\n=== Page {page_num + 1} ===\n{translation}"
+
+    # Save to new PDF
+    with open(output_path, "w", encoding="utf-8") as output_file:
+        output_file.write(translated_text)
+
+# Usage Example
+translate_pdf("your_input.pdf", "translated_output.txt")
+
+
 Pour effectuer cette migration, merci de suivre les instructions disponibles via ce lien : Instructions de migratio
 
 
