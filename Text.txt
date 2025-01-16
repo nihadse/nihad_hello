@@ -1,3 +1,8 @@
+Pour effectuer cette migration, merci de suivre les instructions disponibles via ce lien : Instructions de migratio
+
+
+
+
 Objet : Migration de la plateforme Domino Data Lab vers DataGrid
 
 Bonjour à tous,
