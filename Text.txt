@@ -1,3 +1,31 @@
+Objet : Migration de la plateforme Domino Data Lab vers DataGrid
+
+Bonjour à tous,
+
+Dans le cadre de la migration de la plateforme Domino Data Lab vers DataGrid, nous vous rappelons qu’il est essentiel de transférer vos données depuis vos espaces de travail Domino, y compris :
+
+Les datasets
+
+Les environnements
+
+
+La date limite pour finaliser cette opération est fixée au 31 janvier 2025. Cependant, il est fortement conseillé d’effectuer le transfert dès que possible afin d’éviter tout retard ou imprévu.
+
+Vous pouvez accéder à DataGrid via le lien suivant :
+Accéder à DataGrid
+
+Veuillez suivre les instructions détaillées pour compléter le processus de migration. Si vous avez des questions ou des difficultés, n’hésitez pas à nous contacter.
+
+Merci pour votre réactivité et votre engagement.
+
+Cordialement,
+Nihad Senhadji
+
+
+
+
+
+
 J'ai entendu dire que tu vas quitter la banque aujourd'hui. Bonne chance pour la suite 
 
 
