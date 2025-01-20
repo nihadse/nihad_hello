@@ -1,3 +1,22 @@
+Bonjour,
+
+Merci pour votre retour concernant les anomalies signalées.
+
+Nous vous informons que le DCC ED000079 a été modifié ce mois-ci, avec une mise à jour du CDD intégrant les conditions "non résidents". Cela explique l’augmentation du périmètre constatée. À noter que ce DCC concerne uniquement les "tiers" et non les "comptes".
+
+Par ailleurs, le DCC ED000267 a également été ajusté pour inclure des conditions spécifiques liées aux résidents. Par exemple, le tiers 07000 000267 est désormais soumis à ces nouvelles conditions.
+
+Enfin, l’ED000044 est impacté, car le DCC qui lui est associé est conditionné par les règles définies dans l’ED000076.
+
+Nous restons disponibles pour toute question ou clarification supplémentaire.
+
+Cordialement,
+
+
+
+
+
+
 import PyPDF2
 import openai
 import httpx
