@@ -1,3 +1,31 @@
+Sujet : Documents nécessaires pour le publipostage
+
+Bonjour [Nom du destinataire],
+
+Comme convenu ce dimanche, nous attendons les éléments nécessaires pour avancer sur le publipostage, à savoir :
+
+1. La lettre Word que vous souhaitez utiliser.
+
+
+2. Le fichier Excel contenant la colonne avec les informations à intégrer dans la lettre.
+
+
+
+Nous aurons besoin de deux versions :
+
+Une lettre vide (sans données intégrées).
+
+Une lettre remplie avec les données du fichier Excel.
+
+
+Merci de nous transmettre ces fichiers dès que possible afin que nous puissions procéder au publipostage.
+
+Cordialement,
+[Votre nom]
+
+
+
+
 Bonjour,
 
 Merci pour votre retour concernant les anomalies signalées.
