@@ -1,3 +1,18 @@
+Le **publipostage** est une fonctionnalité puissante des logiciels de traitement de texte, comme Microsoft Word, qui permet de personnaliser et de générer automatiquement des documents en masse. Voici un bref aperçu de son utilisation :
+
+1. **Préparation des données** : Créez une base de données (par exemple, dans Excel) contenant les informations variables (noms, adresses, etc.).  
+2. **Liaison des données** : Dans Word, utilisez l'onglet "Publipostage" pour importer votre fichier de données.  
+3. **Insertion des champs** : Placez des champs de fusion (ex : « Nom », « Adresse ») dans votre document pour personnaliser chaque version.  
+4. **Vérification et finalisation** : Aperçu des documents fusionnés pour vérifier leur exactitude.  
+5. **Impression ou envoi** : Générez les documents finaux pour impression ou envoi par email.  
+
+Cette technologie est idéale pour les lettres, étiquettes, emails ou présentations personnalisées, comme votre déclaration en français.
+
+
+
+
+
+
 Sujet : Documents nécessaires pour le publipostage
 
 Bonjour [Nom du destinataire],
