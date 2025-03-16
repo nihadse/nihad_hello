@@ -1,0 +1,74 @@
+Bien sûr ! Voici une version simplifiée et en français des points **1 (Définir le cadre du projet)** et **4 (Découper le projet en phases)** sans entrer dans les détails techniques ou d'évaluation.
+
+---
+
+### **1. Définir le cadre du projet**
+Pour que le projet soit clair et bien organisé, il est essentiel de définir un cadre précis. Voici comment procéder :
+
+#### **Objectif**
+- **But principal** : Développer un chatbot basé sur l'IA générative pour répondre aux besoins spécifiques de BNP Paribas.
+- **Cas d'utilisation** :
+  - **Service client** : Répondre aux questions fréquentes sur les comptes, les transactions, les prêts, etc.
+  - **Gestion interne** : Aider les employés à trouver des informations sur les politiques ou les procédures internes.
+  - **Conseil financier** : Fournir des recommandations personnalisées (si applicable).
+
+#### **Fonctionnalités clés**
+- **Réponses précises et contextuelles** : Le chatbot doit comprendre les questions et fournir des réponses pertinentes.
+- **Connaissances bancaires** : Il doit maîtriser le vocabulaire et les concepts financiers.
+- **Conformité** : Respecter les réglementations bancaires en vigueur.
+
+#### **Livrables**
+- Un prototype fonctionnel du chatbot.
+- Une intégration avec les systèmes existants de BNP Paribas.
+- Une documentation claire sur le fonctionnement du chatbot.
+
+#### **Contraintes**
+- **Délais** : Définir un calendrier réaliste (par exemple, 3 à 6 mois).
+- **Ressources** : Identifier les outils et les données disponibles.
+- **Réglementation** : S'assurer que le chatbot respecte les normes légales et de sécurité.
+
+---
+
+### **4. Découper le projet en phases**
+Découper le projet en étapes permet de structurer le travail et d'avancer de manière organisée. Voici les phases principales :
+
+#### **Phase 1 : Recherche et planification**
+- **Comprendre les besoins** :
+  - Identifier les cas d'utilisation spécifiques pour le chatbot.
+  - Collaborer avec les parties prenantes pour définir les priorités.
+- **Préparer les données** :
+  - Identifier les sources de données nécessaires (par exemple, FAQ clients, documents internes).
+- **Planifier les outils** :
+  - Choisir les outils et plateformes adaptés au projet.
+
+#### **Phase 2 : Préparation des données**
+- **Collecte des données** :
+  - Rassembler les informations pertinentes (questions fréquentes, documents financiers, etc.).
+- **Organisation des données** :
+  - Structurer les données pour qu'elles soient facilement accessibles et utilisables.
+
+#### **Phase 3 : Développement du chatbot**
+- **Système de récupération** :
+  - Mettre en place un mécanisme pour trouver les informations pertinentes.
+- **Modèle de génération** :
+  - Adapter un modèle d'IA pour générer des réponses naturelles et précises.
+- **Intégration** :
+  - Combiner les deux systèmes pour créer le cœur du chatbot.
+
+#### **Phase 4 : Intégration et tests**
+- **Intégration aux systèmes existants** :
+  - Connecter le chatbot aux outils internes de BNP Paribas (par exemple, CRM, bases de données).
+- **Tests** :
+  - Vérifier que le chatbot fonctionne correctement et répond aux attentes.
+  - S'assurer que les réponses sont précises et conformes.
+
+#### **Phase 5 : Amélioration continue**
+- **Feedback** :
+  - Recueillir les retours des utilisateurs (employés ou clients).
+- **Améliorations** :
+  - Affiner les réponses et élargir les connaissances du chatbot.
+  - Adapter le système en fonction des besoins évolutifs.
+
+---
+
+En suivant ces étapes, vous pourrez guider les stagiaires de manière claire et structurée, tout en assurant le succès du projet. Si vous avez besoin de précisions supplémentaires, n'hésitez pas à demander ! 😊
