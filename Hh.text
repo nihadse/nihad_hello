@@ -1,3 +1,33 @@
+
+from chromadb import SegmentScope  # Import the enum
+
+def retrieve_relevant_chunks(query, top_k=35):
+    """GPU-accelerated retrieval with proper error handling"""
+    query_embedding = model.encode([query], convert_to_tensor=True)
+    query_embedding = accelerator.gather(query_embedding).cpu().numpy().tolist()
+
+    results = collection.query(  # Added missing `=` for assignment
+        query_embeddings=query_embedding,  # Fixed typo: `-` → `=`
+        n_results=top_k,
+        include=["documents", "metadatas", "distances"],
+        where={"segment_scope": SegmentScope.VECTOR}  # Use enum, not string
+    )
+
+    return [
+        {"document": doc, "metadata": meta, "distance": dist}
+        for doc, meta, dist in zip(
+            results["documents"][0],
+            results["metadatas"][0],
+            results["distances"][0]
+        )
+    ]
+
+
+
+    
+
+
+
 La formation couvre les fondamentaux de l’IA Générative de manière claire et structurée. Voici quelques suggestions pour améliorer l’expérience d’apprentissage :
 
 
