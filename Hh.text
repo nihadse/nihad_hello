@@ -1,4 +1,17 @@
 
+
+chroma_client.get_or_create_collection(
+    name="pdf_documents3",
+    embedding_function=AcceleratedBGEEmbeddingFunction(model, accelerator),
+    metadata={"source": "pdf_documents"},
+    # Optional config if supported by your version:
+    # settings={"hnsw:space": "cosine", "hnsw:dimensions": 1024}
+)
+
+
+
+
+
 from chromadb import SegmentScope  # Import the enum
 
 def retrieve_relevant_chunks(query, top_k=35):
