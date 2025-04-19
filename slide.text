@@ -1,3 +1,8 @@
+Sentinilia est une solution d’intelligence artificielle conçue pour détecter les communautés de fraude en analysant les comportements des clients à travers leurs cartes, agences utilisées et autres données bancaires.
+Elle met en évidence les connexions cachées entre ces éléments pour identifier les communautés organisées de fraudeurs qui parviennent à échapper à nos systèmes de surveillance traditionnels.
+
+
+
 🎯 Objectif du projet :
 Détecter les communautés de fraude en identifiant les liens et relations cachées entre les clients.
 
