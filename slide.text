@@ -1,4 +1,17 @@
+📥 Le département reçoit chaque mois environ 2 200 noms de clients interdits de chéquier.
+
+📃 Ces noms sont transmis par la centrale des impayés dans un fichier texte brut.
+
+🛠️ Le fichier doit être converti manuellement en Excel et formaté (nom, prénom, etc.).
+
+🔍 La vérification est faite manuellement dans le système Atlas, via la transaction INTIER.
+
+🕒 Ce processus mobilise plusieurs collaborateurs et prend plusieurs jours chaque mois.
+
 Slide 1 : Une tâche manuelle lourde à chaque mois
+
+
+
 📄 Nous recevons un fichier texte brut avec 2 200 noms de personnes interdites de chéquier.
 
 🧾 Le fichier doit être converti manuellement en Excel et mis en forme (nom, prénom, entreprise…).
