@@ -1,3 +1,19 @@
+Dear [Recipient's Name],
+
+Thank you for your message.
+
+Please find attached the information and documents required for the account creation.
+
+I will send the remaining data related to the badge as soon as it becomes available.
+
+Please let me know if anything further is needed.
+
+Best regards,
+[Your Name]
+
+
+
+
 Bonjour Hind,
 
 Comme nous en avons déjà discuté, nous avons créé un SharePoint pour que vous puissiez partager les fichiers et recevoir les résultats directement dessus, sans passer par e-mail. Voici le lien : [insérer le lien].
